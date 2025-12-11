@@ -175,9 +175,8 @@ html, body{
     background-size: cover;
     width: 70%;
     height: 100%;
-    background-image: url(banda-se-apresentando-em-estudio.jpg) ;
+    background-image: url("../images/banda-se-apresentando-em-estudio.jpg");
 }
-
 .botoes button:hover{
     background-color: #F30800;
     color: #ffffff;
@@ -240,7 +239,7 @@ font-size: 3rem;
 
 .fundo{
     background-size: cover;
-    background-image: url(banda-se-apresentando-em-estudio.jpg); 
+    background-image: url("../images/banda-se-apresentando-em-estudio.jpg"); 
     width: 100%;
     height: 100%;
 }
@@ -262,7 +261,7 @@ font-size: 3rem;
 
 .fundo{
     background-size: cover;
-    background-image: url(banda-se-apresentando-em-estudio.jpg); 
+    background-image: url("../images/banda-se-apresentando-em-estudio.jpg"); 
     width: 100%;
     height: 100%;
 }
