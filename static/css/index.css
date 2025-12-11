@@ -54,3 +54,29 @@
 
 .prev { left: 10px; }
 .next { right: 10px; }
+
+@media (min-width: 1024px) {
+    
+    .carousel{
+        width: 100%;
+        height: 20rem;
+    }
+    .carousel-item img {
+        height: 45rem;
+    }
+    
+    
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    
+    .carousel{
+        width: 100%;
+        height: 18rem;
+    }
+    .carousel-item img {
+        height: 30rem;
+    }
+    
+    
+}
