@@ -66,6 +66,7 @@ def cadastro():
         if existing_user:
             return 'Usuário já existe!'
         
+        # Criação de um novo usuário
         new_user = User(name=name, password=password)
         db.session.add(new_user)
         db.session.commit()
@@ -73,13 +74,12 @@ def cadastro():
         login_user(new_user)
         return redirect(url_for('home'))
 
-# Logout    
+# Logout (saindo da conta)
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
-
 
 # Rota para a página inicial
 @app.route('/')
