@@ -5,8 +5,36 @@ function sucesso(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
-    // Seleciona os spans e parágrafos para atualização
-    document.getElementById('status').textContent = 'Localização obtida com sucesso!';
+    // 🚨 PASSO 1: Criar o corpo da requisição no formato de formulário
+    const formData = new URLSearchParams();
+    formData.append('latitude', latitude);
+    formData.append('longitude', longitude);
+
+    fetch("/coordenadas", { 
+        method: 'POST',
+        headers: {
+            // 🚨 PASSO 2: O Content-Type deve ser este para Formulário
+            'Content-Type': 'application/x-www-form-urlencoded' 
+        },
+        // 🚨 PASSO 3: Enviar o corpo como string
+        body: formData.toString() 
+    })
+    .then(response => {
+        // Verifica se a resposta HTTP foi OK antes de tentar o JSON
+        if (!response.ok) {
+            // Se cair aqui, o status é 404, 500, etc.
+            throw new Error(`Erro HTTP: Status ${response.status}`);
+        }
+        return response.json(); 
+    })
+    .then(data => {
+        document.getElementById('resultado').textContent = `Você está em: ${data.address}`;
+        document.getElementById('status').textContent = 'Localização obtida com sucesso!';
+    })
+    .catch(error => {
+        // Este é o bloco que captura o SyntaxError/JSON inválido e o Erro HTTP
+        document.getElementById('status').textContent = `Erro ao obter endereço: ${error.message}`;
+    });
 }
 
 function erro(err) {
@@ -29,4 +57,5 @@ function obterLocalizacao() {
         navigator.geolocation.getCurrentPosition(sucesso, erro);
     }
 }
+
 window.onload = obterLocalizacao;

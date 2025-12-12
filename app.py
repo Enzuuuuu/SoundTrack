@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user  
 from flask_sqlalchemy import SQLAlchemy
+from geopy.geocoders import Nominatim
+from flask import jsonify
 
 # Cria a aplicação Flask
 app = Flask(__name__)
@@ -88,7 +90,36 @@ def home():
 with app.app_context():
     db.create_all()
 
-# Executa o aplicativo Flask
+
+
+@app.route("/coordenadas", methods=["POST"])
+def coordenadas():
+    try:
+
+        latitude_str = request.form.get("latitude")
+        longitude_str = request.form.get("longitude")
+
+        # Verifica se os dados foram recebidos
+        if not latitude_str or not longitude_str:
+            return jsonify({"address": "Erro: Dados de latitude/longitude ausentes"}), 400
+
+        # Converte para float antes de usar na biblioteca
+        lat = float(latitude_str)
+        lon = float(longitude_str)
+
+        geolocator = Nominatim(user_agent="myGeolocator")
+        location = geolocator.reverse((lat, lon), language='pt')
+
+        if location:
+            address = location.address
+        else:
+            address = "Endereço não encontrado"
+
+        return jsonify({"address": address})
+    except Exception as e:
+        return jsonify({"address": f"Erro ao processar a solicitação: {str(e)}"}), 500
+    
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
