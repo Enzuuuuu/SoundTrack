@@ -17,6 +17,11 @@
             <div class="fundo">
                 <div class="meio" id="cadastrinho">
                     <h1 class="animate__animated animate__fadeInDown">Cadastro</h1>
+
+                    {% if error %}
+                        <div class="error animate__animated animate__shakeX">{{ error }}</div>
+                    {% endif %}
+
                     <form action="#" method="post">
                         <input type="text" placeholder="Nome do Usuário" class="animate__animated animate__fadeInDown" name="name">
                         <input type="password" placeholder="Crie sua senha" class="animate__animated animate__fadeInDown" name="password">
