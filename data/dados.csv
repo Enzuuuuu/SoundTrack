@@ -1,0 +1,6 @@
+id,titulo,artista,data,hora,local,genero,preco,usuario
+1,Rock Night,Banda X,2025-12-15,20:00,São Paulo,Rock,50.00,user1
+2,Pop Festival,Artista Y,2025-12-20,18:00,Rio de Janeiro,Pop,0.00,user2
+3,Eletrônica Vibes,DJ Z,2025-12-25,22:00,Belo Horizonte,Eletrônica,30.00,user3
+4,Jazz Session,Jazz Band,2025-12-30,19:00,Porto Alegre,Jazz,40.00,user1
+5,Indie Night,Indie Artist,2026-01-05,21:00,Salvador,Indie,25.00,user4
