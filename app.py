@@ -82,9 +82,23 @@ def logout():
     return redirect(url_for('home'))
 
 # Rota para a página inicial
+import os
+import csv
+
+#carregando os shows do csv
+def carregar_shows():
+    if not os.path.exists('data/dados.csv'):
+        return []
+    shows = []
+    with open('data/dados.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            shows.append(row)
+    return shows
 @app.route('/')
 def home():
-    return render_template('index.html')
+    shows = carregar_shows()
+    return render_template('index.html', shows=shows ) 
 
 # Cria as tabelas do banco de dados
 with app.app_context():

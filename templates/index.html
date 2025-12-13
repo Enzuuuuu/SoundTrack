@@ -83,6 +83,43 @@
 
 
         </section>
+        
+        <div class="tabela">
+          <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Artista</th>
+                <th>Data</th>
+                <th>Local</th>
+                <th>Hora</th>
+                <th>Gênero</th>
+                <th>Preço</th>
+                <th>Usuário</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for show in shows %}
+            <tr>
+                <td>{{ show.id }}</td>
+                <td>{{ show.titulo }}</td>
+                <td>{{ show.artista }}</td>
+                <td>{{ show.data }}</td>
+                <td>{{ show.local }}</td>
+                <td>{{ show.hora }}</td>
+                <td>{{ show.genero }}</td>
+                <td>{{ show.preco }}</td>
+                <td>{{ show.usuario }}</td>
+            </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% if not shows %}
+            <p>Nenhum show disponível no momento.</p>
+        {% endif %}
         <script src="../static/javascript/carrossel.js"></script>
 </body>
 

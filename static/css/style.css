@@ -209,6 +209,26 @@ text-decoration: underline;
     margin-bottom: 10px;
 }
 
+.tabela{
+    width: 80%;
+    margin: 2rem auto;
+    border-collapse: collapse;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tabela th, .tabela td{
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.tabela th{
+    background-color: #F30800;
+    color: white;
+}
+
 @media screen and (min-width:1024px){  /*Computador*/
     /*mensagem de erro*/
     .error{
