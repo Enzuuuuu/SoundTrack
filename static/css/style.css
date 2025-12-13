@@ -194,7 +194,27 @@ html, body{
 text-decoration: underline;
 }
 
+/*Borda no aviso de erro*/
+.error{
+    display: flex;
+    border: 2px solid #F30800;
+    border-radius: 5px;
+    color: white;
+    background-color: #F30800;
+    opacity: 0.7;
+    height: 20px;
+    font-size: 0.8rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
 @media screen and (min-width:1024px){  /*Computador*/
+    /*mensagem de erro*/
+    .error{
+        height: 30px;
+        font-size: 0.8rem;
+    }
     header{
         flex-direction: row;
         justify-content: space-between;
@@ -203,6 +223,10 @@ text-decoration: underline;
 }
 
 @media screen and (min-width:768px) and  (max-width:1023px){ /*tablet*/
+    .error{
+        height: 30px;
+        font-size: 0.8rem;
+    }
     header{
         flex-direction: row;
         justify-content: space-between;

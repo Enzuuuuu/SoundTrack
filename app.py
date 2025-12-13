@@ -42,7 +42,7 @@ def login():
 
         user = db.session.query(User).filter_by(name=name, password=password).first()
         if not user:
-            return 'Usuário ou senha inválidos'
+            return render_template('login.html', error="Usuário ou senha incorretos!", name=name)
         
         login_user(user)
         return redirect(url_for('home'))

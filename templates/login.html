@@ -18,6 +18,9 @@
                 <div class="meio">
                     <h1 class="animate__animated animate__fadeInDown">Login</h1>
                     <form action="#" method="post">
+                        {% if error %}
+                        <div class="error animate__animated animate__shakeX">{{ error }}</div>
+                    {% endif %}
                         <input type="text" placeholder="Nome do Usuário" class="animate__animated animate__fadeInDown" name="name">
                         <input type="password" placeholder="Senha" class="animate__animated animate__fadeInDown" name="password">
                         <div class="botoes">
