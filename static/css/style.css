@@ -210,20 +210,23 @@ text-decoration: underline;
 }
 
 .tabela{
-    width: 80%;
+    width: 100%;
     margin: 2rem auto;
     border-collapse: collapse;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    overflow-x: auto;
 }
 
 .tabela th, .tabela td{
-    border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
 }
 
+.tabela tr:nth-child(even){
+    background-color: #f2f2f2;
+}
 .tabela th{
     background-color: #F30800;
     color: white;
