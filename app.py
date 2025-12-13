@@ -6,7 +6,7 @@ from flask import jsonify
 
 # Cria a aplicação Flask
 app = Flask(__name__)
-
+app.secret_key = 'banana'
 lm = LoginManager()
 lm.init_app(app)
 
@@ -59,12 +59,12 @@ def cadastro():
 
         # Verifica se as senhas coincidem
         if password != confirmpassword: 
-            return 'As senhas não coincidem!'
+            return render_template('cadastro.html', error="As senhas não coincidem!")
         
         # Verifica se o usuário já existe
         existing_user = db.session.query(User).filter_by(name=name).first()
         if existing_user:
-            return 'Usuário já existe!'
+            return render_template('cadastro.html', error='Usuário já existe!', name=name)
         
         new_user = User(name=name, password=password)
         db.session.add(new_user)
