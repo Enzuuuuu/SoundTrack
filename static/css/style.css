@@ -210,13 +210,14 @@ text-decoration: underline;
 }
 
 .tabela{
-    width: 100%;
+    width: 85%;
     margin: 2rem auto;
     border-collapse: collapse;
     display: flex;
     flex-direction: column;
     justify-content: center;
     overflow-x: auto;
+    border-radius: 10px;
 }
 
 .tabela th, .tabela td{
@@ -232,6 +233,33 @@ text-decoration: underline;
     color: white;
 }
 
+.pesquisa{
+    display: flex;
+    justify-content: center;
+    margin-top: 6rem;
+}
+
+.pesquisa input{
+    width: 80%;
+    height: 50px;
+    border: 2px solid #F30800;
+    border-radius: 5px 0 0 5px;
+    padding: 5px;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.pesquisa button{
+    width: 50px;
+    height: 50px;
+    border: 2px solid #F30800;
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+    background-color: #F30800;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color .3s;
+}
 @media screen and (min-width:1024px){  /*Computador*/
     /*mensagem de erro*/
     .error{
