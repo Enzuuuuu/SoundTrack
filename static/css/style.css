@@ -33,7 +33,7 @@ ul{
     gap: 1.5rem;
 }
 
-ul li{
+.menu li{
     width: 3rem;
     height: 3rem;
     border: 2px solid #ffffff;
@@ -48,32 +48,32 @@ ul li{
 }
 
 
-ul li .icone{
+.menu li .icone{
     font-size: 1em;
 }
 
-ul li .texto{
+.menu li .texto{
     transform: scale(0);
     transition: .3s;
     transition-delay: .1s;
 }
 
-ul li span{
+.menu li span{
     position: absolute;
 }
-ul li:hover{
+.menu li:hover{
     width: 8rem;
 }
 
-ul li:hover .texto{
+.menu li:hover .texto{
     transform: scale(1);
 }
 
-ul li:hover .icone{
+.menu li:hover .icone{
     transform: scale(0);
 }
 
-ul li::before{
+.menu li::before{
     content: '';
     position: absolute;
     background-image: linear-gradient(45deg, #F7B32B, #F30800 );
@@ -82,7 +82,7 @@ ul li::before{
     border-radius: 60px;
 }
 
-ul li:hover::before{
+.menu li:hover::before{
     opacity: 1;
 }
 .meio{
