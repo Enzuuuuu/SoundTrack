@@ -62,9 +62,6 @@ function sucesso(position) {
     .catch(err => console.error("Erro:", err));
 }
 
-// ======================
-// Inicialização
-// ======================
 window.addEventListener("load", () => {
     const statusParagrafo = document.getElementById("status");
     statusParagrafo.textContent = "Buscando localização...";
