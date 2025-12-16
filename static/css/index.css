@@ -69,6 +69,10 @@
     color: #333;
     padding: 1.1rem;
 }
+.sobre p{
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
 
 .sobre h2{
     font-size: 2.5rem;
@@ -106,7 +110,7 @@
 }
 .sobrenos p{
     margin-bottom: 1rem;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
 }
 
 
