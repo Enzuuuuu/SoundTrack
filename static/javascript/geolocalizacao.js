@@ -9,6 +9,9 @@ function erro(err) {
 function sucesso(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
+    const mapaLink = document.getElementById("map-link");
+    mapaLink.href = `https://www.google.com/maps?q=${latitude},${longitude}`;
+    
 
    //primeiro fetch para pegar o endereço
     const formData = new URLSearchParams();
