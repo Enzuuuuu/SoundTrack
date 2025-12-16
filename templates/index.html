@@ -2,23 +2,26 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>Página Principal</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
-    <link rel="stylesheet" href="../static/css/index.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
-<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Página Principal</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+  <link rel="stylesheet" href="../static/css/index.css">
+  <link rel="stylesheet" href="../static/css/tabela.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
-      <header>
+
+  <header>
     <h1>SoundTrack</h1>
     <nav>
       <ul>
@@ -53,38 +56,36 @@
     </nav>
   </header>
 
-    <button onclick="obterLocalizacao()">Obter Localização</button>
-    <script src="../static/javascript/geolocalizacao.js"></script>
+  <button onclick="obterLocalizacao()">Obter Localização</button>      
 
-    
-    <main>
-        <section class="carousel">
-                <div class="carousel-track">
-                    <div class="carousel-item">
-                        <img src="../static/images/imagemc1.png" alt="">
-                        <h2 class="carousel-title">Descubra músicos perto de você</h2>
+  <main>
+    <section class="carousel">
+      <div class="carousel-track">
+        <div class="carousel-item">
+          <img src="../static/images/imagemc1.png" alt="">
+          <h2 class="carousel-title">Descubra músicos perto de você</h2>
 
-                    </div>
+        </div>
 
-                    <div class="carousel-item">
-                        <img src="../static/images/imagemc2.png" alt="">
-                        <h2 class="carousel-title">Sempre saiba os melhores lugares para ir</h2>
-                    </div>
+        <div class="carousel-item">
+          <img src="../static/images/imagemc2.png" alt="">
+          <h2 class="carousel-title">Sempre saiba os melhores lugares para ir</h2>
+        </div>
 
-                    <div class="carousel-item">
-                        <img src="../static/images/imagemc3.png" alt="">
-                        <h2 class="carousel-title">Demonstre o seu verdadeiro talento</h2>
-                    </div>
-                </div>
+        <div class="carousel-item">
+          <img src="../static/images/imagemc3.png" alt="">
+          <h2 class="carousel-title">Demonstre o seu verdadeiro talento</h2>
+        </div>
+      </div>
 
-                <button class="prev">❮</button>
-                <button class="next">❯</button>
-            </div>
+      <button class="prev">❮</button>
+      <button class="next">❯</button>
+      </div>
 
 
-        </section>
+    </section>
 
-        <form method="get" class="search-form">
+    <form method="get" class="search-form">
           <div class="pesquisa">
             <input type="text" placeholder="Pesquisar shows..." name="pesquisa">
             <button type="submit"><i class="bi bi-search"></i></button>
@@ -118,7 +119,10 @@
                         <td>{{ resultado.hora }}</td>
                         <td>{{ resultado.genero }}</td>
                         <td>{{ resultado.preco }}</td>
-                        <td>{{ resultado.usuario }}</td>
+                        <td class="distancia"
+                data-titulo="{{ resultado.titulo }}">
+                Calculando...
+            </td>
                 {% endfor %}
                 {% else %}
                     </tr>
@@ -133,18 +137,23 @@
                 <td>{{ show.hora }}</td>
                 <td>{{ show.genero }}</td>
                 <td>{{ show.preco }}</td>
-                <td>{{ show.usuario }}</td>
+                <td class="distancia"
+                data-titulo="{{ show.titulo }}">
+                Calculando...
+            </td>
             </tr>
                 {% endfor %}
                 {% endif %}
             </tbody>
           </table>
-        </div>
+       
 
-        {% if not shows %}
-            <p>Nenhum show disponível no momento.</p>
-        {% endif %}
-        <script src="../static/javascript/carrossel.js"></script>
+    <span id="status">aqui</span>
+    <span id="resultado">aqui</span>
+
+  </main>
+  <script src="../static/javascript/carrossel.js"></script>
+  <script src="../static/javascript/geolocalizacao.js"></script>
 </body>
 
 </html>

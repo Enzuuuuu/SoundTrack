@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user  
 from flask_sqlalchemy import SQLAlchemy
 from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
 from flask import jsonify
 
 # Cria a aplicação Flask
@@ -106,9 +107,13 @@ def pesquisar_shows(shows, termo):
     return resultados
 @app.route('/')
 def home():
+    import csv
+
+    with open("data/dados.csv", newline="", encoding="utf-8") as f:
+        dist = list(csv.DictReader(f))
     shows = carregar_shows()
     resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
-    return render_template('index.html', shows=shows, resultados=resultados) 
+    return render_template('index.html', shows=shows, resultados=resultados, dist=dist, user=current_user)  
 
 # Cria as tabelas do banco de dados
 with app.app_context():
@@ -142,7 +147,38 @@ def coordenadas():
         return jsonify({"address": address})
     except Exception as e:
         return jsonify({"address": f"Erro ao processar a solicitação: {str(e)}"}), 500
-    
+
+@app.route("/distancia", methods=["POST"])
+def distancia():
+    data = request.get_json()
+
+    user_location = (
+        float(data["latitude"]),
+        float(data["longitude"])
+    )
+
+    proximidades = []
+
+    with open("data/dados.csv", newline="", encoding="utf-8") as f:
+        shows = csv.DictReader(f)
+
+        for show in shows:
+            show_location = (
+                float(show["latitude"]),
+                float(show["longitude"])
+            )
+
+            distancia_km = geodesic(user_location, show_location).kilometers
+
+            proximidades.append({
+                "titulo": show["titulo"],
+                "distancia_km": round(distancia_km, 2)
+            })
+
+    proximidades.sort(key=lambda x: x["distancia_km"])
+
+    return jsonify(proximidades)
+
 
 if __name__ == '__main__':
     with app.app_context():
