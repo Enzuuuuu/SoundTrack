@@ -7,6 +7,8 @@
     justify-content: center;
     overflow-x: auto;
     font-family: "JetBrains Mono", monospace;
+    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem ;
 }
 
 .tabela th, .tabela td{
