@@ -2,23 +2,26 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>Página Principal</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
-    <link rel="stylesheet" href="../static/css/index.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
-<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Página Principal</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+  <link rel="stylesheet" href="../static/css/index.css">
+  <link rel="stylesheet" href="../static/css/tabela.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
-      <header>
+
+  <header>
     <h1>SoundTrack</h1>
     <nav>
       <ul>
@@ -53,74 +56,85 @@
     </nav>
   </header>
 
-    <button onclick="obterLocalizacao()">Obter Localização</button>
-    <script src="../static/javascript/geolocalizacao.js"></script>
-
-    
-    <main>
-        <section class="carousel">
-                <div class="carousel-track">
-                    <div class="carousel-item">
-                        <img src="../static/images/imagemc1.png" alt="">
-                        <h2 class="carousel-title">Descubra músicos perto de você</h2>
-
-                    </div>
-
-                    <div class="carousel-item">
-                        <img src="../static/images/imagemc2.png" alt="">
-                        <h2 class="carousel-title">Sempre saiba os melhores lugares para ir</h2>
-                    </div>
-
-                    <div class="carousel-item">
-                        <img src="../static/images/imagemc3.png" alt="">
-                        <h2 class="carousel-title">Demonstre o seu verdadeiro talento</h2>
-                    </div>
-                </div>
-
-                <button class="prev">❮</button>
-                <button class="next">❯</button>
-            </div>
+  <button onclick="obterLocalizacao()">Obter Localização</button>
 
 
-        </section>
-        
-        <div class="tabela">
-          <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Artista</th>
-                <th>Data</th>
-                <th>Local</th>
-                <th>Hora</th>
-                <th>Gênero</th>
-                <th>Preço</th>
-                <th>Usuário</th>
-            </tr>
-            </thead>
-            <tbody>
-                {% for show in shows %}
-            <tr>
-                <td>{{ show.id }}</td>
-                <td>{{ show.titulo }}</td>
-                <td>{{ show.artista }}</td>
-                <td>{{ show.data }}</td>
-                <td>{{ show.local }}</td>
-                <td>{{ show.hora }}</td>
-                <td>{{ show.genero }}</td>
-                <td>{{ show.preco }}</td>
-                <td>{{ show.usuario }}</td>
-            </tr>
-                {% endfor %}
-            </tbody>
-          </table>
+
+  <main>
+    <section class="carousel">
+      <div class="carousel-track">
+        <div class="carousel-item">
+          <img src="../static/images/imagemc1.png" alt="">
+          <h2 class="carousel-title">Descubra músicos perto de você</h2>
+
         </div>
 
-        {% if not shows %}
-            <p>Nenhum show disponível no momento.</p>
-        {% endif %}
-        <script src="../static/javascript/carrossel.js"></script>
+        <div class="carousel-item">
+          <img src="../static/images/imagemc2.png" alt="">
+          <h2 class="carousel-title">Sempre saiba os melhores lugares para ir</h2>
+        </div>
+
+        <div class="carousel-item">
+          <img src="../static/images/imagemc3.png" alt="">
+          <h2 class="carousel-title">Demonstre o seu verdadeiro talento</h2>
+        </div>
+      </div>
+
+      <button class="prev">❮</button>
+      <button class="next">❯</button>
+      </div>
+
+
+    </section>
+
+    <div class="tabela">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Artista</th>
+            <th>Data</th>
+            <th>Local</th>
+            <th>Hora</th>
+            <th>Gênero</th>
+            <th>Preço</th>
+            <th>Proximidade</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for show in shows %}
+          <tr>
+            <td>{{ show.id }}</td>
+            <td>{{ show.titulo }}</td>
+            <td>{{ show.artista }}</td>
+            <td>{{ show.data }}</td>
+            <td>{{ show.local }}</td>
+            <td>{{ show.hora }}</td>
+            <td>{{ show.genero }}</td>
+            <td>{{ show.preco }}</td>
+             <td class="distancia"
+                data-titulo="{{ show.titulo }}">
+                Calculando...
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if not shows %}
+    <p>Nenhum show disponível no momento.</p>
+    {% endif %}
+
+    <span id="status">aqui</span>
+    <span id="resultado">aqui</span>
+
+  </main>
+  <script src="../static/javascript/carrossel.js"></script>
+  <script src="../static/javascript/geolocalizacao.js"></script>
 </body>
 
 </html>

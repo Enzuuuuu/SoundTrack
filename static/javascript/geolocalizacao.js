@@ -1,61 +1,79 @@
-// Funções de callback para sucesso e erro, como no exemplo anterior.
+// ======================
+// Callback de erro
+// ======================
+function erro(err) {
+    document.getElementById("status").textContent =
+        `Erro ao obter localização: ${err.message}`;
+}
 
-
+// ======================
+// Callback de sucesso
+// ======================
 function sucesso(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
-    // 🚨 PASSO 1: Criar o corpo da requisição no formato de formulário
+    // ---------- FETCH 1: endereço ----------
     const formData = new URLSearchParams();
-    formData.append('latitude', latitude);
-    formData.append('longitude', longitude);
+    formData.append("latitude", latitude);
+    formData.append("longitude", longitude);
 
-    fetch("/coordenadas", { 
-        method: 'POST',
+    fetch("/coordenadas", {
+        method: "POST",
         headers: {
-            // 🚨 PASSO 2: O Content-Type deve ser este para Formulário
-            'Content-Type': 'application/x-www-form-urlencoded' 
+            "Content-Type": "application/x-www-form-urlencoded"
         },
-        // 🚨 PASSO 3: Enviar o corpo como string
-        body: formData.toString() 
+        body: formData.toString()
     })
-    .then(response => {
-        // Verifica se a resposta HTTP foi OK antes de tentar o JSON
-        if (!response.ok) {
-            // Se cair aqui, o status é 404, 500, etc.
-            throw new Error(`Erro HTTP: Status ${response.status}`);
-        }
-        return response.json(); 
-    })
+    .then(r => r.json())
     .then(data => {
-        document.getElementById('resultado').textContent = `Você está em: ${data.address}`;
-        document.getElementById('status').textContent = 'Localização obtida com sucesso!';
+        document.getElementById("resultado").textContent =
+            `Você está em: ${data.address}`;
+        document.getElementById("status").textContent =
+            "Localização obtida com sucesso!";
     })
-    .catch(error => {
-        // Este é o bloco que captura o SyntaxError/JSON inválido e o Erro HTTP
-        document.getElementById('status').textContent = `Erro ao obter endereço: ${error.message}`;
+    .catch(err => {
+        document.getElementById("status").textContent =
+            `Erro ao obter endereço: ${err.message}`;
     });
+
+    // ---------- FETCH 2: distâncias ----------
+    fetch("/distancia", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            latitude: latitude,
+            longitude: longitude
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        document.querySelectorAll(".distancia").forEach(td => {
+            const titulo = td.dataset.titulo;
+            const show = data.find(s => s.titulo === titulo);
+
+            if (show) {
+                td.textContent = show.distancia_km + " km";
+            }
+        });
+    })
+    .catch(err => console.error("Erro:", err));
 }
 
-function erro(err) {
-    // Exibe o erro no parágrafo de status
-    document.getElementById('status').textContent = `Erro ao obter localização: ${err.message}`;
-}
+// ======================
+// Inicialização
+// ======================
+window.addEventListener("load", () => {
+    const statusParagrafo = document.getElementById("status");
+    statusParagrafo.textContent = "Buscando localização...";
 
-
-// Função principal chamada pelo botão no HTML (usando onclick="obterLocalizacao()")
-function obterLocalizacao() {
-    const statusParagrafo = document.getElementById('status');
-
-    statusParagrafo.textContent = 'Buscando localização...';
-    
-    // Verifica se o navegador suporta a API de Geolocalização
     if (!navigator.geolocation) {
-        statusParagrafo.textContent = 'Seu navegador não suporta geolocalização.';
-    } else {
-        // Solicita a posição: chama 'sucesso' se ok, 'erro' se falhar
-        navigator.geolocation.getCurrentPosition(sucesso, erro);
+        statusParagrafo.textContent =
+            "Seu navegador não suporta geolocalização.";
+        return;
     }
-}
 
-window.onload = obterLocalizacao;
+    navigator.geolocation.getCurrentPosition(sucesso, erro);
+});
