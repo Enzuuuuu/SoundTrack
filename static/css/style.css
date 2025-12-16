@@ -213,6 +213,38 @@ text-decoration: underline;
     margin: 2rem auto;
     border-collapse: collapse;
 }
+
+.pesquisa{
+    margin-top: 6rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    gap: 0;
+}
+
+.pesquisa input{
+    width: 70%;
+    padding: 8px;
+    border: 2px solid #F30800;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    height: 40px;
+}
+
+.pesquisa input::placeholder{
+    font-family: "JetBrains Mono", monospace;
+}
+
+.pesquisa button{
+    padding: 8px 12px;
+    border: none;
+    background-color: #F30800;
+    color: white;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+}
 @media screen and (min-width:1024px){  /*Computador*/
     /*mensagem de erro*/
     .error{
