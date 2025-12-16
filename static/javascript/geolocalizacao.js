@@ -1,20 +1,16 @@
-// ======================
-// Callback de erro
-// ======================
+
 function erro(err) {
     document.getElementById("status").classList.add("erro");
     document.getElementById("status").textContent =
         `Erro ao obter localização: ${err.message}`;
 }
 
-// ======================
-// Callback de sucesso
-// ======================
+
 function sucesso(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
-    // ---------- FETCH 1: endereço ----------
+   //primeiro fetch para pegar o endereço
     const formData = new URLSearchParams();
     formData.append("latitude", latitude);
     formData.append("longitude", longitude);
@@ -28,8 +24,6 @@ function sucesso(position) {
     })
     .then(r => r.json())
     .then(data => {
-        document.getElementById("resultado").textContent =
-            `Você está em: ${data.address}`;
         document.getElementById("status").textContent =
             "Localização obtida com sucesso!";
         document.getElementById("status").classList.add("sucesso");
@@ -40,7 +34,7 @@ function sucesso(position) {
         document.getElementById("status").classList.add("erro");
     });
 
-    // ---------- FETCH 2: distâncias ----------
+    //segundo fetch para pegar as distâncias
     fetch("/distancia", {
         method: "POST",
         headers: {
