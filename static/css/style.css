@@ -33,7 +33,7 @@ ul{
     gap: 1.5rem;
 }
 
-ul li{
+.menu li{
     width: 3rem;
     height: 3rem;
     border: 2px solid #ffffff;
@@ -48,32 +48,32 @@ ul li{
 }
 
 
-ul li .icone{
+.menu li .icone{
     font-size: 1em;
 }
 
-ul li .texto{
+.menu li .texto{
     transform: scale(0);
     transition: .3s;
     transition-delay: .1s;
 }
 
-ul li span{
+.menu li span{
     position: absolute;
 }
-ul li:hover{
+.menu li:hover{
     width: 8rem;
 }
 
-ul li:hover .texto{
+.menu li:hover .texto{
     transform: scale(1);
 }
 
-ul li:hover .icone{
+.menu li:hover .icone{
     transform: scale(0);
 }
 
-ul li::before{
+.menu li::before{
     content: '';
     position: absolute;
     background-image: linear-gradient(45deg, #F7B32B, #F30800 );
@@ -82,7 +82,7 @@ ul li::before{
     border-radius: 60px;
 }
 
-ul li:hover::before{
+.menu li:hover::before{
     opacity: 1;
 }
 .meio{
@@ -208,57 +208,42 @@ text-decoration: underline;
     justify-content: center;
     margin-bottom: 10px;
 }
-
 .tabela{
     width: 85%;
     margin: 2rem auto;
     border-collapse: collapse;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow-x: auto;
-    border-radius: 10px;
-}
-
-.tabela th, .tabela td{
-    padding: 8px;
-    text-align: center;
-}
-
-.tabela tr:nth-child(even){
-    background-color: #f2f2f2;
-}
-.tabela th{
-    background-color: #F30800;
-    color: white;
 }
 
 .pesquisa{
-    display: flex;
-    justify-content: center;
     margin-top: 6rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    gap: 0;
 }
 
 .pesquisa input{
-    width: 80%;
-    height: 50px;
+    width: 70%;
+    padding: 8px;
     border: 2px solid #F30800;
-    border-radius: 5px 0 0 5px;
-    padding: 5px;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    height: 40px;
+}
+
+.pesquisa input::placeholder{
     font-family: "JetBrains Mono", monospace;
 }
 
 .pesquisa button{
-    width: 50px;
-    height: 50px;
-    border: 2px solid #F30800;
-    border-left: none;
-    border-radius: 0 5px 5px 0;
+    padding: 8px 12px;
+    border: none;
     background-color: #F30800;
     color: white;
-    font-size: 1.2rem;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
     cursor: pointer;
-    transition: background-color .3s;
+    height: 40px;
+    width: 40px;
 }
 @media screen and (min-width:1024px){  /*Computador*/
     /*mensagem de erro*/
@@ -340,11 +325,12 @@ header{
     height: 6rem;
 }
 
+
 header h1{
     font-size: 1.5rem;
 }
 
-ul li{
+.menu li{
     width: 2.2rem;
     height: 2.2rem;
 }
