@@ -85,7 +85,6 @@ def logout():
 # Rota para a página inicial
 import os
 import csv
-
 #carregando os shows do csv
 def carregar_shows():
     if not os.path.exists('data/dados.csv'):
@@ -96,15 +95,25 @@ def carregar_shows():
         for row in reader:
             shows.append(row)
     return shows
+
+def pesquisar_shows(shows, termo):
+    termo = termo.lower()
+    resultados = []
+    for show in shows:
+        if (termo in show['artista'].lower() or
+            termo in show['data'].lower() or
+            termo in show['local'].lower()):
+            resultados.append(show)
+    return resultados
 @app.route('/')
 def home():
     import csv
 
     with open("data/dados.csv", newline="", encoding="utf-8") as f:
         dist = list(csv.DictReader(f))
-
     shows = carregar_shows()
-    return render_template('index.html', shows=shows, user=current_user, dist=dist) 
+    resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
+    return render_template('index.html', shows=shows, resultados=resultados, dist=dist, user=current_user)  
 
 # Cria as tabelas do banco de dados
 with app.app_context():
