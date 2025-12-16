@@ -113,7 +113,46 @@
     font-size: 1.1rem;
 }
 
+.status{
+    font-size: 1rem;
+    font-family: "JetBrains Mono", monospace;
+    width: fit-content;
+    margin: 1rem auto;
+    padding: 10px;
+    border-radius: 0.5rem;
+    animation: expand 0.3s ease-in;
+}
 
+.sucesso{
+    background-color: rgb(206, 247, 206, 0.8);
+    text-align: center;
+    width: fit-content;
+    padding: 20px;
+    margin: 1rem auto;
+    border-radius: 1rem;
+    animation: fadeInfadeout 1s ease-in;
+    animation-fill-mode: forwards;
+
+}
+
+.erro{
+    background-color: rgb(255, 180, 180, 0.8);
+    text-align: center;
+    width: fit-content;
+    padding: 20px;
+    margin: 1rem auto;
+    border-radius: 1rem;
+    animation: fadeInfadeout 1.8s ease-in;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeInfadeout {
+    0% {opacity: 0;}
+    30% {opacity: 1;}
+    70% {opacity: 1;}
+    100% {opacity: 0;}
+}
+  
 @media (min-width: 1024px) {
     
     .carousel{
