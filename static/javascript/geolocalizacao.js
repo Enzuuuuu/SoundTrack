@@ -2,6 +2,7 @@
 // Callback de erro
 // ======================
 function erro(err) {
+    document.getElementById("status").classList.add("erro");
     document.getElementById("status").textContent =
         `Erro ao obter localização: ${err.message}`;
 }
@@ -31,10 +32,12 @@ function sucesso(position) {
             `Você está em: ${data.address}`;
         document.getElementById("status").textContent =
             "Localização obtida com sucesso!";
+        document.getElementById("status").classList.add("sucesso");
     })
     .catch(err => {
         document.getElementById("status").textContent =
             `Erro ao obter endereço: ${err.message}`;
+        document.getElementById("status").classList.add("erro");
     });
 
     // ---------- FETCH 2: distâncias ----------
@@ -62,9 +65,6 @@ function sucesso(position) {
     .catch(err => console.error("Erro:", err));
 }
 
-// ======================
-// Inicialização
-// ======================
 window.addEventListener("load", () => {
     const statusParagrafo = document.getElementById("status");
     statusParagrafo.textContent = "Buscando localização...";

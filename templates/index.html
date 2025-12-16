@@ -24,7 +24,7 @@
   <header>
     <h1>SoundTrack</h1>
     <nav>
-      <ul>
+      <ul class="menu">
         <a href="/config">
           <li>
             <span class="icone"><i class="bi bi-person-fill-gear"></i></span>
@@ -56,7 +56,7 @@
     </nav>
   </header>
 
-  <button onclick="obterLocalizacao()">Obter Localização</button>      
+  <button onclick="obterLocalizacao()">Obter Localização</button>
 
   <main>
     <section class="carousel">
@@ -81,78 +81,100 @@
       <button class="prev">❮</button>
       <button class="next">❯</button>
       </div>
-
+    
+    </section>
+    <div class="status" ><span id="status"></span></div>
+    <section class="sobre">
+      <h2>Sobre o Site</h2>
+      <p>Bem-vindo ao SoundTrack, a plataforma que conecta músicos e amantes da música em um só lugar. Nossa missão é
+        facilitar o encontro entre artistas talentosos e públicos apaixonados, proporcionando experiências musicais
+        inesquecíveis. Seja você um músico em busca de oportunidades para se apresentar ou um fã procurando novos shows,
+        o SoundTrack é o lugar ideal para descobrir e compartilhar a magia da música ao vivo.</p>
 
     </section>
 
     <form method="get" class="search-form">
-          <div class="pesquisa">
-            <input type="text" placeholder="Pesquisar shows..." name="pesquisa">
-            <button type="submit"><i class="bi bi-search"></i></button>
-          </div>
-        </form>
-        
-        <div class="tabela">
-          <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Artista</th>
-                <th>Data</th>
-                <th>Local</th>
-                <th>Hora</th>
-                <th>Gênero</th>
-                <th>Preço</th>
-                <th>Usuário</th>
-            </tr>
-            </thead>
-            <tbody>
-                {% if resultados %}
-                {% for resultado in resultados %}
-                    <tr>
-                        <td>{{ resultado.id }}</td>
-                        <td>{{ resultado.titulo }}</td>
-                        <td>{{ resultado.artista }}</td>
-                        <td>{{ resultado.data }}</td>
-                        <td>{{ resultado.local }}</td>
-                        <td>{{ resultado.hora }}</td>
-                        <td>{{ resultado.genero }}</td>
-                        <td>{{ resultado.preco }}</td>
-                        <td class="distancia"
-                data-titulo="{{ resultado.titulo }}">
-                Calculando...
-            </td>
-                {% endfor %}
-                {% else %}
-                    </tr>
-               
-                {% for show in shows %}
-            <tr>
-                <td>{{ show.id }}</td>
-                <td>{{ show.titulo }}</td>
-                <td>{{ show.artista }}</td>
-                <td>{{ show.data }}</td>
-                <td>{{ show.local }}</td>
-                <td>{{ show.hora }}</td>
-                <td>{{ show.genero }}</td>
-                <td>{{ show.preco }}</td>
-                <td class="distancia"
-                data-titulo="{{ show.titulo }}">
-                Calculando...
-            </td>
-            </tr>
-                {% endfor %}
-                {% endif %}
-            </tbody>
-          </table>
-       
+      <div class="pesquisa">
+        <input type="text" placeholder="Pesquisar shows..." name="pesquisa">
+        <button type="submit"><i class="bi bi-search"></i></button>
+      </div>
+    </form>
 
-    <span id="status">aqui</span>
-    <span id="resultado">aqui</span>
+    <div class="tabela">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Artista</th>
+            <th>Data</th>
+            <th>Local</th>
+            <th>Hora</th>
+            <th>Gênero</th>
+            <th>Preço</th>
+            <th>Usuário</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if resultados %}
+          {% for resultado in resultados %}
+          <tr>
+            <td>{{ resultado.id }}</td>
+            <td>{{ resultado.titulo }}</td>
+            <td>{{ resultado.artista }}</td>
+            <td>{{ resultado.data }}</td>
+            <td>{{ resultado.local }}</td>
+            <td>{{ resultado.hora }}</td>
+            <td>{{ resultado.genero }}</td>
+            <td>{{ resultado.preco }}</td>
+            <td class="distancia" data-titulo="{{ resultado.titulo }}">
+              Calculando...
+            </td>
+            {% endfor %}
+            {% else %}
+          </tr>
+
+          {% for show in shows %}
+          <tr>
+            <td>{{ show.id }}</td>
+            <td>{{ show.titulo }}</td>
+            <td>{{ show.artista }}</td>
+            <td>{{ show.data }}</td>
+            <td>{{ show.local }}</td>
+            <td>{{ show.hora }}</td>
+            <td>{{ show.genero }}</td>
+            <td>{{ show.preco }}</td>
+            <td class="distancia" data-titulo="{{ show.titulo }}">
+              Calculando...
+            </td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+
+
+
+      <span id="resultado">aqui</span>
 
   </main>
+
+  <footer class="sobrenos">
+    <h2>Sobre Nós</h2>
+    <p>Somos estudantes do IFPB, nosso objetivo com a soundtrack é uma ferramenta simples para conectar músicos e fãs de
+      música. <br><br>
+      Acreditamos no poder da música para unir pessoas e criar experiências inesquecíveis. Além de que precisamos
+      entregar este projeto para a conclusão do nosso curso.
+    </p>
+    <p>Criado Por:</p>
+    <ul>
+      <li>Enzo <a href="https://github.com/Enzuuuuu"><i class="fa-brands fa-github"></i></a></li>
+      <li>Matheus <a href="https://github.com/mattheuspaivadini"><i class="fa-brands fa-github"></i></a></li>
+      <li>Francisco<a href="https://github.com/francisco-josetti"><i class="fa-brands fa-github"></i></a></li>
+    </ul>
+  </footer>
   <script src="../static/javascript/carrossel.js"></script>
+  <script src="https://kit.fontawesome.com/8de2dbf4f4.js" crossorigin="anonymous"></script>
   <script src="../static/javascript/geolocalizacao.js"></script>
 </body>
 
