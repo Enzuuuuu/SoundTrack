@@ -24,8 +24,6 @@ function sucesso(position) {
     })
     .then(r => r.json())
     .then(data => {
-        document.getElementById("resultado").textContent =
-            `Você está em: ${data.address}`;
         document.getElementById("status").textContent =
             "Localização obtida com sucesso!";
         document.getElementById("status").classList.add("sucesso");
