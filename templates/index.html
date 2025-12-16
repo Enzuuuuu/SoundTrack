@@ -84,7 +84,7 @@
 
         </section>
 
-        <form action="">
+        <form method="get" class="search-form">
           <div class="pesquisa">
             <input type="text" placeholder="Pesquisar shows..." name="pesquisa">
             <button type="submit"><i class="bi bi-search"></i></button>
@@ -107,6 +107,22 @@
             </tr>
             </thead>
             <tbody>
+                {% if resultados %}
+                {% for resultado in resultados %}
+                    <tr>
+                        <td>{{ resultado.id }}</td>
+                        <td>{{ resultado.titulo }}</td>
+                        <td>{{ resultado.artista }}</td>
+                        <td>{{ resultado.data }}</td>
+                        <td>{{ resultado.local }}</td>
+                        <td>{{ resultado.hora }}</td>
+                        <td>{{ resultado.genero }}</td>
+                        <td>{{ resultado.preco }}</td>
+                        <td>{{ resultado.usuario }}</td>
+                {% endfor %}
+                {% else %}
+                    </tr>
+               
                 {% for show in shows %}
             <tr>
                 <td>{{ show.id }}</td>
@@ -120,6 +136,7 @@
                 <td>{{ show.usuario }}</td>
             </tr>
                 {% endfor %}
+                {% endif %}
             </tbody>
           </table>
         </div>
