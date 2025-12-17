@@ -131,6 +131,7 @@
             <td class="distancia" data-titulo="{{ resultado.titulo }}">
               Calculando...
             </td>
+            <td></td>
             {% endfor %}
             {% else %}
           </tr>
@@ -148,6 +149,12 @@
             <td class="distancia" data-titulo="{{ show.titulo }}">
               Calculando...
             </td>
+            <td><a 
+                   href="https://www.openstreetmap.org/?mlat={{ show.latitude }}&mlon={{ show.longitude }}#map=18/{{ show.latitude }}/{{ show.longitude }}"
+                   target="_blank"
+                >
+                    !!!
+                </a></td>
           </tr>
           {% endfor %}
           {% endif %}

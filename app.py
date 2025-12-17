@@ -111,10 +111,22 @@ def home():
 
     with open("data/dados.csv", newline="", encoding="utf-8") as f:
         dist = list(csv.DictReader(f))
-    shows = carregar_shows()
-    resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
-    return render_template('index.html', shows=shows, resultados=resultados, dist=dist, user=current_user)  
+    latitudes = []
+    longitudes = []
 
+    for linha in dist:
+        latitudes.append(float(linha["latitude"]))
+        longitudes.append(float(linha["longitude"]))
+    shows = carregar_shows()
+    resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))  
+
+    return render_template(
+    "index.html",
+    latitudes=latitudes,
+    longitudes=longitudes,
+    shows=shows, resultados=resultados, dist=dist, user=current_user
+)
+    
 # Cria as tabelas do banco de dados
 with app.app_context():
     db.create_all()
