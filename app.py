@@ -113,7 +113,7 @@ def pesquisar_shows(shows, termo):
     return resultados
 
 def filtrar_shows_alfabeticamente(shows):
-    return sorted(shows, key=lambda x: x['artista'].lower())
+    return sorted(shows, key=lambda x: x['titulo'].lower())
 @app.route('/')
 def home():
     import csv
@@ -126,7 +126,7 @@ def home():
     if resultados:
         shows = resultados
     if alfabeto:
-        shows = sorted(shows, key=lambda x: x['artista'].lower())
+        shows = sorted(shows, key=lambda x: x['titulo'].lower())
     else:
         shows = shows
 
