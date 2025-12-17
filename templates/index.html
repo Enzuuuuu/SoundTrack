@@ -93,66 +93,87 @@
 
     </section>
 
-    <form method="get" class="search-form">
-      <div class="pesquisa">
-        <input type="text" placeholder="Pesquisar shows..." name="pesquisa">
-        <button type="submit"><i class="bi bi-search"></i></button>
-      </div>
-    </form>
-
-    <div class="tabela">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Título</th>
-            <th>Artista</th>
-            <th>Data</th>
-            <th>Local</th>
-            <th>Hora</th>
-            <th>Gênero</th>
-            <th>Preço</th>
-            <th>Proximidade</th>
-            <th>link</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% if resultados %}
-          {% for resultado in resultados %}
-          <tr>
-            <td>{{ resultado.id }}</td>
-            <td>{{ resultado.titulo }}</td>
-            <td>{{ resultado.artista }}</td>
-            <td>{{ resultado.data }}</td>
-            <td>{{ resultado.local }}</td>
-            <td>{{ resultado.hora }}</td>
-            <td>{{ resultado.genero }}</td>
-            <td>{{ resultado.preco }}</td>
-            <td class="distancia" data-titulo="{{ resultado.titulo }}">
-              Calculando...
-            </td>
+      <form method="get" class="search-form">
+        <div class="centralizar">
+          <div class="pesquisa">
+            <input type="text" placeholder="Pesquisar shows..." name="pesquisa">
+            <button type="submit"><i class="bi bi-search"></i></button>
+            <button id="alfabeto" onclick="ordenarAlfabeticamente()"><i class="bi bi-alphabet"></i></button>
+          </div>
+        </div>
+      </form>
+      <div class="pesquisa-tabela">
+      <div class="tabela">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Artista</th>
+              <th>Data</th>
+              <th>Local</th>
+              <th>Hora</th>
+              <th>Gênero</th>
+              <th>Preço</th>
+              <th>Proximidade</th>
+              <th>link</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if alfabeto %}
+            {% for show in alfabeto %}
+            <tr>
+              <td>{{ show.id }}</td>
+              <td>{{ show.titulo }}</td>
+              <td>{{ show.artista }}</td>
+              <td>{{ show.data }}</td>
+              <td>{{ show.local }}</td>
+              <td>{{ show.hora }}</td>
+              <td>{{ show.genero }}</td>
+              <td>{{ show.preco }}</td>
+              <td class="distancia" data-titulo="{{ show.titulo }}">
+                Calculando...
+              </td>
+            </tr>
             {% endfor %}
             {% else %}
-          </tr>
-
-          {% for show in shows %}
-          <tr>
-            <td>{{ show.id }}</td>
-            <td>{{ show.titulo }}</td>
-            <td>{{ show.artista }}</td>
-            <td>{{ show.data }}</td>
-            <td>{{ show.local }}</td>
-            <td>{{ show.hora }}</td>
-            <td>{{ show.genero }}</td>
-            <td>{{ show.preco }}</td>
-            <td class="distancia" data-titulo="{{ show.titulo }}">
-              Calculando...
-            </td>
-          </tr>
-          {% endfor %}
-          {% endif %}
-        </tbody>
-      </table>
+            {% if resultados %}
+            {% for resultado in resultados %}
+            <tr>
+              <td>{{ resultado.id }}</td>
+              <td>{{ resultado.titulo }}</td>
+              <td>{{ resultado.artista }}</td>
+              <td>{{ resultado.data }}</td>
+              <td>{{ resultado.local }}</td>
+              <td>{{ resultado.hora }}</td>
+              <td>{{ resultado.genero }}</td>
+              <td>{{ resultado.preco }}</td>
+              <td class="distancia" data-titulo="{{ resultado.titulo }}">
+                Calculando...
+              </td>
+              {% endfor %}
+              {% else %}
+            </tr>
+            {% for show in shows %}
+            <tr>
+              <td>{{ show.id }}</td>
+              <td>{{ show.titulo }}</td>
+              <td>{{ show.artista }}</td>
+              <td>{{ show.data }}</td>
+              <td>{{ show.local }}</td>
+              <td>{{ show.hora }}</td>
+              <td>{{ show.genero }}</td>
+              <td>{{ show.preco }}</td>
+              <td class="distancia" data-titulo="{{ show.titulo }}">
+                Calculando...
+              </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            {% endif %}
+          </tbody>
+        </table>
+    </div>
       <a id="map-link" href="" target="_blank">!!!!!</a>
   </main>
 

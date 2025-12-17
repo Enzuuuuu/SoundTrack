@@ -105,6 +105,9 @@ def pesquisar_shows(shows, termo):
             termo in show['local'].lower()):
             resultados.append(show)
     return resultados
+
+def filtrar_shows_alfabeticamente(shows):
+    return sorted(shows, key=lambda x: x['artista'].lower())
 @app.route('/')
 def home():
     import csv
@@ -112,8 +115,9 @@ def home():
     with open("data/dados.csv", newline="", encoding="utf-8") as f:
         dist = list(csv.DictReader(f))
     shows = carregar_shows()
+    alfabeto = filtrar_shows_alfabeticamente(shows)
     resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
-    return render_template('index.html', shows=shows, resultados=resultados, dist=dist, user=current_user)  
+    return render_template('index.html', shows=shows, resultados=resultados, dist=dist, alfabeto=alfabeto, user=current_user)  
 
 # Cria as tabelas do banco de dados
 with app.app_context():
