@@ -120,10 +120,6 @@ def home():
 
     with open("data/dados.csv", newline="", encoding="utf-8") as f:
         dist = list(csv.DictReader(f))
-<<<<<<< HEAD
-    latitudes = []
-    longitudes = []
-=======
     shows = carregar_shows()
     alfabeto = filtrar_shows_alfabeticamente(shows)
     resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
@@ -134,14 +130,12 @@ def home():
     else:
         shows = shows
 
-    return render_template('index.html', shows=shows, dist=dist, user=current_user)  
->>>>>>> 73eb27fb31dddfff2747d2f3ec2a00c6b401936c
+    latitudes = []
+    longitudes = []  
 
     for linha in dist:
         latitudes.append(float(linha["latitude"]))
-        longitudes.append(float(linha["longitude"]))
-    shows = carregar_shows()
-    resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))  
+        longitudes.append(float(linha["longitude"]))  
 
     return render_template(
     "index.html",
