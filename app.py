@@ -117,7 +117,14 @@ def home():
     shows = carregar_shows()
     alfabeto = filtrar_shows_alfabeticamente(shows)
     resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
-    return render_template('index.html', shows=shows, resultados=resultados, dist=dist, alfabeto=alfabeto, user=current_user)  
+    if resultados:
+        shows = resultados
+    if alfabeto:
+        shows = sorted(shows, key=lambda x: x['artista'].lower())
+    else:
+        shows = shows
+
+    return render_template('index.html', shows=shows, dist=dist, user=current_user)  
 
 # Cria as tabelas do banco de dados
 with app.app_context():

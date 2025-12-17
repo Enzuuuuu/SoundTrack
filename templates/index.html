@@ -98,7 +98,7 @@
           <div class="pesquisa">
             <input type="text" placeholder="Pesquisar shows..." name="pesquisa">
             <button type="submit"><i class="bi bi-search"></i></button>
-            <button id="alfabeto" onclick="ordenarAlfabeticamente()"><i class="bi bi-alphabet"></i></button>
+            <button id="alfabeto" onclick="ordenarAlfabeticamente(shows)"><i class="bi bi-alphabet"></i></button>
           </div>
         </div>
       </form>
@@ -120,40 +120,6 @@
             </tr>
           </thead>
           <tbody>
-            {% if alfabeto %}
-            {% for show in alfabeto %}
-            <tr>
-              <td>{{ show.id }}</td>
-              <td>{{ show.titulo }}</td>
-              <td>{{ show.artista }}</td>
-              <td>{{ show.data }}</td>
-              <td>{{ show.local }}</td>
-              <td>{{ show.hora }}</td>
-              <td>{{ show.genero }}</td>
-              <td>{{ show.preco }}</td>
-              <td class="distancia" data-titulo="{{ show.titulo }}">
-                Calculando...
-              </td>
-            </tr>
-            {% endfor %}
-            {% else %}
-            {% if resultados %}
-            {% for resultado in resultados %}
-            <tr>
-              <td>{{ resultado.id }}</td>
-              <td>{{ resultado.titulo }}</td>
-              <td>{{ resultado.artista }}</td>
-              <td>{{ resultado.data }}</td>
-              <td>{{ resultado.local }}</td>
-              <td>{{ resultado.hora }}</td>
-              <td>{{ resultado.genero }}</td>
-              <td>{{ resultado.preco }}</td>
-              <td class="distancia" data-titulo="{{ resultado.titulo }}">
-                Calculando...
-              </td>
-              {% endfor %}
-              {% else %}
-            </tr>
             {% for show in shows %}
             <tr>
               <td>{{ show.id }}</td>
@@ -169,8 +135,6 @@
               </td>
             </tr>
             {% endfor %}
-            {% endif %}
-            {% endif %}
           </tbody>
         </table>
     </div>
