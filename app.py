@@ -123,18 +123,19 @@ def home():
     latitudes = []
     longitudes = []
     shows = carregar_shows()
-    alfabeto = filtrar_shows_alfabeticamente(shows)
     resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
+    ordenar = request.args.get('ordenar', '')
     if resultados:
         shows = resultados
-    if alfabeto:
+    if ordenar == 'alfabetica':
         shows = sorted(shows, key=lambda x: x['titulo'].lower())
-    else:
-        shows = shows  
+    return render_template('index.html', shows=shows, dist=dist, user=current_user)  
 
     for linha in dist:
         latitudes.append(float(linha["latitude"]))
-        longitudes.append(float(linha["longitude"]))  
+        longitudes.append(float(linha["longitude"]))
+    shows = carregar_shows()
+    resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))  
 
     return render_template(
     "index.html",
