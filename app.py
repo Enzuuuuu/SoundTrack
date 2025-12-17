@@ -88,18 +88,32 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-# Rota para a página inicial
-import os
-import csv
-#carregando os shows do csv
 def carregar_shows():
-    if not os.path.exists('data/dados.csv'):
+    try:
+        with open('data/dados.csv', 'r', encoding='utf-8') as arquivo:
+            linhas = arquivo.read().splitlines()
+    except FileNotFoundError:
         return []
+
+    if not linhas:
+        return []
+
     shows = []
-    with open('data/dados.csv', newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            shows.append(row)
+
+    cabecalho = linhas[0].split(',')
+
+    for linha in linhas[1:]:
+        valores = linha.split(',')
+
+        row = {}
+        for i in range(len(cabecalho)):
+            if i < len(valores):
+                row[cabecalho[i]] = valores[i]
+            else:
+                row[cabecalho[i]] = ""
+
+        shows.append(row)
+
     return shows
 
 def pesquisar_shows(shows, termo):
@@ -116,32 +130,56 @@ def filtrar_shows_alfabeticamente(shows):
     return sorted(shows, key=lambda x: x['titulo'].lower())
 @app.route('/')
 def home():
-    import csv
+    # --- leitura manual do CSV ---
+    try:
+        with open("data/dados.csv", "r", encoding="utf-8") as f:
+            linhas = f.read().splitlines()
+    except FileNotFoundError:
+        linhas = []
 
-    with open("data/dados.csv", newline="", encoding="utf-8") as f:
-        dist = list(csv.DictReader(f))
+    dist = []
+
+    if linhas:
+        cabecalho = linhas[0].split(',')
+
+        for linha in linhas[1:]:
+            valores = linha.split(',')
+
+            row = {}
+            for i in range(len(cabecalho)):
+                row[cabecalho[i]] = valores[i] if i < len(valores) else ""
+
+            dist.append(row)
+
+    # --- resto do seu código ---
     latitudes = []
     longitudes = []
+
     shows = carregar_shows()
     alfabeto = filtrar_shows_alfabeticamente(shows)
     resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
+
     if resultados:
         shows = resultados
+
     if alfabeto:
         shows = sorted(shows, key=lambda x: x['titulo'].lower())
     else:
-        shows = shows  
+        shows = shows
 
     for linha in dist:
         latitudes.append(float(linha["latitude"]))
-        longitudes.append(float(linha["longitude"]))  
+        longitudes.append(float(linha["longitude"]))
 
     return render_template(
-    "index.html",
-    latitudes=latitudes,
-    longitudes=longitudes,
-    shows=shows, resultados=resultados, dist=dist, user=current_user
-)
+        "index.html",
+        latitudes=latitudes,
+        longitudes=longitudes,
+        shows=shows,
+        resultados=resultados,
+        dist=dist,
+        user=current_user
+    )
     
 # Cria as tabelas do banco de dados
 with app.app_context():
@@ -187,21 +225,36 @@ def distancia():
 
     proximidades = []
 
-    with open("data/dados.csv", newline="", encoding="utf-8") as f:
-        shows = csv.DictReader(f)
+    # --- leitura manual do CSV ---
+    try:
+        with open("data/dados.csv", "r", encoding="utf-8") as f:
+            linhas = f.read().splitlines()
+    except FileNotFoundError:
+        return jsonify([])
 
-        for show in shows:
-            show_location = (
-                float(show["latitude"]),
-                float(show["longitude"])
-            )
+    if not linhas:
+        return jsonify([])
 
-            distancia_km = geodesic(user_location, show_location).kilometers
+    cabecalho = linhas[0].split(',')
 
-            proximidades.append({
-                "titulo": show["titulo"],
-                "distancia_km": round(distancia_km, 2)
-            })
+    for linha in linhas[1:]:
+        valores = linha.split(',')
+
+        show = {}
+        for i in range(len(cabecalho)):
+            show[cabecalho[i]] = valores[i] if i < len(valores) else ""
+
+        show_location = (
+            float(show["latitude"]),
+            float(show["longitude"])
+        )
+
+        distancia_km = geodesic(user_location, show_location).kilometers
+
+        proximidades.append({
+            "titulo": show["titulo"],
+            "distancia_km": round(distancia_km, 2)
+        })
 
     proximidades.sort(key=lambda x: x["distancia_km"])
 
