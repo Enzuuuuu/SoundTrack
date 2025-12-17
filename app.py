@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user  
 from flask_sqlalchemy import SQLAlchemy
+from datetime import timedelta
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from flask import jsonify
@@ -8,6 +9,7 @@ from flask import jsonify
 # Cria a aplicação Flask
 app = Flask(__name__)
 app.secret_key = 'banana'
+app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
 lm = LoginManager()
 lm.init_app(app)
 
@@ -57,6 +59,7 @@ def cadastro():
         name = request.form['name']
         password = request.form['password']
         confirmpassword = request.form['confirmpassword']
+        session['username'] = name
 
         # Verifica se as senhas coincidem
         if password != confirmpassword: 
@@ -74,6 +77,9 @@ def cadastro():
 
         login_user(new_user)
         return redirect(url_for('home'))
+    
+
+    
 
 # Logout (saindo da conta)
 @app.route('/logout')
