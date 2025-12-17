@@ -130,9 +130,7 @@ def home():
     if alfabeto:
         shows = sorted(shows, key=lambda x: x['titulo'].lower())
     else:
-        shows = shows
-
-    return render_template('index.html', shows=shows, dist=dist, user=current_user)  
+        shows = shows  
 
     for linha in dist:
         latitudes.append(float(linha["latitude"]))
