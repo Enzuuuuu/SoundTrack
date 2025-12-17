@@ -209,20 +209,37 @@ text-decoration: underline;
     margin-bottom: 10px;
 }
 .tabela{
-    width: 85%;
+    width: 100%;
     margin: 2rem auto;
     border-collapse: collapse;
 }
 
 .pesquisa{
+    display: flex;
     margin-top: 6rem;
     margin-bottom: 1rem;
     text-align: center;
     gap: 0;
+    justify-content: start; 
+    width: 80% ;
+    justify-self: center;
 }
 
+.centralizar{
+    display: flex;
+    justify-content: center;
+}
+
+.pesquisa-tabela{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 1.5rem auto;
+    width: 94%;
+}
 .pesquisa input{
-    width: 70%;
+    width: 50%;
     padding: 8px;
     border: 2px solid #F30800;
     border-radius: 5px;
@@ -245,6 +262,17 @@ text-decoration: underline;
     height: 40px;
     width: 40px;
 }
+
+#alfabeto{
+    margin-left: 10px;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    font-size: 20px;
+}
+
 @media screen and (min-width:1024px){  /*Computador*/
     /*mensagem de erro*/
     .error{

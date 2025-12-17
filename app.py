@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user  
 from flask_sqlalchemy import SQLAlchemy
+from datetime import timedelta
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from flask import jsonify
@@ -8,6 +9,7 @@ from flask import jsonify
 # Cria a aplicação Flask
 app = Flask(__name__)
 app.secret_key = 'banana'
+app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
 lm = LoginManager()
 lm.init_app(app)
 
@@ -57,6 +59,7 @@ def cadastro():
         name = request.form['name']
         password = request.form['password']
         confirmpassword = request.form['confirmpassword']
+        session['username'] = name
 
         # Verifica se as senhas coincidem
         if password != confirmpassword: 
@@ -74,6 +77,9 @@ def cadastro():
 
         login_user(new_user)
         return redirect(url_for('home'))
+    
+
+    
 
 # Logout (saindo da conta)
 @app.route('/logout')
@@ -105,14 +111,31 @@ def pesquisar_shows(shows, termo):
             termo in show['local'].lower()):
             resultados.append(show)
     return resultados
+
+def filtrar_shows_alfabeticamente(shows):
+    return sorted(shows, key=lambda x: x['artista'].lower())
 @app.route('/')
 def home():
     import csv
 
     with open("data/dados.csv", newline="", encoding="utf-8") as f:
         dist = list(csv.DictReader(f))
+<<<<<<< HEAD
     latitudes = []
     longitudes = []
+=======
+    shows = carregar_shows()
+    alfabeto = filtrar_shows_alfabeticamente(shows)
+    resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
+    if resultados:
+        shows = resultados
+    if alfabeto:
+        shows = sorted(shows, key=lambda x: x['artista'].lower())
+    else:
+        shows = shows
+
+    return render_template('index.html', shows=shows, dist=dist, user=current_user)  
+>>>>>>> 73eb27fb31dddfff2747d2f3ec2a00c6b401936c
 
     for linha in dist:
         latitudes.append(float(linha["latitude"]))
