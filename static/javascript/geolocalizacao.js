@@ -59,7 +59,11 @@ function sucesso(position) {
             }
         });
     })
-    .catch(err => console.error("Erro:", err));
+    .catch(err => {
+        document.getElementById("status").textContent =
+            `Erro ao obter endereço: ${err.message}`;
+        document.getElementById("status").classList.add("erro");
+    });
 }
 
 window.addEventListener("load", () => {
