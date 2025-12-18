@@ -25,14 +25,14 @@
     <h1>SoundTrack</h1>
     <nav>
       <ul class="menu">
-        <a href="/config">
+        <a href="#">
           <li>
             <span class="icone"><i class="bi bi-person-fill-gear"></i></span>
             <span class="texto">Configurações</span>
           </li>
         </a>
 
-        <a href="/pesquisa">
+        <a href="#pesquisa">
           <li>
             <span class="icone"><i class="bi bi-search"></i></span>
             <span class="texto">Pesquisa</span>
@@ -46,7 +46,7 @@
           </li>
         </a>
 
-        <a href="#shows">
+        <a href="#tabela">
           <li>
             <span class="icone"><i class="bi bi-cassette-fill"></i></span>
             <span class="texto">Shows</span>
@@ -96,7 +96,7 @@
       <form method="get" class="search-form">
         <div class="centralizar">
           <div class="pesquisa">
-            <input type="text" placeholder="Pesquisar shows..." name="pesquisa">
+            <input type="text" placeholder="Pesquisar shows..." name="pesquisa" id="pesquisa">
             <button type="submit"><i class="bi bi-search"></i></button>
             <a href="/?ordenar=alfabetica" id="alfabeto"><i class="bi bi-alphabet"></i></a>
             <a href="/"><i class="bi bi-x"></i></a>
@@ -105,7 +105,7 @@
       </div>
     </form>
     <div class="pesquisa-tabela">
-      <div class="tabela">
+      <div class="tabela" id="tabela">
         <table>
           <thead>
             <tr>
