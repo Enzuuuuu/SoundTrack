@@ -81,9 +81,9 @@
       <button class="prev">❮</button>
       <button class="next">❯</button>
       </div>
-    
+
     </section>
-    <div class="status" ><span id="status"></span></div>
+    <div class="status"><span id="status"></span></div>
     <section class="sobre">
       <h2>Sobre o Site</h2>
       <p>Bem-vindo ao SoundTrack, a plataforma que conecta músicos e amantes da música em um só lugar. Nossa missão é
@@ -93,21 +93,20 @@
 
     </section>
 
-      <form method="get" class="search-form">
-        <div class="centralizar">
-          <div class="pesquisa">
-            <input type="text" placeholder="Pesquisar shows..." name="pesquisa">
-            <button type="submit"><i class="bi bi-search"></i></button>
-            <button id="alfabeto" onclick="ordenarAlfabeticamente(shows)"><i class="bi bi-alphabet"></i></button>
-          </div>
+    <form method="get" class="search-form">
+      <div class="centralizar">
+        <div class="pesquisa">
+          <input type="text" placeholder="Pesquisar shows..." name="pesquisa">
+          <button type="submit"><i class="bi bi-search"></i></button>
+          <button id="alfabeto" onclick="ordenarAlfabeticamente(shows)"><i class="bi bi-alphabet"></i></button>
         </div>
-      </form>
-      <div class="pesquisa-tabela">
+      </div>
+    </form>
+    <div class="pesquisa-tabela">
       <div class="tabela">
         <table>
           <thead>
             <tr>
-              <th>ID</th>
               <th>Título</th>
               <th>Artista</th>
               <th>Data</th>
@@ -122,7 +121,6 @@
           <tbody>
             {% for show in shows %}
             <tr>
-              <td>{{ show.id }}</td>
               <td>{{ show.titulo }}</td>
               <td>{{ show.artista }}</td>
               <td>{{ show.data }}</td>
@@ -131,14 +129,20 @@
               <td>{{ show.genero }}</td>
               <td>{{ show.preco }}</td>
               <td class="distancia" data-titulo="{{ show.titulo }}">
-                Calculando...
+                {% if show.distancia is not none %}
+                {{ show.distancia }} ----------
+                {% else %}
+                N/A
+                {% endif %}
+              </td>
+              <td><a href="https://www.google.com/maps?q={{show.latitude}},{{show.longitude}}" target="_blank" class="localidade"><i class="fa-solid fa-location-pin"></i></a>
               </td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
-    </div>
-      <a id="map-link" href="" target="_blank">!!!!!</a>
+      </div>
+      <a id="map-link" href="" target="_blank" class="local"> Seu Local <i class="fa-solid fa-map-location"></i></a>
   </main>
 
   <footer class="sobrenos">
