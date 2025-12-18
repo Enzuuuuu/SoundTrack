@@ -79,8 +79,6 @@ def cadastro():
         return redirect(url_for('home'))
     
 
-    
-
 # Logout (saindo da conta)
 @app.route('/logout')
 @login_required
@@ -154,7 +152,9 @@ def home():
     # --- resto do seu código ---
     latitudes = []
     longitudes = []
-
+    for linha in dist:
+        latitudes.append(float(linha["latitude"]))
+        longitudes.append(float(linha["longitude"]))
     shows = carregar_shows()
     resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
     ordenar = request.args.get('ordenar', '')
@@ -162,23 +162,7 @@ def home():
         shows = resultados
     if ordenar == 'alfabetica':
         shows = sorted(shows, key=lambda x: x['titulo'].lower())
-    return render_template('index.html', shows=shows, dist=dist, user=current_user)  
-
-    for linha in dist:
-        latitudes.append(float(linha["latitude"]))
-        longitudes.append(float(linha["longitude"]))
-    shows = carregar_shows()
-    resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))  
-
-    return render_template(
-        "index.html",
-        latitudes=latitudes,
-        longitudes=longitudes,
-        shows=shows,
-        resultados=resultados,
-        dist=dist,
-        user=current_user
-    )
+    return render_template('index.html', shows=shows, dist=dist, user=current_user, latitudes=latitudes, longitudes=longitudes)  
     
 # Cria as tabelas do banco de dados
 with app.app_context():
