@@ -79,8 +79,6 @@ def cadastro():
         return redirect(url_for('home'))
     
 
-    
-
 # Logout (saindo da conta)
 @app.route('/logout')
 @login_required
