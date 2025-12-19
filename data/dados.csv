@@ -1,0 +1,11 @@
+id,titulo,artista,data,hora,local,genero,preco,latitude,longitude
+1,Rock Night,Banda X,2025-12-15,20:00,São Paulo,Rock,50.00,-23.55052,-46.633308
+2,Pop Festival,Artista Y,2025-12-20,18:00,Rio de Janeiro,Pop,0.00,-22.906847,-43.172896
+3,Eletrônica Vibes,DJ Z,2025-12-25,22:00,Belo Horizonte,Eletrônica,30.00,-19.916681, -43.934493
+4,Jazz Session,Jazz Band,2025-12-30,19:00,Porto Alegre,Jazz,40.00,-30.034647,-51.217658
+5,Indie Night,Indie Artist,2026-01-05,21:00,Salvador,Indie,25.00,-12.971399,-38.501305 
+6,Clássicos ao Vivo,Orquestra A,2026-01-10,20:30,Curitiba,Clássica,60.00,-25.429596,-49.271272
+7,Hip Hop Beats,Rapper B,2026-01-15,23:00,Fortaleza,Hip Hop,35.00,-3.71722,-38.543369
+8,Reggae Fest,Banda C,2026-01-20,17:00,Recife,Reggae,20.00,-8.047562,-34.877001
+9,Metal Madness,Banda D,2026-01-25,21:30,Belo Horizonte,Metal,55.00,-19.916681,-43.934493
+10,Folk Evening,Folk Group,2026-01-30,19:30,Brasília,Folk,25.00,-15.794229,-47.882167

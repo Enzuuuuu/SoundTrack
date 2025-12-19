@@ -1,0 +1,63 @@
+.tabela{
+    width: 85%;
+    margin: 2rem auto;
+    border-collapse: collapse;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-x: auto;
+    font-family: "JetBrains Mono", monospace;
+    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem ;
+}
+
+.tabela th, .tabela td{
+    padding: 8px;
+    text-align: center;
+}
+
+.tabela tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+.tabela th{
+    background-color: #F30800;
+    color: white;
+}
+
+.local {
+    display: inline-block;
+    text-decoration: none;
+    color: #F30800;
+    font-weight: bold;
+    font-size: 1.2rem;
+    
+}
+
+.local::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    right: 0;
+    background: #F30800;
+    transition: width .3s ease;
+    margin: 0 auto;
+    
+}
+
+.local:hover::after {
+    width: 10%;
+    left: 0;
+    background: #F30800;
+}
+
+.localidade {
+    color: #F30800;
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+.localidade:hover {
+    color: #B20600;
+}

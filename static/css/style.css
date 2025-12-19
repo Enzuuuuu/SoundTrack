@@ -1,0 +1,462 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.fundo{
+    font-family: "JetBrains Mono", monospace;
+}
+
+header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #F30800;
+    padding: 15px;
+    position: fixed;
+    width: 100%;
+    z-index: 50;
+}
+
+header h1 {
+    font-family: 'Rock Salt', cursive;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+ul{
+    list-style: none;
+    display: flex;
+    position: relative;
+    gap: 1.5rem;
+}
+
+.menu li{
+    width: 3rem;
+    height: 3rem;
+    border: 2px solid #ffffff;
+    box-shadow: 0 8px 15px #f3080048;
+    border-radius: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: .2s;
+    color: #ffffff;
+}
+
+
+.menu li .icone{
+    font-size: 1em;
+}
+
+.menu li .texto{
+    transform: scale(0);
+    transition: .3s;
+    transition-delay: .1s;
+}
+
+.menu li span{
+    position: absolute;
+}
+.menu li:hover{
+    width: 8rem;
+}
+
+.menu li:hover .texto{
+    transform: scale(1);
+}
+
+.menu li:hover .icone{
+    transform: scale(0);
+}
+
+.menu li::before{
+    content: '';
+    position: absolute;
+    background-image: linear-gradient(45deg, #F7B32B, #F30800 );
+    inset: 0;
+    opacity: 0;
+    border-radius: 60px;
+}
+
+.menu li:hover::before{
+    opacity: 1;
+}
+.meio{
+    background-color: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    height: 35%;
+  backdrop-filter: blur(10px); 
+  border-radius: 8px;
+  padding: 20px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.fundo{
+    background-size: cover;
+    background: #ffffff;
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+html, body{
+    height: 100%;
+}
+
+.meio h1{
+    color: #1C110A;
+    padding-bottom: 1rem;
+}
+
+.meio input{
+    background: none;
+    border: none;
+    border-bottom: 2px solid #F30800;
+    color: #1C110A;
+    box-shadow: none;
+    outline: none;
+    width: 100%;
+}
+
+.meio input::placeholder{
+    color: #1C110A;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.botoes{
+    display: flex;
+    gap: 1rem;
+}
+
+.botoes button{
+    padding: 5px;
+    color: #1C110A;
+    background: none;
+    border: 1px solid #F30800;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    transition: all .3s;
+    width: 100%;
+}
+
+.meio p{
+    font-size: 15px;
+    color: #1C110A;
+    margin-bottom: 20px;
+}
+
+.meio p a{
+    text-decoration: none;
+    color: rgb(143, 143, 241);
+}
+
+.juncao{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.left{
+    background-size: cover;
+    width: 70%;
+    height: 100%;
+    background-image: url("../images/banda-se-apresentando-em-estudio.jpg");
+}
+.botoes button:hover{
+    background-color: #F30800;
+    color: #ffffff;
+}
+
+.botoes button:active{
+    background-color: #880D05;
+    border: 1px solid #880D05;
+}
+
+.meio p a:active{
+text-decoration: underline;
+}
+
+/*Borda no aviso de erro*/
+.error{
+    display: flex;
+    border: 2px solid #F30800;
+    border-radius: 5px;
+    color: white;
+    background-color: #F30800;
+    opacity: 0.7;
+    height: 20px;
+    font-size: 0.8rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.tabela{
+    width: 100%;
+    margin: 2rem auto;
+    border-collapse: collapse;
+}
+
+.pesquisa{
+    display: flex;
+    margin-top: 6rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    gap: 0;
+    justify-content: start; 
+    width: 80% ;
+    justify-self: center;
+}
+
+.centralizar{
+    display: flex;
+    justify-content: center;
+}
+
+.pesquisa-tabela{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 1.5rem auto;
+    width: 94%;
+}
+.pesquisa input{
+    width: 50%;
+    padding: 8px;
+    border: 2px solid #F30800;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    height: 40px;
+}
+
+.pesquisa input::placeholder{
+    font-family: "JetBrains Mono", monospace;
+}
+
+.pesquisa button{
+    padding: 8px 12px;
+    border: none;
+    background-color: #F30800;
+    color: white;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+}
+
+.pesquisa a{
+    background-color: #F30800;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    margin: 0 10px;
+    color: white;
+}
+
+#alfabeto{
+    margin-left: 10px;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    font-size: 20px;
+}
+
+@media screen and (min-width:1024px){  /*Computador*/
+    /*mensagem de erro*/
+    .error{
+        height: 30px;
+        font-size: 0.8rem;
+    }
+    header{
+        flex-direction: row;
+        justify-content: space-between;
+        height: 4rem;
+    }
+}
+
+@media screen and (min-width:768px) and  (max-width:1023px){ /*tablet*/
+    .error{
+        height: 30px;
+        font-size: 0.8rem;
+    }
+    header{
+        flex-direction: row;
+        justify-content: space-between;
+        height: 6rem;
+    }
+
+    ul li, header h1{
+        font-size: 2rem;
+    }
+
+    .fundo input{
+    width: 100%;
+    height: 2rem;
+}
+
+.fundo input::placeholder{
+    font-size: 1rem;
+}
+
+.fundo button{
+width: 90%;
+height: 3rem;
+font-size: 1rem;
+border-radius: 10px;
+}
+
+.fundo h1{
+font-size: 3rem;
+}
+
+.botoes{
+    flex-direction: column;
+}
+
+.left{
+    width: 0;
+    height: 0;
+}
+
+.fundo{
+    background-size: cover;
+    background-image: url("../images/banda-se-apresentando-em-estudio.jpg"); 
+    width: 100%;
+    height: 100%;
+}
+
+.meio{
+    width: 100%;
+    background-color: #ffffff;
+    height: 45%;
+}
+
+.meio input{
+    width: 90%;
+}
+}
+@media screen and (max-width:767px){ /*smartphone*/
+/* Header*/
+header{
+    height: 6rem;
+}
+
+
+header h1{
+    font-size: 1.5rem;
+}
+
+.menu li{
+    width: 2.2rem;
+    height: 2.2rem;
+}
+/*Login e Cadastro */
+.left{
+    width: 0;
+    height: 0;
+}
+
+.fundo{
+    background-size: cover;
+    background-image: url("../images/banda-se-apresentando-em-estudio.jpg"); 
+    width: 100%;
+    height: 100%;
+}
+
+.fundo input{
+    width: 120%;
+    height: 2rem;
+}
+
+.fundo input::placeholder{
+    font-size: 1rem;
+}
+
+.fundo button{
+width: 100%;
+height: 3rem;
+font-size: 1rem;
+border-radius: 60px;
+}
+
+.fundo h1{
+font-size: 2rem;
+}
+
+.botoes{
+    flex-direction: column;
+}
+.meio{
+    background-color: #ffffff;
+    padding: 20px;
+    width: 80%;
+    height: 60%;
+}
+
+.meio p{
+    font-size: 15px;
+    color: #1C110A;
+    margin-bottom: 20px;
+}
+
+.meio h1{
+    color: #1C110A;
+    padding-bottom: 1rem;
+}
+
+.meio input{
+    background: none;
+    border: none;
+    border-bottom: 2px solid #F30800;
+    color: #1C110A;
+    box-shadow: none;
+    outline: none;
+    width: 100%;
+}
+
+.meio input::placeholder{
+    color: #1C110A;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.botoes{
+    display: flex;
+    gap: 1rem;
+}
+
+.botoes button{
+    padding: 5px;
+    color: #1C110A;
+    background: none;
+    border: 1px solid #F30800;
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+}
+
+#cadastrinho{
+    height: 60%;
+    width: 80%;
+}
+}
