@@ -2,6 +2,11 @@
     font-size: 62.5%;
 }
 
+html, body{
+    width: 100%;
+    overflow-x: hidden;
+}
+
 .carousel {
     position: relative;
     width: 100%;
@@ -150,6 +155,25 @@
     border-radius: 1rem;
     animation: fadeInfadeout 1.8s ease-in;
     animation-fill-mode: forwards;
+}
+
+.filtros{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem auto;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.filtros a{
+    text-decoration: none;
+    background-color: #F30800;
+    padding: 5px;
+    text-align: center;
+    border-radius: 10px;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
 @keyframes fadeInfadeout {

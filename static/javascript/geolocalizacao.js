@@ -17,6 +17,7 @@ function sucesso(position) {
     const formData = new URLSearchParams();
     formData.append("latitude", latitude);
     formData.append("longitude", longitude);
+     
 
     fetch("/coordenadas", {
         method: "POST",
@@ -78,3 +79,4 @@ window.addEventListener("load", () => {
 
     navigator.geolocation.getCurrentPosition(sucesso, erro);
 });
+

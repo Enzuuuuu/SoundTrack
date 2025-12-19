@@ -128,6 +128,8 @@ def filtrar_shows_alfabeticamente(shows):
     return sorted(shows, key=lambda x: x['titulo'].lower())
 @app.route('/')
 def home():
+    print("ARGS RECEBIDOS:", request.args)
+    
     # --- leitura manual do CSV ---
     try:
         with open("data/dados.csv", "r", encoding="utf-8") as f:
@@ -160,9 +162,20 @@ def home():
     ordenar = request.args.get('ordenar', '')
     if resultados:
         shows = resultados
+    
+    genero_filtro = request.args.get('genero', '')
+    if ordenar == 'genero' and genero_filtro:
+        shows = [show for show in shows if show.get('genero', '').lower() == genero_filtro.lower()]
     if ordenar == 'alfabetica':
         shows = sorted(shows, key=lambda x: x['titulo'].lower())
-    return render_template('index.html', shows=shows, dist=dist, user=current_user, latitudes=latitudes, longitudes=longitudes)  
+    
+    if ordenar == 'preco':
+        shows = sorted(shows, key=lambda x: float(x.get('preco', float('inf'))))
+
+        
+    for s in shows[:5]:
+        print(s["titulo"], s.get("distancia_km"))    
+    return render_template('index.html', shows=shows, dist=dist, user=current_user, latitudes=latitudes, longitudes=longitudes,)  
     
 # Cria as tabelas do banco de dados
 with app.app_context():
@@ -206,24 +219,27 @@ def distancia():
         float(data["longitude"])
     )
 
+    proximidades = calcular_proximidades(user_location)
+    return jsonify(proximidades)
+
+def calcular_proximidades(user_location):
     proximidades = []
 
-    # --- leitura manual do CSV ---
     try:
-        with open("data/dados.csv", "r", encoding="utf-8") as f:
+        with open("data/dados.csv", newline="", encoding="utf-8") as f:
             linhas = f.read().splitlines()
     except FileNotFoundError:
-        return jsonify([])
+        return proximidades
 
     if not linhas:
-        return jsonify([])
+        return proximidades
 
     cabecalho = linhas[0].split(',')
 
     for linha in linhas[1:]:
         valores = linha.split(',')
-
         show = {}
+
         for i in range(len(cabecalho)):
             show[cabecalho[i]] = valores[i] if i < len(valores) else ""
 
@@ -240,8 +256,7 @@ def distancia():
         })
 
     proximidades.sort(key=lambda x: x["distancia_km"])
-
-    return jsonify(proximidades)
+    return proximidades
 
 
 
