@@ -261,6 +261,7 @@ text-decoration: underline;
     cursor: pointer;
     height: 40px;
     width: 40px;
+    margin-right: 10px;
 }
 
 .pesquisa a{
@@ -271,6 +272,16 @@ text-decoration: underline;
     font-family: "JetBrains Mono", monospace;
     margin: 0 10px;
     color: white;
+    height: 40px;
+    width: fit-content;
+}
+
+.pesquisa a:hover{
+    background-color: #D00600;
+}
+
+.pesquisa button:hover{
+    background-color: #D00600;
 }
 
 #alfabeto{

@@ -163,17 +163,28 @@ html, body{
     gap: 1rem;
     margin: 2rem auto;
     font-family: "JetBrains Mono", monospace;
+    width: 100%;
+    align-items: start;
 }
 
 .filtros a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
     background-color: #F30800;
     padding: 5px;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 15px;
     color: #FFFFFF;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 0.6rem;
+    width: 4rem;
+    height: 2rem;
+}
+
+.filtros a:hover{
+    background-color: #B20600;
 }
 
 @keyframes fadeInfadeout {
