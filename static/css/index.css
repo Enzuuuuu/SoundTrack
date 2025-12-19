@@ -176,6 +176,10 @@ html, body{
     font-size: 1.2rem;
 }
 
+.filtros a:hover{
+    background-color: #B20600;
+}
+
 @keyframes fadeInfadeout {
     0% {opacity: 0;}
     30% {opacity: 1;}

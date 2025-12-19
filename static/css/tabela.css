@@ -29,27 +29,11 @@
     text-decoration: none;
     color: #F30800;
     font-weight: bold;
-    font-size: 1.2rem;
-    
+    font-size: 1.2rem;  
 }
 
-.local::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    display: block;
-    right: 0;
-    background: #F30800;
-    transition: width .3s ease;
-    margin: 0 auto;
-    
-}
-
-.local:hover::after {
-    width: 10%;
-    left: 0;
-    background: #F30800;
+.local:hover {
+    color: #B20600;
 }
 
 .localidade {
