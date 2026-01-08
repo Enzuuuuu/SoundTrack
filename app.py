@@ -1,23 +1,21 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user  
-from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from flask import jsonify
+from db import db
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user 
+from models import User
 
 # Cria a aplicação Flask
 app = Flask(__name__)
 app.secret_key = 'banana'
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///dados.db"
+db.init_app(app)
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
 lm = LoginManager()
 lm.init_app(app)
 
-# Essa coisa aqui cria banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dados.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
 
 # Função para carregar o usuário
 @lm.user_loader
@@ -25,67 +23,15 @@ def user_loader(id):
     user = db.session.query(User).filter_by(id=id).first()
     return user
 
-# Modelo de Usuário
-class User(db.Model, UserMixin):
-    __tablename__ = 'users'
+# Importa os blueprints
+from app.public import public_bp
+from app.artist import artist_bp
 
-    id = db.Column(db.Integer, primary_key=True)
+# Registra os blueprints na aplicação
+app.register_blueprint(public_bp)
+app.register_blueprint(artist_bp, url_prefix='/admin')
 
-    name = db.Column(db.String(30), unique=True)
-    password= db.Column(db.String())
-
-# Rota de Login    
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-    elif request.method == 'POST':
-        name = request.form['name']
-        password = request.form['password']
-
-        user = db.session.query(User).filter_by(name=name, password=password).first()
-        if not user:
-            return render_template('login.html', error="Usuário ou senha incorretos!", name=name)
-        
-        login_user(user)
-        return redirect(url_for('home'))
-    
-# Rota de Cadastro
-@app.route('/cadastro', methods=['GET', 'POST'])
-def cadastro():
-    if request.method == 'GET':
-        return render_template('cadastro.html')
-    elif request.method == 'POST':
-        name = request.form['name']
-        password = request.form['password']
-        confirmpassword = request.form['confirmpassword']
-        session['username'] = name
-
-        # Verifica se as senhas coincidem
-        if password != confirmpassword: 
-            return render_template('cadastro.html', error="As senhas não coincidem!")
-        
-        # Verifica se o usuário já existe
-        existing_user = db.session.query(User).filter_by(name=name).first()
-        if existing_user:
-            return render_template('cadastro.html', error='Usuário já existe!', name=name)
-        
-        # Criação de um novo usuário
-        new_user = User(name=name, password=password)
-        db.session.add(new_user)
-        db.session.commit()
-
-        login_user(new_user)
-        return redirect(url_for('home'))
-    
-
-# Logout (saindo da conta)
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('home'))
-
+#carregar shows
 def carregar_shows():
     try:
         with open('data/dados.csv', 'r', encoding='utf-8') as arquivo:
@@ -268,3 +214,12 @@ if __name__ == '__main__':
 @app.route('/shows_proximos')
 def shows_proximos():
     return render_template('shows_proximos.html', user=current_user)
+
+# Redirecionar rota de login raiz para public.login
+@app.route('/login')
+def login_redirect():
+    return redirect(url_for('public.login'))
+
+@app.route('/cadastro')
+def cadastro_redirect():
+    return redirect(url_for('public.cadastro'))

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Página Principal</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+  <link rel="stylesheet" href="../static/css/index.css">
+  <link rel="stylesheet" href="../static/css/tabela.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>SoundTrack</h1>
+    <nav>
+      <ul class="menu">
+        <a href="#">
+          <li>
+            <span class="icone"><i class="bi bi-person-fill-gear"></i></span>
+            <span class="texto">Configurações</span>
+          </li>
+        </a>
+
+        <a href="#pesquisa">
+          <li>
+            <span class="icone"><i class="bi bi-search"></i></span>
+            <span class="texto">Pesquisa</span>
+          </li>
+        </a>
+
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('artist.dashboard') }}">
+          <li>
+            <span class="icone"><i class="bi bi-person-circle"></i></span>
+            <span class="texto">{{ current_user.name }}</span>
+          </li>
+        </a>
+
+        <a href="{{ url_for('artist.logout') }}">
+          <li>
+            <span class="icone"><i class="bi bi-box-arrow-right"></i></span>
+            <span class="texto">Logout</span>
+          </li>
+        </a>
+        {% else %}
+        <a href="{{ url_for('public.login') }}">
+          <li>
+            <span class="icone"><i class="bi bi-box-arrow-in-right"></i></span>
+            <span class="texto">Login</span>
+          </li>
+        </a>
+
+        <a href="{{ url_for('public.cadastro') }}">
+          <li>
+            <span class="icone"><i class="bi bi-person-plus"></i></span>
+            <span class="texto">Cadastro</span>
+          </li>
+        </a>
+        {% endif %}
+
+        <a href="/shows_proximos">
+          <li>
+            <span class="icone"><i class="bi bi-cassette-fill"></i></span>
+            <span class="texto">Shows</span>
+          </li>
+        </a>
+      </ul>
+    </nav>
+  </header>
+
+  <button onclick="obterLocalizacao()">Obter Localização</button>
+
+  <main>
+    <section class="carousel">
+      <div class="carousel-track">
+        <div class="carousel-item">
+          <img src="../static/images/imagemc1.png" alt="">
+          <h2 class="carousel-title">Descubra músicos perto de você</h2>
+
+        </div>
+
+        <div class="carousel-item">
+          <img src="../static/images/imagemc2.png" alt="">
+          <h2 class="carousel-title">Sempre saiba os melhores lugares para ir</h2>
+        </div>
+
+        <div class="carousel-item">
+          <img src="../static/images/imagemc3.png" alt="">
+          <h2 class="carousel-title">Demonstre o seu verdadeiro talento</h2>
+        </div>
+      </div>
+
+      <button class="prev">❮</button>
+      <button class="next">❯</button>
+      </div>
+
+    </section>
+    <div class="status"><span id="status"></span></div>
+    <section class="sobre">
+      <h2>Sobre o Site</h2>
+      <p>Bem-vindo ao SoundTrack, a plataforma que conecta músicos e amantes da música em um só lugar. Nossa missão é
+        facilitar o encontro entre artistas talentosos e públicos apaixonados, proporcionando experiências musicais
+        inesquecíveis. Seja você um músico em busca de oportunidades para se apresentar ou um fã procurando novos shows,
+        o SoundTrack é o lugar ideal para descobrir e compartilhar a magia da música ao vivo.</p>
+
+    </section>
+
+      <form method="get" class="search-form">
+        <div class="centralizar">
+          <div class="pesquisa">
+            <input type="text" placeholder="Pesquisar shows..." name="pesquisa" id="pesquisa">
+            <button type="submit"><i class="bi bi-search"></i></button>
+            <a href="/?ordenar=alfabetica" id="alfabeto"><i class="bi bi-alphabet"></i></a>
+            <a href="/"><i class="bi bi-x"></i></a>
+          </div>
+         
+        </div>
+         <div class="filtros">
+            <a href="/?ordenar=genero&genero=Rock" class="filtro-link">Rock</a>
+            <a href="/?ordenar=genero&genero=Pop" class="filtro-link">Pop</a>
+            <a href="/?ordenar=genero&genero=Jazz" class="filtro-link">Jazz</a>
+            <a href="/?ordenar=genero&genero=Clássica" class="filtro-link">Clássica</a>
+            <a href="/?ordenar=genero&genero=Eletrônica" class="filtro-link">Eletrônica</a>
+            <a href="/?ordenar=genero&genero=Hip-Hop" class="filtro-link">Hip-Hop</a>
+          </div>
+      </form>
+    <div class="pesquisa-tabela">
+      <div class="tabela" id="tabela">
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Artista</th>
+              <th>Data</th>
+              <th>Local</th>
+              <th>Hora</th>
+              <th>Gênero</th>
+              <th>Preço</th>
+              <th>Proximidade</th>
+              <th>link</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for show in shows %}
+            <tr>
+              <td>{{ show.titulo }}</td>
+              <td>{{ show.artista }}</td>
+              <td>{{ show.data }}</td>
+              <td>{{ show.local }}</td>
+              <td>{{ show.hora }}</td>
+              <td>{{ show.genero }}</td>
+              <td>{{ show.preco }}</td>
+              <td class="distancia" data-titulo="{{ show.titulo }}">
+                {% if show.distancia is not none %}
+                {{ show.distancia }} ----------
+                {% else %}
+                N/A
+                {% endif %}
+              </td>
+              <td><a href="https://www.google.com/maps?q={{show.latitude}},{{show.longitude}}" target="_blank" class="localidade"><i class="fa-solid fa-location-pin"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <a id="map-link" href="" target="_blank" class="local"> Seu Local <i class="fa-solid fa-map-location"></i></a>
+  </main>
+
+  <footer class="sobrenos">
+    <h2>Sobre Nós</h2>
+    <p>Somos estudantes do IFPB, nosso objetivo com a soundtrack é uma ferramenta simples para conectar músicos e fãs de
+      música. <br><br>
+      Acreditamos no poder da música para unir pessoas e criar experiências inesquecíveis. Além de que precisamos
+      entregar este projeto para a conclusão do nosso curso.
+    </p>
+    <p>Criado Por:</p>
+    <ul>
+      <li>Enzo <a href="https://github.com/Enzuuuuu"><i class="fa-brands fa-github"></i></a></li>
+      <li>Matheus <a href="https://github.com/mattheuspaivadini"><i class="fa-brands fa-github"></i></a></li>
+      <li>Francisco<a href="https://github.com/francisco-josetti"><i class="fa-brands fa-github"></i></a></li>
+    </ul>
+  </footer>
+  <script src="../static/javascript/carrossel.js"></script>
+  <script src="https://kit.fontawesome.com/8de2dbf4f4.js" crossorigin="anonymous"></script>
+  <script src="../static/javascript/geolocalizacao.js"></script>
+</body>
+
+</html>
