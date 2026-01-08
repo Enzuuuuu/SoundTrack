@@ -49,7 +49,11 @@ def login():
         
         login_user(user)
         return redirect(url_for('home'))
-    
+
+@app.route('/logado')
+@login_required
+def logado():
+    return render_template('logado.html', user=current_user)
 # Rota de Cadastro
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
