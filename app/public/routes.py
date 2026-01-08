@@ -5,12 +5,33 @@ from flask import request, flash
 from db import db
 from models import User
 from flask_login import login_user
+import funcoes
 
+
+#inicialização a partir do público
 @public_bp.route('/')
-def index():
-    return render_template('public/index.html')
+def home():
+    shows = funcoes.carregar_shows()
+    dist = funcoes.carregar_csv()
+    shows_filtrados =  funcoes.pesquisar_shows(shows, request.args.get('pesquisa', ''))
 
-# Redirecionar para login público se necessário
+    latitudes = [float(linha["latitude"]) for linha in dist]
+    longitudes = [float(linha["longitude"]) for linha in dist]
+
+    for s in shows_filtrados[:5]:
+        print(s["titulo"], s.get("distancia_km"))
+    
+    return render_template(
+        'public/index.html', 
+        shows=shows, 
+        dist=dist, 
+        user=current_user, 
+        latitudes=latitudes, 
+        longitudes=longitudes
+    )
+
+
+# Login do Usuário
 @public_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -29,6 +50,8 @@ def login():
         login_user(user)
         return redirect(url_for('artist.dashboard'))
 
+
+# Cadastro do Usuário
 @public_bp.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if current_user.is_authenticated:
