@@ -16,14 +16,25 @@ def home():
     for s in shows_filtrados[:5]:
         print(s["titulo"], s.get("distancia_km"))
     
-    return render_template(
-        'index.html', 
-        shows=shows, 
-        dist=dist, 
-        user=current_user, 
-        latitudes=latitudes, 
-        longitudes=longitudes
-    )
+    user = current_user
+    if user.is_authenticated:
+        return render_template(
+            'artist/index.html', 
+            shows=shows, 
+            dist=dist, 
+            user=current_user, 
+            latitudes=latitudes, 
+            longitudes=longitudes
+        )
+    else:
+        return render_template(
+            'public/index.html', 
+            shows=shows, 
+            dist=dist, 
+            user=current_user, 
+            latitudes=latitudes, 
+            longitudes=longitudes
+        )
 
 
 
