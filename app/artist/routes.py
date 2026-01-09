@@ -34,4 +34,4 @@ def dashboard():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('public.index'))
+    return redirect(url_for('home'))

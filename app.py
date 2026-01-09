@@ -1,108 +1,94 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user  
-from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from datetime import timedelta
+
+# 1. IMPORTAÇÕES DE ARQUIVOS LOCAIS
+from db import db
+from models import User
 import funcoes
+
+# Importa os Blueprints (certifique-se de que os arquivos existem em app/public e app/artist)
+from app.public.routes import public_bp
+from app.artist.routes import artist_bp
 
 # Cria a aplicação Flask
 app = Flask(__name__)
 app.secret_key = 'banana'
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
-lm = LoginManager()
-lm.init_app(app)
 
-# Essa coisa aqui cria banco de dados
+# 2. CONFIGURAÇÃO DO BANCO DE DADOS
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dados.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+# Inicializa o banco de dados no app (Resolve o RuntimeError)
+db.init_app(app)
 
-# Função para carregar o usuário
+# 3. CONFIGURAÇÃO DO LOGIN MANAGER
+lm = LoginManager()
+lm.init_app(app)
+lm.login_view = 'login' # Define a rota de login padrão
+
 @lm.user_loader
 def user_loader(id):
-    user = db.session.query(User).filter_by(id=id).first()
-    return user
+    # .get() é a forma mais eficiente de buscar por ID no SQLAlchemy atual
+    return db.session.get(User, int(id))
 
-# Modelo de Usuário
-class User(db.Model, UserMixin):
-    __tablename__ = 'users'
+# 4. REGISTRO DE BLUEPRINTS
+# Isso permite que você use subpastas para organizar seu código
+app.register_blueprint(public_bp)
+app.register_blueprint(artist_bp)
 
-    id = db.Column(db.Integer, primary_key=True)
+# --- ROTAS PRINCIPAIS ---
 
-    name = db.Column(db.String(30), unique=True)
-    password= db.Column(db.String())
+@app.route('/')
+def home():
+    return funcoes.home()
 
-# Rota de Login    
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         return render_template('login.html')
-    elif request.method == 'POST':
-        name = request.form['name']
-        password = request.form['password']
+    
+    name = request.form.get('name')
+    password = request.form.get('password')
 
-        user = db.session.query(User).filter_by(name=name, password=password).first()
-        if not user:
-            return render_template('login.html', error="Usuário ou senha incorretos!", name=name)
-        
-        login_user(user)
-        return redirect(url_for('home'))
+    user = db.session.query(User).filter_by(name=name, password=password).first()
+    if not user:
+        return render_template('login.html', error="Usuário ou senha incorretos!", name=name)
+    
+    login_user(user)
+    return redirect(url_for('home'))
 
-# Rota de Cadastro
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'GET':
         return render_template('cadastro.html')
-    elif request.method == 'POST':
-        name = request.form['name']
-        password = request.form['password']
-        confirmpassword = request.form['confirmpassword']
-        session['username'] = name
-
-        # Verifica se as senhas coincidem
-        if password != confirmpassword: 
-            return render_template('cadastro.html', error="As senhas não coincidem!")
-        
-        # Verifica se o usuário já existe
-        existing_user = db.session.query(User).filter_by(name=name).first()
-        if existing_user:
-            return render_template('cadastro.html', error='Usuário já existe!', name=name)
-        
-        # Criação de um novo usuário
-        new_user = User(name=name, password=password)
-        db.session.add(new_user)
-        db.session.commit()
-
-        login_user(new_user)
-        return redirect(url_for('home'))
     
+    name = request.form.get('name')
+    password = request.form.get('password')
+    confirmpassword = request.form.get('confirmpassword')
 
-# Logout (saindo da conta)
+    if password != confirmpassword: 
+        return render_template('cadastro.html', error="As senhas não coincidem!")
+    
+    existing_user = db.session.query(User).filter_by(name=name).first()
+    if existing_user:
+        return render_template('cadastro.html', error='Usuário já existe!', name=name)
+    
+    new_user = User(name=name, password=password)
+    db.session.add(new_user)
+    db.session.commit()
+
+    login_user(new_user)
+    return redirect(url_for('home'))
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
 
-def carregar_shows():
-    return funcoes.carregar_shows()
-
-def pesquisar_shows(shows, termo):
-    funcoes.pesquisar_shows(shows, termo)
-
-def filtrar_shows_alfabeticamente(shows):
-    return sorted(shows, key=lambda x: x['titulo'].lower())
-
-
-@app.route('/')
-def home():
-    return funcoes.home()  
-    
-# Cria as tabelas do banco de dados
-with app.app_context():
-    db.create_all()
-
-
+# --- FUNÇÕES AUXILIARES ---
 
 @app.route("/coordenadas", methods=["POST"])
 def coordenadas():
@@ -112,14 +98,10 @@ def coordenadas():
 def distancia():
     return funcoes.distancia()
 
-
-
-def calcular_proximidades(user_location):
-    return funcoes.calcular_proximidades(user_location)
-
-
+# --- INICIALIZAÇÃO ---
 
 if __name__ == '__main__':
     with app.app_context():
+        # Cria as tabelas do banco de dados automaticamente
         db.create_all()
     app.run(debug=True)
