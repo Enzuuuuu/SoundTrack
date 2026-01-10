@@ -27,8 +27,11 @@ def dashboard():
         latitudes=latitudes, 
         longitudes=longitudes
     )
-    
 
+@artist_bp.route('/profile')
+@login_required
+def profile():
+    return render_template('artist/profile.html')
 # Logout (saindo da conta) 
 @artist_bp.route('/logout')
 @login_required

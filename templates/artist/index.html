@@ -18,7 +18,7 @@
         </a>
 
         {% if user.is_authenticated %}
-        <a href="{{ url_for('artist.dashboard') }}">
+        <a href="{{ url_for('artist.profile') }}">
           <li>
             <span class="icone"><i class="bi bi-person-circle"></i></span>
             <span class="texto">{{ user.name }}</span>
