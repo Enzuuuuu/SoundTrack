@@ -1,0 +1,41 @@
+
+  </header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Shows</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/show.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+<div class="shows-container">
+    {% for show in shows %}
+        <div class="show-card">
+            <h2>{{ show.titulo }}</h2>
+            <p>Banda: {{ show.artista }}</p>
+            <p>Local: {{ show.local }}</p>
+            <p>Data: {{ show.data }}</p>
+            <p class="distancia" data-titulo="{{ show.titulo }}">{% if show.distancia is not none %}
+                {{ show.distancia }} ----------
+                {% else %}
+                N/A
+                {% endif %}</p>
+        </div>
+    {% endfor %}
+</div> 
+<a href="/dashboard" class="voltar">Voltar</a>
+<script src="../static/javascript/geolocalizacao.js"></script>
+</body>
+</html>

@@ -82,3 +82,24 @@ def cadastro():
 
         login_user(new_user)
         return redirect(url_for('artist.dashboard'))
+
+@public_bp.route('/shows_proximos')
+def shows_proximos():
+    shows = funcoes.carregar_shows()
+    dist = funcoes.carregar_csv()
+    shows_filtrados =  funcoes.pesquisar_shows(shows, request.args.get('pesquisa', ''))
+
+    latitudes = [float(linha["latitude"]) for linha in dist]
+    longitudes = [float(linha["longitude"]) for linha in dist]
+
+    for s in shows_filtrados[:10]:
+        print(s["titulo"], s.get("distancia_km"))
+    
+    return render_template(
+        'public/shows_proximos.html', 
+        shows=shows, 
+        dist=dist, 
+        user=current_user, 
+        latitudes=latitudes, 
+        longitudes=longitudes
+    )
