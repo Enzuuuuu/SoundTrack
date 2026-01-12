@@ -11,25 +11,7 @@ import funcoes
 #inicialização a partir do público
 @public_bp.route('/')
 def home():
-    shows = funcoes.carregar_shows()
-    dist = funcoes.carregar_csv()
-    shows_filtrados =  funcoes.pesquisar_shows(shows, request.args.get('pesquisa', ''))
-
-    latitudes = [float(linha["latitude"]) for linha in dist]
-    longitudes = [float(linha["longitude"]) for linha in dist]
-
-    for s in shows_filtrados[:5]:
-        print(s["titulo"], s.get("distancia_km"))
-    
-    return render_template(
-        'public/index.html', 
-        shows=shows, 
-        dist=dist, 
-        user=current_user, 
-        latitudes=latitudes, 
-        longitudes=longitudes
-    )
-
+    return funcoes.home()
 
 # Login do Usuário
 @public_bp.route('/login', methods=['GET', 'POST'])

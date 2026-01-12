@@ -19,6 +19,11 @@
 </head>
 <body>
 
+  <div style="display:none;">
+    <span id="status"></span>
+    <a id="map-link" href=""></a>
+</div>
+
 <div class="shows-container">
     {% for show in shows %}
         <div class="show-card">
@@ -35,7 +40,7 @@
     {% endfor %}
 </div>
 <a href="/" class="voltar">Voltar</a>
-<script src="../static/javascript/geolocalizacao.js"></script>
+<script src="../../static/javascript/geolocalizacao.js"></script>
 </body>
 </html>
     
