@@ -1,10 +1,14 @@
-from flask import  render_template, request, jsonify
-from flask_login import current_user 
+from flask import  render_template, request, jsonify, redirect, url_for
+from flask_login import  login_user, logout_user, login_required, current_user
+from models import User
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
+from db import db
+import csv
+import os
 
 
-#inicializador da rota padrão (home)
+# funções base para a home
 def home():
     shows = carregar_shows()
     dist = carregar_csv()
@@ -38,7 +42,6 @@ def home():
 
 
 
-# para conseguir a variavel dist ( leitura manual do csv)
 def carregar_csv():
     try:
         with open("data/dados.csv", "r", encoding="utf-8") as f:
@@ -62,7 +65,6 @@ def carregar_csv():
     return dist
 
 
-# função para pesquisa
 def pesquisar_shows():
     resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
     ordenar = request.args.get('ordenar', '')
@@ -80,8 +82,6 @@ def pesquisar_shows():
         return shows
     
 
-
-# vara a tabela csv e cataloga os Shows
 def carregar_shows():
     try:
         with open('data/dados.csv', 'r', encoding='utf-8') as arquivo:
@@ -111,8 +111,6 @@ def carregar_shows():
     return shows
 
 
-
-# função para pesquisa
 def pesquisar_shows(shows, termo):
     termo = termo.lower()
     resultados = []
@@ -125,13 +123,12 @@ def pesquisar_shows(shows, termo):
 
 
 
-#inicialização em ordem alfabética por padrão
 def filtrar_shows_alfabeticamente(shows):
     return sorted(shows, key=lambda x: x['titulo'].lower())
 
 
 
-# função para descobrir localização a partir de coordenadas
+#funções de coordenadas e distância
 def coordenadas():
     try:
 
@@ -158,7 +155,7 @@ def coordenadas():
     except Exception as e:
         return jsonify({"address": f"Erro ao processar a solicitação: {str(e)}"}), 500
 
-# função para calcular distâncias entre o usuário e os shows
+
 def distancia():
     data = request.get_json()
 
@@ -207,5 +204,68 @@ def calcular_proximidades(user_location):
     proximidades.sort(key=lambda x: x["distancia_km"])
     return proximidades
 
+def shows_proximos():
+    shows = carregar_shows()
+    dist = carregar_csv()
+    shows_filtrados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
+
+    latitudes = [float(linha["latitude"]) for linha in dist]
+    longitudes = [float(linha["longitude"]) for linha in dist]
+
+    for s in shows_filtrados[:10]:
+        print(s["titulo"], s.get("distancia_km"))
+    
+    return render_template(
+        'shows_proximos.html', 
+        shows=shows, 
+        dist=dist, 
+        user=current_user, 
+        latitudes=latitudes, 
+        longitudes=longitudes
+    )
 
 
+# funções de login e cadastro
+def login():
+    if request.method == 'GET':
+        return render_template('public/login.html')
+    
+    name = request.form.get('name')
+    password = request.form.get('password')
+
+    user = db.session.query(User).filter_by(name=name, password=password).first()
+    if not user:
+        return render_template('public/login.html', error="Usuário ou senha incorretos!", name=name)
+    
+    login_user(user)
+    return redirect(url_for('home'))
+
+def cadastro():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+       
+    if request.method == 'GET':
+        return render_template('public/cadastro.html')
+    
+    elif request.method == 'POST':
+        name = request.form.get('name')
+        password = request.form.get('password')
+        confirmpassword = request.form.get('confirmpassword')
+
+        # Verifica se as senhas coincidem
+        if password != confirmpassword: 
+            return render_template('public/cadastro.html', error="As senhas não coincidem!", name=name)
+        
+        existing_user = db.session.query(User).filter_by(name=name).first()
+        if existing_user:
+            return render_template('public/cadastro.html', error='Usuário já existe!', name=name)
+        
+        # Criação de um novo usuário
+        new_user = User(name=name, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        login_user(new_user)
+        return redirect(url_for('home'))
+    
+    
