@@ -242,12 +242,11 @@ def login():
 
 def cadastro():
     if current_user.is_authenticated:
-        return redirect(url_for('artist.dashboard'))
-    
-    
-    
+        return redirect(url_for('home'))
+       
     if request.method == 'GET':
         return render_template('public/cadastro.html')
+    
     elif request.method == 'POST':
         name = request.form.get('name')
         password = request.form.get('password')
@@ -267,6 +266,6 @@ def cadastro():
         db.session.commit()
 
         login_user(new_user)
-        return redirect(url_for('artist.dashboard'))
+        return redirect(url_for('home'))
     
     

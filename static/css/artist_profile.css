@@ -2,10 +2,46 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #e9ecef;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
+}
+
+.profile-card {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+.profile-card h2 {
+    margin-top: 0;
+    color: #333;
+    text-align: center;
+}
+.profile-card p {
+    color: #555;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+
+/* Coluna do Formulário (Direita - igual à sua imagem) */
+.form-section {
+    flex: 1;
+    min-width: 350px;
+    max-width: 500px;
+}
+
+.card-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
 .form-container {
