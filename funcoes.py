@@ -226,14 +226,14 @@ def shows_proximos():
 # funções de login e cadastro
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('public/login.html')
     
     name = request.form.get('name')
     password = request.form.get('password')
 
     user = db.session.query(User).filter_by(name=name, password=password).first()
     if not user:
-        return render_template('login.html', error="Usuário ou senha incorretos!", name=name)
+        return render_template('public/login.html', error="Usuário ou senha incorretos!", name=name)
     
     login_user(user)
     return redirect(url_for('artist.dashboard'))
