@@ -8,11 +8,6 @@ from flask_login import login_user
 import funcoes
 
 
-#inicialização a partir do público
-@public_bp.route('/')
-def home():
-    return funcoes.home()
-
 # Login do Usuário
 @public_bp.route('/login', methods=['GET', 'POST'])
 def login():

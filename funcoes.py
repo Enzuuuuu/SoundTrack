@@ -1,9 +1,11 @@
 from flask import  render_template, request, jsonify, redirect, url_for
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_login import  login_user, logout_user, login_required, current_user
 from models import User
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from db import db
+import csv
+import os
 
 
 # funções base para a home
@@ -236,7 +238,7 @@ def login():
         return render_template('public/login.html', error="Usuário ou senha incorretos!", name=name)
     
     login_user(user)
-    return redirect(url_for('artist.dashboard'))
+    return redirect(url_for('home'))
 
 def cadastro():
     if current_user.is_authenticated:
@@ -266,3 +268,5 @@ def cadastro():
 
         login_user(new_user)
         return redirect(url_for('artist.dashboard'))
+    
+    

@@ -1,146 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artist Profile Settings</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .header {
-            background-color: #333;
-            color: white;
-            padding: 20px;
-            border-radius: 8px 8px 0 0;
-        }
-        
-        .header h1 {
-            font-size: 24px;
-        }
-        
-        .content {
-            padding: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
-        
-        input[type="text"],
-        input[type="email"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 30px;
-        }
-        
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .btn-save {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        .btn-cancel {
-            background-color: #f44336;
-            color: white;
-        }
-        
-        button:hover {
-            opacity: 0.9;
-        }
-    </style>
+    <title>Perfil do Artista</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/artist_profile.css') }}">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Profile Settings</h1>
-        </div>
-        
-        <div class="content">
-            <form method="POST" action="/artist/profile/update">
-                <div class="form-group">
-                    <label for="stage-name">Stage Name</label>
-                    <input type="text" id="stage-name" name="stage_name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="bio">Bio</label>
-                    <textarea id="bio" name="bio"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="genre">Primary Genre</label>
-                    <select id="genre" name="genre" required>
-                        <option value="">Select a genre</option>
-                        <option value="rock">Rock</option>
-                        <option value="pop">Pop</option>
-                        <option value="hip-hop">Hip-Hop</option>
-                        <option value="jazz">Jazz</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="country">Country</label>
-                    <input type="text" id="country" name="country">
-                </div>
-                
-                <div class="button-group">
-                    <button type="submit" class="btn-save">Save Changes</button>
-                    <button type="reset" class="btn-cancel">Cancel</button>
-                </div>
-            </form>
-        </div>
+
+<div class="form-container">
+    <h2>Perfil do Artista</h2>
+    
+    <form method="POST" action="{{ url_for('artist.profile') }}">
+    <div class="form-group">
+        <label for="nome">Nome do Grupo ou Artista</label>
+        <input type="text" id="nome" name="nome" required>
     </div>
+
+    <div class="form-group">
+        <label for="genero">Gênero Musical</label>
+        <select id="genero" name="genero" required>
+            <option value="Rock">Rock</option>
+            <option value="Pop">Pop</option>
+            <option value="Trap">Trap/Hip Hop</option>
+            <option value="Outro">Outro</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="bio">Biografia</label>
+        <textarea id="bio" name="bio"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="instagram">Instagram</label>
+        <input type="text" id="instagram" name="instagram" placeholder="@seuusuario">
+    </div>
+
+    <button type="submit" class="submit-btn">Salvar Perfil</button>
+</form>
+</div>
+
 </body>
 </html>
