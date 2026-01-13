@@ -8,46 +8,53 @@ import csv
 @login_required
 def profile():
     csv_path = os.path.join(current_app.root_path, 'data', 'artistas.csv')
+    user_id = str(current_user.id)
+    
     if request.method == 'POST':
-        # DEBUG: Verifique se isso aparece no seu terminal preto/VS Code
-        print("Tentando salvar dados...") 
-        
         nome = request.form.get('nome')
         genero = request.form.get('genero')
         bio = request.form.get('bio')
         instagram = request.form.get('instagram')
-        
-        user_id = str(current_user.id)
-        print(f"Dados: {nome}, {genero}")
 
-        
-        
+        linhas_atualizadas = []
+        usuario_encontrado = False
+
+        # 1. Ler o arquivo e atualizar a lista na memória
+        if os.path.exists(csv_path):
+            with open(csv_path, mode='r', encoding='utf-8') as file:
+                reader = csv.reader(file)
+                for row in reader:
+                    if row and row[0] == user_id:
+                        # Substitui pelos novos dados
+                        linhas_atualizadas.append([user_id, nome, genero, bio, instagram])
+                        usuario_encontrado = True
+                    else:
+                        linhas_atualizadas.append(row)
+
+        # 2. Se o usuário não existia no CSV, adicionamos uma nova linha
+        if not usuario_encontrado:
+            linhas_atualizadas.append([user_id, nome, genero, bio, instagram])
+
+        # 3. Reescrever o arquivo com a lista completa (ou nova ou atualizada)
         try:
-            with open(csv_path, mode='a', newline='', encoding='utf-8') as file:
+            with open(csv_path, mode='w', newline='', encoding='utf-8') as file:
                 writer = csv.writer(file)
-                writer.writerow([user_id,nome, genero, bio, instagram])
+                writer.writerows(linhas_atualizadas)
             
-            print("Sucesso ao gravar no CSV!")
-            return redirect(url_for('artist.profile')) # Ajuste conforme seu Blueprint
-            
+            return redirect(url_for('artist.profile'))
         except Exception as e:
-            print(f"ERRO DE ESCRITA: {e}")
-            return f"Erro técnico: {e}"
-# --- LÓGICA PARA CARREGAR OS DADOS DO USUÁRIO ---
-    user_data = {}
+            return f"Erro ao atualizar: {e}"
+
+    # Lógica GET para exibir os dados (como já tínhamos feito)
+    user_data = None
     if os.path.exists(csv_path):
         with open(csv_path, mode='r', encoding='utf-8') as file:
             reader = csv.reader(file)
             for row in reader:
-                # Se a primeira coluna for o ID do usuário logado, pegamos os dados
-                if row and row[0] == str(current_user.id):
-                    user_data = {
-                        'nome': row[1],
-                        'genero': row[2],
-                        'bio': row[3],
-                        'instagram': row[4]
-                    }
-    
+                if row and row[0] == user_id:
+                    user_data = {'nome': row[1], 'genero': row[2], 'bio': row[3], 'instagram': row[4]}
+                    break
+
     return render_template('artist/profile.html', user=current_user, data=user_data)
 
 @artist_bp.route('/logout')
