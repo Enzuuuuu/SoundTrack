@@ -8,65 +8,67 @@
 <body>
 
 
-{% if data %}
-<div class="profile-card">
-    <h3 class="profile-card-title">Dados Cadastrados</h3>
+<div class="lado-a-lado">
+    {% if data %}
+    <div class="profile-card">
+        <h3 class="profile-card-title">Dados Cadastrados</h3>
     
-    <div class="profile-info-group">
-        <label class="profile-info-label">Nome:</label>
-        <p class="profile-info-value">{{ data.nome }}</p>
-    </div>
-
-    <div class="profile-info-group">
-        <label class="profile-info-label">Gênero:</label>
-        <p class="profile-info-value">{{ data.genero }}</p>
-    </div>
-
-    <div class="profile-info-group">
-        <label class="profile-info-label">Instagram:</label>
-        <p class="profile-info-value">
-            <a href="https://instagram.com/{{ data.instagram.replace('@', '') }}" target="_blank">
-                {{ data.instagram }}
-            </a>
-        </p>
-    </div>
-
-    <div class="profile-info-group">
-        <label class="profile-info-label">Biografia:</label>
-        <p class="profile-info-value bio-text">{{ data.bio }}</p>
-    </div>
-</div>
-{% endif %}
-<div class="form-container">
-    <h2>Perfil do Artista</h2>
+        <div class="profile-info-group">
+            <label class="profile-info-label">Nome:</label>
+            <p class="profile-info-value">{{ data.nome }}</p>
+        </div>
     
-    <form method="POST" action="{{ url_for('artist.profile') }}">
-    <div class="form-group">
-        <label>Nome do Grupo ou Artista</label>
-        <input type="text" name="nome" value="{{ data.nome or '' }}" required>
+        <div class="profile-info-group">
+            <label class="profile-info-label">Gênero:</label>
+            <p class="profile-info-value">{{ data.genero }}</p>
+        </div>
+    
+        <div class="profile-info-group">
+            <label class="profile-info-label">Instagram:</label>
+            <p class="profile-info-value">
+                <a href="https://instagram.com/{{ data.instagram.replace('@', '') }}" target="_blank">
+                    {{ data.instagram }}
+                </a>
+            </p>
+        </div>
+    
+        <div class="profile-info-group">
+            <label class="profile-info-label">Biografia:</label>
+            <p class="profile-info-value bio-text">{{ data.bio }}</p>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label>Gênero Musical</label>
-        <select name="genero" required>
-            <option value="Rock" {% if data.genero == 'Rock' %}selected{% endif %}>Rock</option>
-            <option value="Pop" {% if data.genero == 'Pop' %}selected{% endif %}>Pop</option>
-            <option value="Trap" {% if data.genero == 'Trap' %}selected{% endif %}>Trap</option>
-        </select>
+    {% endif %}
+    <div class="form-container">
+        <h2>Perfil do Artista</h2>
+    
+        <form method="POST" action="{{ url_for('artist.profile') }}">
+        <div class="form-group">
+            <label>Nome do Grupo ou Artista</label>
+            <input type="text" name="nome" value="{{ data.nome or '' }}" required>
+        </div>
+    
+        <div class="form-group">
+            <label>Gênero Musical</label>
+            <select name="genero" required>
+                <option value="Rock" {% if data.genero == 'Rock' %}selected{% endif %}>Rock</option>
+                <option value="Pop" {% if data.genero == 'Pop' %}selected{% endif %}>Pop</option>
+                <option value="Trap" {% if data.genero == 'Trap' %}selected{% endif %}>Trap</option>
+            </select>
+        </div>
+    
+        <div class="form-group">
+            <label>Biografia</label>
+            <textarea name="bio">{{ data.bio or '' }}</textarea>
+        </div>
+    
+        <div class="form-group">
+            <label>Instagram</label>
+            <input type="text" name="instagram" value="{{ data.instagram or '' }}">
+        </div>
+    
+        <button type="submit" class="submit-btn">Atualizar Perfil</button>
+    </form>
     </div>
-
-    <div class="form-group">
-        <label>Biografia</label>
-        <textarea name="bio">{{ data.bio or '' }}</textarea>
-    </div>
-
-    <div class="form-group">
-        <label>Instagram</label>
-        <input type="text" name="instagram" value="{{ data.instagram or '' }}">
-    </div>
-
-    <button type="submit" class="submit-btn">Atualizar Perfil</button>
-</form>
 </div>
 
 </body>
