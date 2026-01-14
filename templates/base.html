@@ -25,7 +25,7 @@
     <h1>SoundTrack</h1>
     {% block content %}{% endblock %}
   </header>
-  
+
   <main>
     <section class="carousel">
       <div class="carousel-track">
@@ -61,26 +61,30 @@
 
     </section>
 
-      <form method="get" class="search-form">
-        <div class="centralizar">
-          <div class="pesquisa">
-            <input type="text" placeholder="Pesquisar shows..." name="pesquisa" id="pesquisa">
-            <button type="submit"><i class="bi bi-search"></i></button>
-            <a href="/?ordenar=alfabetica" id="alfabeto"><i class="bi bi-alphabet"></i></a>
-            <a href="/"><i class="bi bi-x"></i></a>
-          </div>
-         
+    <form method="get" class="search-form">
+      <div class="centralizar">
+        <div class="pesquisa">
+          <input type="text" placeholder="Pesquisar shows..." name="pesquisa" id="pesquisa">
+          <button type="submit"><i class="bi bi-search"></i></button>
+          <a href="/?ordenar=alfabetica" id="alfabeto"><i class="bi bi-alphabet"></i></a>
+          <a href="/?ordenar=preco" id="preco"><i class="bi bi-currency-dollar"></i></a>
+          <a href="/"><i class="bi bi-x"></i></a>
+
         </div>
-         <div class="filtros">
-          <label for="filtro-genero">Gênero:</label>
-          <select id="filtro-genero" name="filtro_genero" class="opcoes">
-            <option value="" class="opcao">Todos</option>
-            {% for genero in generos %}
-            <option value="{{ genero }}">{{ genero }}</option>
-            {% endfor %}
-          </select>
-          </div>
-      </form>
+
+      </div>
+      <div class="filtros">
+        <label for="filtro-genero">Gênero:</label>
+        <select id="filtro-genero" name="filtro_genero" class="opcoes" onchange="this.form.submit()">
+          <option value="" class="opcao">Todos</option>
+          {% for genero in generos %}
+          <option value="{{ genero }}" {% if request.args.get('filtro_genero')==genero %}selected{% endif %}>
+            {{ genero }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </form>
     <div class="pesquisa-tabela">
       <div class="tabela" id="tabela">
         <table>
@@ -114,7 +118,8 @@
                 N/A
                 {% endif %}
               </td>
-              <td><a href="https://www.google.com/maps?q={{show.latitude}},{{show.longitude}}" target="_blank" class="localidade"><i class="fa-solid fa-location-pin"></i></a>
+              <td><a href="https://www.google.com/maps?q={{show.latitude}},{{show.longitude}}" target="_blank"
+                  class="localidade"><i class="fa-solid fa-location-pin"></i></a>
               </td>
             </tr>
             {% endfor %}

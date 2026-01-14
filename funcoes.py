@@ -16,8 +16,8 @@ def home():
     latitudes = [float(linha["latitude"]) for linha in dist]
     longitudes = [float(linha["longitude"]) for linha in dist]
 
-    for s in shows_filtrados[:5]:
-        print(s["titulo"], s.get("distancia_km"))
+    generos_disponiveis = sorted(list(set(show['genero'] for show in shows_filtrados)))
+
     
     user = current_user
     if user.is_authenticated:
@@ -28,7 +28,7 @@ def home():
             user=current_user, 
             latitudes=latitudes, 
             longitudes=longitudes,
-            generos=set(show['genero'] for show in shows_filtrados)
+            generos=generos_disponiveis
         )
     
     else:
@@ -39,7 +39,7 @@ def home():
             user=current_user, 
             latitudes=latitudes, 
             longitudes=longitudes,
-            generos=set(show['genero'] for show in shows_filtrados)
+            generos=generos_disponiveis
         )
 
 
@@ -68,33 +68,28 @@ def carregar_csv():
 
 
 def pesquisar_shows(shows, termo):
-    resultados = pesquisa(shows, termo)
+    resultados = shows
+    if termo:
+        resultados = pesquisa(resultados, termo)
+    
+
+    genero_selecionado = request.args.get('filtro_genero', '')
     ordenar = request.args.get('ordenar', '')
-    genero_filtro = request.args.get('genero', '')
 
+    if genero_selecionado:
+        resultados = [s for s in resultados if s.get('genero', '').lower() == genero_selecionado.lower()]
 
-    if resultados:
-        shows = resultados
-    
-    genero_filtro = request.args.get('genero', '')
-    # 4. Filtro por Gênero
-    if ordenar == 'genero' and genero_filtro:
-        resultados = [show for show in resultados if show.get('genero', '').lower() == genero_filtro.lower()]
-    
-    # 5. Ordenação Alfabética
     if ordenar == 'alfabetica':
         resultados = sorted(resultados, key=lambda x: x.get('titulo', '').lower())
 
-    # 6. Ordenação por Preço
     elif ordenar == 'preco':
         def safe_float(valor):
             try:
-                return float(valor)
+                return float(str(valor).replace('R$', '').replace(',', '.').strip())
             except:
                 return float('inf')
         resultados = sorted(resultados, key=lambda x: safe_float(x.get('preco')))
 
-    # IMPORTANTE: Sempre retornar a lista final, independente do filtro
     return resultados
 
 
