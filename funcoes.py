@@ -24,8 +24,8 @@ def home():
     if user.is_authenticated:
         return render_template(
             'artist/index.html', 
-            shows=shows, 
-            dist=dist, 
+            shows=shows_filtrados, 
+            dist=dist   , 
             user=current_user, 
             latitudes=latitudes, 
             longitudes=longitudes
@@ -33,7 +33,7 @@ def home():
     else:
         return render_template(
             'public/index.html', 
-            shows=shows, 
+            shows=shows_filtrados, 
             dist=dist, 
             user=current_user, 
             latitudes=latitudes, 
@@ -65,22 +65,36 @@ def carregar_csv():
     return dist
 
 
-def pesquisar_shows():
-    resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
+def pesquisar_shows(shows, termo):
+    resultados = pesquisa(shows, termo)
     ordenar = request.args.get('ordenar', '')
+    genero_filtro = request.args.get('genero', '')
+
+
     if resultados:
         shows = resultados
     
     genero_filtro = request.args.get('genero', '')
+    # 4. Filtro por Gênero
     if ordenar == 'genero' and genero_filtro:
-        shows = [show for show in shows if show.get('genero', '').lower() == genero_filtro.lower()]
+        resultados = [show for show in resultados if show.get('genero', '').lower() == genero_filtro.lower()]
+    
+    # 5. Ordenação Alfabética
     if ordenar == 'alfabetica':
-        shows = sorted(shows, key=lambda x: x['titulo'].lower())
-    
-    if ordenar == 'preco':
-        shows = sorted(shows, key=lambda x: float(x.get('preco', float('inf'))))
-        return shows
-    
+        resultados = sorted(resultados, key=lambda x: x.get('titulo', '').lower())
+
+    # 6. Ordenação por Preço
+    elif ordenar == 'preco':
+        def safe_float(valor):
+            try:
+                return float(valor)
+            except:
+                return float('inf')
+        resultados = sorted(resultados, key=lambda x: safe_float(x.get('preco')))
+
+    # IMPORTANTE: Sempre retornar a lista final, independente do filtro
+    return resultados
+
 
 def carregar_shows():
     try:
@@ -111,7 +125,7 @@ def carregar_shows():
     return shows
 
 
-def pesquisar_shows(shows, termo):
+def pesquisa(shows, termo):
     termo = termo.lower()
     resultados = []
     for show in shows:
