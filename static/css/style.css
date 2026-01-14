@@ -214,6 +214,37 @@ text-decoration: underline;
     border-collapse: collapse;
 }
 
+.opcoes{
+    border: 0.2rem solid #F30800;
+    border-radius: 0.5rem;
+    font-family: "JetBrains Mono", monospace;
+    height: 2rem;
+    width: 10rem;
+    margin-left: 1rem;
+}
+
+.filtros{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    gap: 1rem;
+
+}
+
+.filtros label{
+    font-family: "JetBrains Mono", monospace;
+    margin-right: 1rem;
+    align-self: center;
+
+}
+
+.opcao{
+    font-family: "JetBrains Mono", monospace;
+}
+
+
 .pesquisa{
     display: flex;
     margin-top: 6rem;

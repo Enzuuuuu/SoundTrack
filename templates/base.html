@@ -72,12 +72,13 @@
          
         </div>
          <div class="filtros">
-            <a href="/?ordenar=genero&genero=Rock" class="filtro-link">Rock</a>
-            <a href="/?ordenar=genero&genero=Pop" class="filtro-link">Pop</a>
-            <a href="/?ordenar=genero&genero=Jazz" class="filtro-link">Jazz</a>
-            <a href="/?ordenar=genero&genero=Clássica" class="filtro-link">Clássica</a>
-            <a href="/?ordenar=genero&genero=Eletrônica" class="filtro-link">Eletrônica</a>
-            <a href="/?ordenar=genero&genero=Hip-Hop" class="filtro-link">Hip-Hop</a>
+          <label for="filtro-genero">Gênero:</label>
+          <select id="filtro-genero" name="filtro_genero" class="opcoes">
+            <option value="" class="opcao">Todos</option>
+            {% for genero in generos %}
+            <option value="{{ genero }}">{{ genero }}</option>
+            {% endfor %}
+          </select>
           </div>
       </form>
     <div class="pesquisa-tabela">

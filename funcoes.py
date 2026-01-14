@@ -4,8 +4,7 @@ from models import User
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from db import db
-import csv
-import os
+
 
 
 # funções base para a home
@@ -28,8 +27,10 @@ def home():
             dist=dist   , 
             user=current_user, 
             latitudes=latitudes, 
-            longitudes=longitudes
+            longitudes=longitudes,
+            generos=set(show['genero'] for show in shows_filtrados)
         )
+    
     else:
         return render_template(
             'public/index.html', 
@@ -37,7 +38,8 @@ def home():
             dist=dist, 
             user=current_user, 
             latitudes=latitudes, 
-            longitudes=longitudes
+            longitudes=longitudes,
+            generos=set(show['genero'] for show in shows_filtrados)
         )
 
 
