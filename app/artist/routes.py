@@ -4,6 +4,11 @@ from flask_login import logout_user, login_required, current_user
 from . import artist_bp
 import csv
 
+@artist_bp.route('/marcar_show')
+@login_required
+def marcar_show():
+    return render_template('artist/marcar_show.html', user=current_user)
+
 @artist_bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
