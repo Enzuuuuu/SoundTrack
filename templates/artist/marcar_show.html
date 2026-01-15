@@ -1,133 +1,106 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marcar Show</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            padding: 40px;
-            max-width: 500px;
-            width: 100%;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: bold;
-        }
-        
-        input, textarea, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            font-family: Arial, sans-serif;
-        }
-        
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
-        }
-        
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        
-        button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-    </style>
 </head>
 <body>
+<div class="lado-a-lado">
+    {% if data %}
+    <div class="profile-card">
+        <h3 class="profile-card-title">Dados Cadastrados</h3>
+    
+        <div class="profile-info-group">
+            <label class="profile-info-label">Nome do Evento::</label>
+            <p class="profile-info-value">{{ data.titulo }}</p>
+        </div>
+    
+        <div class="profile-info-group">
+            <label class="profile-info-label">Artista:</label>
+            <p class="profile-info-value">{{ data.artista }}</p>
+        </div>
+    
+        <div class="profile-info-group">
+            <label class="profile-info-label">Data do Show:</label>
+            <p class="profile-info-value">{{ data.date }}</p>
+        </div>
+    
+        <div class="profile-info-group">
+            <label class="profile-info-label">Hora do Show:</label>
+            <p class="profile-info-value bio-text">{{ data.hora }}</p>
+        </div>
+        <div class="profile-info-group">
+            <label class="profile-info-label">Local do Show:</label>
+            <p class="profile-info-value bio-text">{{ data.local }}</p>
+        </div>
+
+        <div class="profile-info-group">
+            <label class="profile-info-label">Gênero:</label>
+            <p class="profile-info-value bio-text">{{ data.genero }}</p>
+        </div>
+        <div class="profile-info-group">
+            <label class="profile-info-label">Preço:</label>
+            <p class="profile-info-value bio-text">{{ data.preco }}</p>
+        </div>
+        <div class="profile-info-group">
+            <label class="profile-info-label">Localização:</label>
+            <p class="profile-info-value bio-text">{{ data.localizacao }}</p>
+        </div>
+    </div>
+    {% endif %}
     <div class="container">
-        <h1>Marcar Show</h1>
-        <form>
+        <form method="POST" action="{{ url_for('artist.marcar_show')}}">
+            <h2>Marcar Show</h2>
             <div class="form-group">
-                <label for="artista">Nome do Artista</label>
-                <input type="text" id="artista" name="artista" required>
+                <label>Nome do Evento:</label>
+                <input type="text" name="event" value="{{ data.titulo or '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Artista:</label>
+                <input type="text" name="artist" value="{{ data.artista or '' }}" required>
             </div>
             
             <div class="form-group">
-                <label for="local">Local do Show</label>
-                <input type="text" id="local" name="local" required>
+                <label>Data do Show:</label>
+                <input type="date" name="date" value="{{ data.date or '' }}" required>
             </div>
-            
+
             <div class="form-group">
-                <label for="data">Data</label>
-                <input type="date" id="data" name="data" required>
+                <label>Hora do Show:</label>
+                <input type="time" name="time" value="{{ data.hora or '' }}" required>
             </div>
-            
+
             <div class="form-group">
-                <label for="hora">Hora</label>
-                <input type="time" id="hora" name="hora" required>
+                <label>Local do Show:</label>
+                <input type="text" name="location" value="{{ data.local or '' }}" required>
             </div>
-            
+
             <div class="form-group">
-                <label for="genero">Gênero Musical</label>
-                <select id="genero" name="genero" required>
-                    <option value="">Selecione um gênero</option>
-                    <option value="rock">Rock</option>
-                    <option value="pop">Pop</option>
-                    <option value="sertanejo">Sertanejo</option>
-                    <option value="mpb">MPB</option>
-                    <option value="hip-hop">Hip-Hop</option>
-                </select>
+                <label>Gênero:</label>
+                <select name="genero" required>
+                <option value="Rock" {% if data.genero == 'Rock' %}selected{% endif %}>Rock</option>
+                <option value="Pop" {% if data.genero == 'Pop' %}selected{% endif %}>Pop</option>
+                <option value="Trap" {% if data.genero == 'Trap' %}selected{% endif %}>Trap</option>
+                <option value="Sertanejo" {% if data.genero == 'Sertanejo' %}selected{% endif %}>Sertanejo</option>
+                <option value="Funk" {% if data.genero == 'Funk' %}selected{% endif %}>Funk</option>
+                <option value="Eletrônica" {% if data.genero == 'Eletrônica' %}selected{% endif %}>Eletrônica</option>
+                <option value="Reggae" {% if data.genero == 'Reggae' %}selected{% endif %}>Reggae</option>
+                <option value="Jazz" {% if data.genero == 'Jazz' %}selected{% endif %}>Jazz</option>
+                <option value="Blues" {% if data.genero == 'Blues' %}selected{% endif %}>Blues</option>
+                <option value="Clássica" {% if data.genero == 'Clássica' %}selected{% endif %}>Clássica</option>
+            </select>
             </div>
-            
+
             <div class="form-group">
-                <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao"></textarea>
+                <label>Preço:</label>
+                <input type="number" name="preco" value="{{ data.preco or '' }}" required>
             </div>
-            
+
             <button type="submit">Marcar Show</button>
+            
+
         </form>
     </div>
 </body>

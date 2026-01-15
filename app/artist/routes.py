@@ -7,7 +7,58 @@ import csv
 @artist_bp.route('/marcar_show')
 @login_required
 def marcar_show():
-    return render_template('artist/marcar_show.html', user=current_user)
+    csv_path = os.path.join(current_app.root_path, 'data', 'dados.csv')
+    user_id = str(current_user.id)
+    
+    if request.method == 'POST':
+        titulo = request.form.get('titulo')
+        artista = request.form.get('artist')
+        date = request.form.get('date')
+        hora = request.form.get('time')
+        local = request.form.get('location')
+        genero = request.form.get('genero')
+        preco = request.form.get('preco')
+
+        linhas_atualizadas = []
+        usuario_encontrado = False
+
+        # 1. Ler o arquivo e atualizar a lista na memória
+        if os.path.exists(csv_path):
+            with open(csv_path, mode='r', encoding='utf-8') as file:
+                reader = csv.reader(file)
+                for row in reader:
+                    if row and row[0] == user_id:
+                        # Substitui pelos novos dados
+                        linhas_atualizadas.append([user_id, titulo, artista, date, hora, local, genero, preco])
+                        usuario_encontrado = True
+                    else:
+                        linhas_atualizadas.append(row)
+
+        # 2. Se o usuário não existia no CSV, adicionamos uma nova linha
+        if not usuario_encontrado:
+            linhas_atualizadas.append([user_id, titulo, artista, date, hora, local, genero, preco])
+
+        # 3. Reescrever o arquivo com a lista completa (ou nova ou atualizada)
+        try:
+            with open(csv_path, mode='w', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerows(linhas_atualizadas)
+            
+            return redirect(url_for('artist.profile'))
+        except Exception as e:
+            return f"Erro ao atualizar: {e}"
+
+    # Lógica GET para exibir os dados (como já tínhamos feito)
+    user_data = None
+    if os.path.exists(csv_path):
+        with open(csv_path, mode='r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row and row[0] == user_id:
+                    user_data = {'titulo': row[1], 'artista': row[2], 'date': row[3], 'hora': row[4], 'local': row[5], 'genero': row[6], 'preco': row[7]}
+                    break
+
+    return render_template('artist/marcar_show.html', user=current_user, data=user_data)
 
 @artist_bp.route('/profile', methods=['GET', 'POST'])
 @login_required
