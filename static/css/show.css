@@ -66,3 +66,24 @@ h1 {
         height: 80%;
     }
 }
+
+a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+.red-button {
+    display: inline-block;
+    padding: 0.5rem 0.7rem;
+    background-color: #F30800;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    width: 40px;
+    height: 40px;
+}
+
+.red-button:hover {
+    background-color: #D00600;
+}

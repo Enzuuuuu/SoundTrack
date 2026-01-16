@@ -1,9 +1,10 @@
-from flask import  render_template, request, jsonify, redirect, url_for
+from flask import  current_app, render_template, request, jsonify, redirect, url_for
 from flask_login import  login_user, logout_user, login_required, current_user
 from models import User
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from db import db
+import os
 
 
 
@@ -278,5 +279,44 @@ def cadastro():
 
         login_user(new_user)
         return redirect(url_for('home'))
+
+  
+def artista_perfil(artist_id):
+    csv_path = os.path.join(current_app.root_path, 'data', 'dados.csv')
+    artist_data = None
+    csv_path2 = os.path.join(current_app.root_path, 'data', 'artistas.csv')  # CORRIGIR CAMINHO
+    id = None
+
+    if os.path.exists(csv_path):
+        with open(csv_path, mode='r', encoding='utf-8') as file:
+            reader = file.read().splitlines()
+            for linha in reader[1:]:
+                row = linha.split(',')
+                genero = row[2].strip().lower() if len(row) > 2 else ""
+                if artist_id.strip().lower() in genero:
+                    id = row[0].strip()  # REMOVER ESPAÇOS
+                    break
     
+    if os.path.exists(csv_path2):
+        with open(csv_path2, mode='r', encoding='utf-8') as file:
+            reader = file.read().splitlines()
+            for linha in reader[1:]:
+                row = linha.split(',')
+                row_id = row[0].strip()  # REMOVER ESPAÇOS
+                if row_id == id:
+                    # artistas.csv: id, Nome, Genero, Bio, Instagram
+                    artist_data = {
+                        'id': row[0].strip() if len(row) > 0 else "",
+                        'nome': row[1].strip() if len(row) > 1 else "",
+                        'genero': row[2].strip() if len(row) > 2 else "",
+                        'bio': row[3].strip() if len(row) > 3 else "",
+                        'instagram': row[4].strip() if len(row) > 4 else ""
+                    }
+                    break
+
+    if artist_data:
+        return render_template('info_artista.html', artist=artist_data)
+    else:
+        return "Artista não encontrado", 404
     
+           
