@@ -2,7 +2,7 @@ id,Nome,Genero,Bio,Instagram
 1,Banda x ,Rock,"Banda de rock formada em 2010, conhecida por seus shows energéticos e letras profundas.",@bandax
 2,Artista y ,Pop,"Cantora pop com vários hits nas paradas musicais, famosa por sua voz única.",@artistay
 3,DJ z ,Eletrônica,"DJ e produtor musical renomado na cena eletrônica, com sets vibrantes.",@djz
-4,Jazz aa,Rock,"Grupo de jazz que mistura clássicos com composições originais, criando uma experiência sonora única.",@jazzband
+4,Jazz aa,Jazz,"Grupo de jazz que mistura clássicos com composições originais, criando uma experiência sonora única.",@jazzband
 5,Indie artist ,Indie,Artista indie que cativa o público com suas melodias suaves e letras introspectivas.,@indieartist
 6,Orquestra a ,Clássica,Orquestra sinfônica dedicada à performance de obras clássicas e contemporâneas.,@orquestraa
 7,Rapper b ,Hip Hop,"Rapper influente na cena do hip hop, conhecido por suas letras impactantes e ritmo contagiante.",@rapperb

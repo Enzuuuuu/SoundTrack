@@ -17,7 +17,6 @@
           </li>
         </a>
 
-        {% if user.is_authenticated %}
         <a href="{{ url_for('artist.profile') }}">
           <li>
             <span class="icone"><i class="bi bi-person-circle"></i></span>
@@ -31,26 +30,18 @@
             <span class="texto">Logout</span>
           </li>
         </a>
-        {% else %}
-        <a href="{{ url_for('public.login') }}">
-          <li>
-            <span class="icone"><i class="bi bi-box-arrow-in-right"></i></span>
-            <span class="texto">Login</span>
-          </li>
-        </a>
-
-        <a href="{{ url_for('public.cadastro') }}">
-          <li>
-            <span class="icone"><i class="bi bi-person-plus"></i></span>
-            <span class="texto">Cadastro</span>
-          </li>
-        </a>
-        {% endif %}
 
         <a href="/shows_proximos">
           <li>
             <span class="icone"><i class="bi bi-cassette-fill"></i></span>
             <span class="texto">Shows</span>
+          </li>
+        </a>
+
+        <a href="/marcar_show">
+          <li>
+            <span class="icone"><i class="bi bi-calendar-check"></i></span>
+            <span class="texto">Marcar Shows</span>
           </li>
         </a>
       </ul>

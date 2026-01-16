@@ -4,10 +4,64 @@ from flask_login import logout_user, login_required, current_user
 from . import artist_bp
 import csv
 
-@artist_bp.route('/marcar_show')
+@artist_bp.route('/marcar_show', methods=['GET', 'POST'])
 @login_required
 def marcar_show():
-    return render_template('artist/marcar_show.html', user=current_user)
+    artistascsv = os.path.join(current_app.root_path, 'data', 'artistas.csv')
+    dadoscsv = os.path.join(current_app.root_path, 'data', 'dados.csv')
+
+    if request.method == 'GET':
+        return render_template('artist/marcar_show.html', user=current_user)
+    
+    elif request.method == 'POST':
+        # 1. Capturar dados do formulário
+        titulo_show = request.form.get('show')
+        local = request.form.get('local')
+        data = request.form.get('data')
+        hora = request.form.get('hora')
+        # Define 0.00 como padrão se o campo preco não estiver no HTML
+        preco = request.form.get('preco', '0.00') 
+
+        artista = 'Desconhecido'
+        genero = 'Desconhecido'
+
+        # 2. Buscar dados do artista (pulando o cabeçalho)
+        if os.path.exists(artistascsv):
+            with open(artistascsv, mode='r', encoding='utf-8') as file:
+                reader = csv.reader(file)
+                next(reader, None)  # PULA O CABEÇALHO DO ARTISTAS.CSV
+                for row in reader:
+                    if row and row[0] == str(current_user.id):
+                        artista = row[1]
+                        genero = row[2]
+                        break
+        
+        # 3. Gerar novo ID de forma segura
+        novo_id = 1
+        if os.path.exists(dadoscsv):
+            with open(dadoscsv, mode='r', encoding='utf-8') as file:
+                reader = csv.reader(file)
+                next(reader, None)  # PULA O CABEÇALHO DO DADOS.CSV
+                # Só tenta converter se for um dígito para evitar novos erros
+                ids = [int(row[0]) for row in reader if row and row[0].isdigit()]
+                if ids:
+                    novo_id = max(ids) + 1
+
+        # 4. Salvar o novo show
+        try:
+            with open(dadoscsv, mode='a', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerow([
+                    novo_id, titulo_show, artista, data, 
+                    hora, local, genero, preco, "-23.5505", "-46.6333"
+                ])
+            
+            # Redirecionar para o perfil para ver o resultado
+            return redirect(url_for('artist.profile'))
+        
+        except Exception as e:
+            return f"Erro ao salvar o show: {e}"
+
 
 @artist_bp.route('/profile', methods=['GET', 'POST'])
 @login_required

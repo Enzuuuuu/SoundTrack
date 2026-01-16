@@ -49,11 +49,7 @@
     
         <div class="form-group">
             <label>Gênero Musical</label>
-            <select name="genero" required>
-                <option value="Rock" {% if data.genero == 'Rock' %}selected{% endif %}>Rock</option>
-                <option value="Pop" {% if data.genero == 'Pop' %}selected{% endif %}>Pop</option>
-                <option value="Trap" {% if data.genero == 'Trap' %}selected{% endif %}>Trap</option>
-            </select>
+            <input type="text" name="genero" value="{{ data.genero or '' }}" required>
         </div>
     
         <div class="form-group">

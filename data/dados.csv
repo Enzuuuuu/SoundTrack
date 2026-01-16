@@ -8,4 +8,5 @@ id,titulo,artista,data,hora,local,genero,preco,latitude,longitude
 7,Hip Hop Beats,Rapper B,2026-01-15,23:00,Fortaleza,Hip Hop,35.00,-3.71722,-38.543369
 8,Reggae Fest,Banda C,2026-01-20,17:00,Recife,Reggae,20.00,-8.047562,-34.877001
 9,Metal Madness,Banda D,2026-01-25,21:30,Belo Horizonte,Metal,55.00,-19.916681,-43.934493
-10,Folk Evening,Folk Group,2026-01-30,19:30,Brasília,Folk,25.00,-15.794229,-47.882167
+10,Folk Evening,Folk Group,2026-01-30,19:30,Brasília,Folk,25.00,-15.794229,-47.88216711,
+11,Forró Fest,Jazz aa,2026-02-05,21:00,João Pessoa,Jazz,50.00,-23.5505,-46.6333

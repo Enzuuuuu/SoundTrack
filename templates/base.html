@@ -78,7 +78,7 @@
         <select id="filtro-genero" name="filtro_genero" class="opcoes" onchange="this.form.submit()">
           <option value="" class="opcao">Todos</option>
           {% for genero in generos %}
-          <option value="{{ genero }}" {% if request.args.get('filtro_genero')==genero %}selected{% endif %}>
+          <option value="{{ genero }}" {% if request.args.get('filtro_genero') == genero %}selected{% endif %}>
             {{ genero }}
           </option>
           {% endfor %}

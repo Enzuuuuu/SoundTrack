@@ -89,10 +89,10 @@
 <body>
     <div class="container">
         <h1>Marcar Show</h1>
-        <form>
+        <form method="POST" action="">
             <div class="form-group">
-                <label for="artista">Nome do Artista</label>
-                <input type="text" id="artista" name="artista" required>
+                <label for="show">Nome do Show</label>
+                <input type="text" id="show" name="show" required>
             </div>
             
             <div class="form-group">
@@ -109,24 +109,12 @@
                 <label for="hora">Hora</label>
                 <input type="time" id="hora" name="hora" required>
             </div>
-            
+
             <div class="form-group">
-                <label for="genero">Gênero Musical</label>
-                <select id="genero" name="genero" required>
-                    <option value="">Selecione um gênero</option>
-                    <option value="rock">Rock</option>
-                    <option value="pop">Pop</option>
-                    <option value="sertanejo">Sertanejo</option>
-                    <option value="mpb">MPB</option>
-                    <option value="hip-hop">Hip-Hop</option>
-                </select>
+                <label for="preco">Preço</label>
+                <input type="number" id="preco" name="preco" required>
             </div>
-            
-            <div class="form-group">
-                <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao"></textarea>
-            </div>
-            
+
             <button type="submit">Marcar Show</button>
         </form>
     </div>
