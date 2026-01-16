@@ -5,6 +5,8 @@ from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from db import db
 import os
+import csv
+from io import StringIO
 
 
 
@@ -284,33 +286,31 @@ def cadastro():
 def artista_perfil(artist_id):
     csv_path = os.path.join(current_app.root_path, 'data', 'dados.csv')
     artist_data = None
-    csv_path2 = os.path.join(current_app.root_path, 'data', 'artistas.csv')  # CORRIGIR CAMINHO
+    csv_path2 = os.path.join(current_app.root_path, 'data', 'artistas.csv')
     id = None
 
+    # Procurar ID em dados.csv
     if os.path.exists(csv_path):
         with open(csv_path, mode='r', encoding='utf-8') as file:
-            reader = file.read().splitlines()
-            for linha in reader[1:]:
-                row = linha.split(',')
-                genero = row[2].strip().lower() if len(row) > 2 else ""
-                if artist_id.strip().lower() in genero:
-                    id = row[0].strip()  # REMOVER ESPAÇOS
+            reader = csv.DictReader(file)
+            for row in reader:
+                artista = row.get('artista', '').strip().lower()
+                if artist_id.strip().lower() in artista:
+                    id = row.get('id', '').strip()
                     break
     
-    if os.path.exists(csv_path2):
+    # Procurar artista em artistas.csv usando o ID
+    if os.path.exists(csv_path2) and id:
         with open(csv_path2, mode='r', encoding='utf-8') as file:
-            reader = file.read().splitlines()
-            for linha in reader[1:]:
-                row = linha.split(',')
-                row_id = row[0].strip()  # REMOVER ESPAÇOS
-                if row_id == id:
-                    # artistas.csv: id, Nome, Genero, Bio, Instagram
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row.get('id', '').strip() == id:
                     artist_data = {
-                        'id': row[0].strip() if len(row) > 0 else "",
-                        'nome': row[1].strip() if len(row) > 1 else "",
-                        'genero': row[2].strip() if len(row) > 2 else "",
-                        'bio': row[3].strip() if len(row) > 3 else "",
-                        'instagram': row[4].strip() if len(row) > 4 else ""
+                        'id': row.get('id', '').strip(),
+                        'nome': row.get('Nome', '').strip(),
+                        'genero': row.get('Genero', '').strip(),
+                        'bio': row.get('Bio', '').strip(),
+                        'instagram': row.get('Instagram', '').strip()
                     }
                     break
 

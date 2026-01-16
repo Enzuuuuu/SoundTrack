@@ -205,3 +205,43 @@ textarea {
     }
 }
 
+.art-card a {
+    color: #F30800;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.art-card a:hover {
+    text-decoration: underline;
+}
+
+.art-card {
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-self: center;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+}
+
+.art-card h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+.art-card p {
+    color: #555;
+    line-height: 1.4;
+    margin: 5px 0;
+}
+
+.art-card h1 {
+    text-align: center;
+    margin: 2rem 0;
+    color: #F30800;
+}
