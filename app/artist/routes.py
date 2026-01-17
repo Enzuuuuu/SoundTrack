@@ -19,6 +19,8 @@ def marcar_show():
         local = request.form.get('local')
         data = request.form.get('data')
         hora = request.form.get('hora')
+        latitude = request.form.get('latitude')
+        longitude = request.form.get('longitude')
         # Define 0.00 como padrão se o campo preco não estiver no HTML
         preco = request.form.get('preco', '0.00') 
 
@@ -53,7 +55,7 @@ def marcar_show():
                 writer = csv.writer(file)
                 writer.writerow([
                     novo_id, titulo_show, artista, data, 
-                    hora, local, genero, preco, "-23.5505", "-46.6333"
+                    hora, local, genero, preco, latitude, longitude
                 ])
             
             # Redirecionar para o perfil para ver o resultado
