@@ -1,5 +1,5 @@
 from flask import  render_template, request, jsonify, redirect, url_for
-from flask_login import  login_user, logout_user, login_required, current_user
+from flask_login import  login_user, current_user
 from models import User
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
@@ -8,23 +8,29 @@ from db import db
 
 
 # funções base para a home
-def home():
-    shows = carregar_shows()
-    dist = carregar_csv()
+def home()-> list:
+    
+    # shows == lista referente a tabela dados.csv
+    shows = carregar_csv()
+
+    #Parametros para filtrar --> A tabela contendo todos os shows e o valor da pesquisa
     shows_filtrados =  pesquisar_shows(shows, request.args.get('pesquisa', ''))
 
-    latitudes = [float(linha["latitude"]) for linha in dist]
-    longitudes = [float(linha["longitude"]) for linha in dist]
 
+    # Pega as linhas referentes as latitudades e longitudes dos shows 
+    latitudes = [float(linha["latitude"]) for linha in shows]
+    longitudes = [float(linha["longitude"]) for linha in shows]
+
+    #Pega a linha referente a Gêneros
     generos_disponiveis = sorted(list(set(show['genero'] for show in shows_filtrados)))
 
-    
+    #O usuário que esta logado no momento
     user = current_user
+    #Diferenciação de página de Logado e não Logado
     if user.is_authenticated:
         return render_template(
             'artist/index.html', 
-            shows=shows_filtrados, 
-            dist=dist   , 
+            shows=shows_filtrados,  
             user=current_user, 
             latitudes=latitudes, 
             longitudes=longitudes,
@@ -35,7 +41,6 @@ def home():
         return render_template(
             'public/index.html', 
             shows=shows_filtrados, 
-            dist=dist, 
             user=current_user, 
             latitudes=latitudes, 
             longitudes=longitudes,
@@ -44,88 +49,81 @@ def home():
 
 
 
-def carregar_csv():
+def carregar_csv()->list:
+    # Função principal da função == Carregar toda a tabela dados.csv e redirecionar para funções adjacentes trabalharem com ela
+    # Entrada: "dados.csv"  Saída: Uma lista com todas as informações da tabela csv
+    # Primeiro ele abre o aquivo
     try:
-        with open("data/dados.csv", "r", encoding="utf-8") as f:
-            linhas = f.read().splitlines()
+        with open( "data/dados.csv", "r", encoding="utf-8") as arquivo:
+            linhas = arquivo.read().splitlines()
     except FileNotFoundError:
         linhas = []
 
-    dist = []
 
+    tabela = []
+    # Separa cabeçalho 
     if linhas:
         cabecalho = linhas[0].split(',')
-
-        for linha in linhas[1:]:
-            valores = linha.split(',')
-
-            row = {}
+        # Show == uma lista contendo um string de tudo
+        # Valores == uma lista contendo varias strings a respeito de todos as informações
+        for show in linhas[1:]:
+            valores = show.split(',')
+        #infos == separação de cada uma das informações
+            infos = {}
             for i in range(len(cabecalho)):
-                row[cabecalho[i]] = valores[i] if i < len(valores) else ""
+                if i < len(valores):
+                    infos[cabecalho[i]] = valores[i] 
+        #tabela == compilação dessas informações
+            tabela.append(infos)
+    return tabela
 
-            dist.append(row)
-    return dist
+
+def pesquisar_shows(shows:list, termo:str) -> list:
+    #Função principal: filtrar a lista de shows, organizando-as ou efetivamente exibindo apenas os shows dentro do escopo de interesse
+    # Ao todo são 4 filtros, dois organizacionais ( alfabetico e preço ) e dois filtros de escopo ( barra de pesquisa e Gênero )
+    # A saída é uma lista que vai ser usada para a geração das páginas
 
 
-def pesquisar_shows(shows, termo):
+    #shows == lista completa
+    #termo == barra de pesquisa ( se houver )
+
     resultados = shows
     if termo:
+        #pesquisa é uma função referente ao "buscar" na barra de escrever
         resultados = pesquisa(resultados, termo)
     
-
+    #puxa da URL se foi adicionado filtro de gênero
     genero_selecionado = request.args.get('filtro_genero', '')
+    #puxa da URL se foi adicionado filtro
     ordenar = request.args.get('ordenar', '')
 
+    #Filtro de Gênero
+    # show --> cada linha
     if genero_selecionado:
-        resultados = [s for s in resultados if s.get('genero', '').lower() == genero_selecionado.lower()]
-
+        lista_filtrada_genero = []
+        for show in resultados:
+            if show.get('genero', '').lower() == genero_selecionado.lower():
+                lista_filtrada_genero.append(show)
+        
+    #Ordenação ordem alfabética
     if ordenar == 'alfabetica':
         resultados = sorted(resultados, key=lambda x: x.get('titulo', '').lower())
 
+    #Ordenação preço
     elif ordenar == 'preco':
-        def safe_float(valor):
-            try:
-                return float(str(valor).replace('R$', '').replace(',', '.').strip())
-            except:
-                return float('inf')
-        resultados = sorted(resultados, key=lambda x: safe_float(x.get('preco')))
+        resultados = sorted(resultados, key=lambda x: x.get('preco'))
 
     return resultados
 
 
-def carregar_shows():
-    try:
-        with open('data/dados.csv', 'r', encoding='utf-8') as arquivo:
-            linhas = arquivo.read().splitlines()
-    except FileNotFoundError:
-        return []
+def pesquisa(shows:list, termo:str)-> list:
+    # A função é referente ao uso da barra de pesquisa do site
+    # A saída é a lista com a exibilção única do que foi pesquisado
 
-    if not linhas:
-        return []
-
-    shows = []
-
-    cabecalho = linhas[0].split(',')
-
-    for linha in linhas[1:]:
-        valores = linha.split(',')
-
-        row = {}
-        for i in range(len(cabecalho)):
-            if i < len(valores):
-                row[cabecalho[i]] = valores[i]
-            else:
-                row[cabecalho[i]] = ""
-
-        shows.append(row)
-
-    return shows
-
-
-def pesquisa(shows, termo):
     termo = termo.lower()
     resultados = []
     for show in shows:
+        # verificação se o termo ( conteudo da barra de pesquisa) bate com o nome do artista // dara // local
         if (termo in show['artista'].lower() or
             termo in show['data'].lower() or
             termo in show['local'].lower()):
@@ -134,39 +132,12 @@ def pesquisa(shows, termo):
 
 
 
-def filtrar_shows_alfabeticamente(shows):
-    return sorted(shows, key=lambda x: x['titulo'].lower())
+#FUNÇÕES REFERENTES A GEOLOCALIZAÇÃO
 
-
-
-#funções de coordenadas e distância
-def coordenadas():
-    try:
-
-        latitude_str = request.form.get("latitude")
-        longitude_str = request.form.get("longitude")
-
-        # Verifica se os dados foram recebidos
-        if not latitude_str or not longitude_str:
-            return jsonify({"address": "Erro: Dados de latitude/longitude ausentes"}), 400
-
-        # Converte para float antes de usar na biblioteca
-        lat = float(latitude_str)
-        lon = float(longitude_str)
-
-        geolocator = Nominatim(user_agent="myGeolocator")
-        location = geolocator.reverse((lat, lon), language='pt')
-
-        if location:
-            address = location.address
-        else:
-            address = "Endereço não encontrado"
-
-        return jsonify({"address": address})
-    except Exception as e:
-        return jsonify({"address": f"Erro ao processar a solicitação: {str(e)}"}), 500
-
-
+# Função responsável por obter a coordenada do usuário e calcular o quao longe o usuário esta de cada um dos shows
+# a entrada das coordenadas é através de um json 
+# a função se comunica com o geolocalizacao.js
+#a saída é um json contendo o quão próximo o usuario esta de cada um dos shows
 def distancia():
     data = request.get_json()
 
@@ -181,18 +152,23 @@ def distancia():
 #cálculo da função acima
 def calcular_proximidades(user_location):
     proximidades = []
-
+    #abre o csv e já define as linhas
     try:
         with open("data/dados.csv", newline="", encoding="utf-8") as f:
             linhas = f.read().splitlines()
     except FileNotFoundError:
         return proximidades
-
+    
     if not linhas:
         return proximidades
-
+    #define o cabeçalho
     cabecalho = linhas[0].split(',')
+    #linhas == string grande com todas as informações
+    #linha == iterador do FOR
+    #valores == lista contendo cada informação das linhas ( ou seja de cada show ) todos em str
 
+    #show == dicionario que associa o cabeçalho com o seu valor
+    #show_location == lista que contém latitude e longitude de um show
     for linha in linhas[1:]:
         valores = linha.split(',')
         show = {}
@@ -204,9 +180,11 @@ def calcular_proximidades(user_location):
             float(show["latitude"]),
             float(show["longitude"])
         )
-
+        # geodesic --> função que precisa de duas coordenadas e calcula a distancia entre elas
         distancia_km = geodesic(user_location, show_location).kilometers
 
+
+        # proximidades == lista que contém sub-listas, cada uma delas contendo o nome do show e sua distância do usuário
         proximidades.append({
             "titulo": show["titulo"],
             "distancia_km": round(distancia_km, 2)
@@ -215,21 +193,16 @@ def calcular_proximidades(user_location):
     proximidades.sort(key=lambda x: x["distancia_km"])
     return proximidades
 
+#função responsável pela página de "Shows próximos"
 def shows_proximos():
-    shows = carregar_shows()
-    dist = carregar_csv()
-    shows_filtrados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
+    shows = carregar_csv()
 
-    latitudes = [float(linha["latitude"]) for linha in dist]
-    longitudes = [float(linha["longitude"]) for linha in dist]
-
-    for s in shows_filtrados[:10]:
-        print(s["titulo"], s.get("distancia_km"))
+    latitudes = [float(linha["latitude"]) for linha in shows]
+    longitudes = [float(linha["longitude"]) for linha in shows]
     
     return render_template(
         'shows_proximos.html', 
         shows=shows, 
-        dist=dist, 
         user=current_user, 
         latitudes=latitudes, 
         longitudes=longitudes
