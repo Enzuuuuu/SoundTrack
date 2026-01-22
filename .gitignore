@@ -1,0 +1,11 @@
+# Ignora pastas de cache do Python em qualquer nível
+**/__pycache__/
+*.py[cod]
+
+# Ignora o ambiente virtual (se você usa um)
+venv/
+.venv/
+
+# Ignora arquivos de banco de dados locais ou logs
+*.sqlite3
+*.log

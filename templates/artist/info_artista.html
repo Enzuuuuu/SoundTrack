@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ artist.nome }}</title>
+</head>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/artist_profile.css') }}">
+<body>
+    <div class="art-card">
+        <h1>Perfil do Artista: {{ artist.nome }}</h1>
+        <p><strong>Gênero:</strong> {{ artist.genero }}</p>
+        <p><strong>Biografia:</strong> {{ artist.bio }}</p>
+        <p><strong>Instagram:</strong>
+            <a href="https://instagram.com/{{ artist.instagram.replace('@', '') }}" target="_blank">
+                {{ artist.instagram }}
+            </a>
+        </p>
+        <a href="/">Voltar à Página Principal</a>
+    </div>
+</body>
+</html>

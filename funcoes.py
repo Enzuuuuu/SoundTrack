@@ -1,9 +1,11 @@
-from flask import  render_template, request, jsonify, redirect, url_for
+from flask import  render_template, request, jsonify, redirect, url_for, current_app
 from flask_login import  login_user, current_user
 from models import User
-from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from db import db
+import os
+import csv
+
 
 
 
@@ -251,5 +253,42 @@ def cadastro():
 
         login_user(new_user)
         return redirect(url_for('home'))
+
+  
+def artista_perfil(artist_id):
+    csv_path = os.path.join(current_app.root_path, 'data', 'dados.csv')
+    artist_data = None
+    csv_path2 = os.path.join(current_app.root_path, 'data', 'artistas.csv')
+    id = None
+
+    # Procurar ID em dados.csv
+    if os.path.exists(csv_path):
+        with open(csv_path, mode='r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                artista = row.get('artista', '').strip().lower()
+                if artist_id.strip().lower() in artista:
+                    id = row.get('id', '').strip()
+                    break
     
+    # Procurar artista em artistas.csv usando o ID
+    if os.path.exists(csv_path2) and id:
+        with open(csv_path2, mode='r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row.get('id', '').strip() == id:
+                    artist_data = {
+                        'id': row.get('id', '').strip(),
+                        'nome': row.get('Nome', '').strip(),
+                        'genero': row.get('Genero', '').strip(),
+                        'bio': row.get('Bio', '').strip(),
+                        'instagram': row.get('Instagram', '').strip()
+                    }
+                    break
+
+    if artist_data:
+        return render_template('info_artista.html', artist=artist_data)
+    else:
+        return "Artista não encontrado", 404
     
+           

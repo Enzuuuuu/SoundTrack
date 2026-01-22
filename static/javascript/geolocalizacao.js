@@ -12,33 +12,12 @@ function sucesso(position) {
     const mapaLink = document.getElementById("map-link");
     mapaLink.href = `https://www.google.com/maps?q=${latitude},${longitude}`;
     
-
-   //primeiro fetch para pegar o endereço
     const formData = new URLSearchParams();
     formData.append("latitude", latitude);
     formData.append("longitude", longitude);
      
 
-    fetch("/coordenadas", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: formData.toString()
-    })
-    .then(r => r.json())
-    .then(data => {
-        document.getElementById("status").textContent =
-            "Localização obtida com sucesso!";
-        document.getElementById("status").classList.add("sucesso");
-    })
-    .catch(err => {
-        document.getElementById("status").textContent =
-            `Erro ao obter endereço: ${err.message}`;
-        document.getElementById("status").classList.add("erro");
-    });
 
-    //segundo fetch para pegar as distâncias
     fetch("/distancia", {
         method: "POST",
         headers: {
@@ -55,6 +34,9 @@ function sucesso(position) {
             const titulo = td.dataset.titulo;
             const show = data.find(s => s.titulo === titulo);
 
+            document.getElementById("status").textContent =
+                "Localização obtida com sucesso.";
+            document.getElementById("status").classList.add("sucesso");
             if (show) {
                 td.textContent = show.distancia_km + " km";
             }

@@ -3,6 +3,7 @@ import os
 from flask_login import logout_user, login_required, current_user
 from . import artist_bp
 import csv
+import funcoes
 
 @artist_bp.route('/marcar_show', methods=['GET', 'POST'])
 @login_required
@@ -123,3 +124,7 @@ def profile():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+@artist_bp.route('/artistas/<artist_id>')
+def artista_perfil(artist_id):
+    return funcoes.artista_perfil(artist_id)
