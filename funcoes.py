@@ -211,14 +211,15 @@ def shows_proximos():
     )
 
 
-# funções de login e cadastro
+# função de logar usuario
 def login():
     if request.method == 'GET':
         return render_template('public/login.html')
-    
+    #variaveis que pegam o nome e senha do banco de dados
     name = request.form.get('name')
     password = request.form.get('password')
 
+    #se a senha e o usuario bater com o banco de dados, o usuario entra no site
     user = db.session.query(User).filter_by(name=name, password=password).first()
     if not user:
         return render_template('public/login.html', error="Usuário ou senha incorretos!", name=name)
@@ -226,27 +227,29 @@ def login():
     login_user(user)
     return redirect(url_for('home'))
 
+# função de cadastrar novos usuarios
 def cadastro():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
        
     if request.method == 'GET':
         return render_template('public/cadastro.html')
-    
+    # três variaveis, sendo que duas irão para o banco e uma é só a confirmação de senha
     elif request.method == 'POST':
         name = request.form.get('name')
         password = request.form.get('password')
         confirmpassword = request.form.get('confirmpassword')
 
-        # Verifica se as senhas coincidem
+        # verificação caso as duas senhas não esteja batendo
         if password != confirmpassword: 
             return render_template('public/cadastro.html', error="As senhas não coincidem!", name=name)
         
+        # verifica se o usuario escolhido já não existe no banco de dados
         existing_user = db.session.query(User).filter_by(name=name).first()
         if existing_user:
             return render_template('public/cadastro.html', error='Usuário já existe!', name=name)
         
-        # Criação de um novo usuário
+        # cria o usuario novo
         new_user = User(name=name, password=password)
         db.session.add(new_user)
         db.session.commit()
