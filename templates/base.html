@@ -102,7 +102,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for show in shows %}
+            {% for show in shows[:10] %}
             <tr>
               <td>{{ show.titulo }}</td>
               <td>{{ show.artista }}</td>
