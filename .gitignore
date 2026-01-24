@@ -9,3 +9,6 @@ venv/
 # Ignora arquivos de banco de dados locais ou logs
 *.sqlite3
 *.log
+
+# Ignora arquivos de configuração sensíveis
+.env
