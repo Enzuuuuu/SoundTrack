@@ -2,6 +2,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #e9ecef;
     display: flex;
+    font-size: 1.2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -30,6 +31,14 @@ body {
     margin: 10px 0;
 }
 
+a {
+    color: #F30800;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
 
 /* Coluna do Formulário (Direita - igual à sua imagem) */
 .form-section {
@@ -167,12 +176,12 @@ textarea {
     }
 
     .profile-card {
-        max-width: 45%;
+        max-width: 65%;
         min-height: 400px;
     }
 
     .form-container {
-        max-width: 45%;
+        max-width: 65%;
         min-height: 400px;
     }
 }
@@ -197,7 +206,7 @@ textarea {
     }
 
     .profile-card {
-        max-width: 43%;
+        max-width: 50%;
         height: 51.5vw;
         align-items: center;
         justify-content: center;
