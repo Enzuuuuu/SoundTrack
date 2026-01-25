@@ -151,6 +151,4 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-@artist_bp.route('/artistas/<id>')
-def artista_perfil(id):
-    return funcoes.artista_perfil(id)
+
