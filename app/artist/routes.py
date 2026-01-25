@@ -5,17 +5,26 @@ from . import artist_bp
 import csv
 import funcoes
 
+
+# A função csv.reader() lê um aruqivo csv ( já considerando sua separação por ',' ) linha por linhas os dados sao lidos e retornados como strings
+
+# Foi usado para reduzir o tamanho do codigo e a fins de estudo da biblioteca Csv
+
+
+#objetivo da função: adquirir informações de um formulário HTML e adicionar como um novo show no dados.csv
 @artist_bp.route('/marcar_show', methods=['GET', 'POST'])
 @login_required
 def marcar_show():
+    #definido o endereço de ambas as tabelas
     artistascsv = os.path.join(current_app.root_path, 'data', 'artistas.csv')
     dadoscsv = os.path.join(current_app.root_path, 'data', 'dados.csv')
 
+    #carrega a página
     if request.method == 'GET':
         return render_template('artist/marcar_show.html', user=current_user)
     
     elif request.method == 'POST':
-        # 1. Capturar dados do formulário
+        #Captura dados do formulário
         titulo_show = request.form.get('show')
         local = request.form.get('local')
         data = request.form.get('data')
@@ -25,36 +34,42 @@ def marcar_show():
         # Define 0.00 como padrão se o campo preco não estiver no HTML
         preco = request.form.get('preco', '0.00') 
 
+        #em caso do artista não ter editado as informações no /profile tanto o artista qaunto o genero são dados como desconhecido
         artista = 'Desconhecido'
         genero = 'Desconhecido'
 
-        # 2. Buscar dados do artista (pulando o cabeçalho)
+        # Faz uma verificação de ID de usuário para determinar o nome do artita e o seu gênero a aprtir de "artistas.csv"
         if os.path.exists(artistascsv):
             with open(artistascsv, mode='r', encoding='utf-8') as file:
-                reader = csv.reader(file)
-                next(reader, None)  # PULA O CABEÇALHO DO ARTISTAS.CSV
-                for row in reader:
-                    if row and row[0] == str(current_user.id):
-                        artista = row[1]
-                        genero = row[2]
+                leitor = csv.reader(file)
+                next(leitor, None)  # PULA O CABEÇALHO DO ARTISTAS.CSV
+                for linha in leitor:
+                    if linha and linha[0] == str(current_user.id):
+                        artista = linha[1]
+                        genero = linha[2]
                         break
         
-        # 3. Gerar novo ID de forma segura
+        # Gera um novo id para o show
         novo_id = 1
         if os.path.exists(dadoscsv):
             with open(dadoscsv, mode='r', encoding='utf-8') as file:
-                reader = csv.reader(file)
-                next(reader, None)  # PULA O CABEÇALHO DO DADOS.CSV
+                leitor = csv.reader(file)
+                next(leitor, None)  # PULA O CABEÇALHO DO DADOS.CSV
                 # Só tenta converter se for um dígito para evitar novos erros
-                ids = [int(row[0]) for row in reader if row and row[0].isdigit()]
+                ids = []
+                for linha in leitor:
+                    if linha and linha[0].isdigit():
+                        ids.append(int(linha[0]))
                 if ids:
+                    #ele cataloga todos os ids depois usa a função max para peagr o maior deles e adicionar +1
                     novo_id = max(ids) + 1
 
-        # 4. Salvar o novo show
+        # Salva o novo show
+        # aqui foi implementado a função csv.writerow() para escrever uma nova coluna de maneira mais rapida e com menos codigo
         try:
             with open(dadoscsv, mode='a', newline='', encoding='utf-8') as file:
-                writer = csv.writer(file)
-                writer.writerow([
+                salvar = csv.writer(file)
+                salvar.writerow([
                     novo_id, titulo_show, artista, data, 
                     hora, local, genero, preco, latitude, longitude
                 ])
@@ -66,59 +81,70 @@ def marcar_show():
             return f"Erro ao salvar o show: {e}"
 
 
+#objetivo da função: Editar informaçõe de perfil do artista
 @artist_bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    csv_path = os.path.join(current_app.root_path, 'data', 'artistas.csv')
-    user_id = str(current_user.id)
+    #define o endereço dos dois principais atributos
+    tabela = os.path.join(current_app.root_path, 'data', 'artistas.csv')
+    id = str(current_user.id)
     
+    #formulário para peagar as informações do usuario através do formulário
     if request.method == 'POST':
         nome = request.form.get('nome')
         genero = request.form.get('genero')
         bio = request.form.get('bio')
         instagram = request.form.get('instagram')
 
+
+        #NÂO APAGAR
+        #objetivo: verificação de usuário já existe para que ao inves de criar uma nova linha na tabela altere uma ja existente
         linhas_atualizadas = []
         usuario_encontrado = False
 
-        # 1. Ler o arquivo e atualizar a lista na memória
-        if os.path.exists(csv_path):
-            with open(csv_path, mode='r', encoding='utf-8') as file:
-                reader = csv.reader(file)
-                for row in reader:
-                    if row and row[0] == user_id:
+        
+        if os.path.exists(tabela):
+            with open(tabela, mode='r', encoding='utf-8') as file:
+                leitor = csv.reader(file)
+                for linha in leitor:
+                    #se a linha atual e a primeira informação da linha == id
+                    # significa que já exite um usuário com esse id ou seja usuaário existente
+                    if linha and linha[0] == id:
                         # Substitui pelos novos dados
-                        linhas_atualizadas.append([user_id, nome, genero, bio, instagram])
+                        linhas_atualizadas.append([id, nome, genero, bio, instagram])
                         usuario_encontrado = True
                     else:
-                        linhas_atualizadas.append(row)
+                        linhas_atualizadas.append(linha)
 
-        # 2. Se o usuário não existia no CSV, adicionamos uma nova linha
+        #se não existir usuário adicionamos uma nova linha na tabela no final dela
         if not usuario_encontrado:
-            linhas_atualizadas.append([user_id, nome, genero, bio, instagram])
+            linhas_atualizadas.append([id, nome, genero, bio, instagram])
 
-        # 3. Reescrever o arquivo com a lista completa (ou nova ou atualizada)
+        # reescreve a tabela 
         try:
-            with open(csv_path, mode='w', newline='', encoding='utf-8') as file:
-                writer = csv.writer(file)
-                writer.writerows(linhas_atualizadas)
+            with open(tabela, mode='w', newline='', encoding='utf-8') as file:
+                escritor = csv.writer(file)
+                escritor.writerows(linhas_atualizadas)
             
             return redirect(url_for('artist.profile'))
         except Exception as e:
             return f"Erro ao atualizar: {e}"
 
-    # Lógica GET para exibir os dados (como já tínhamos feito)
+    # Lógica GET para exibir os dados
     user_data = None
-    if os.path.exists(csv_path):
-        with open(csv_path, mode='r', encoding='utf-8') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if row and row[0] == user_id:
-                    user_data = {'nome': row[1], 'genero': row[2], 'bio': row[3], 'instagram': row[4]}
+    if os.path.exists(tabela):
+        with open(tabela, mode='r', encoding='utf-8') as file:
+            leitor = csv.reader(file)
+            for linha in leitor:
+                #separação dos dados com suas devidas colunas
+                if linha and linha[0] == id:
+                    user_data = {'nome': linha[1], 'genero': linha[2], 'bio': linha[3], 'instagram': linha[4]}
                     break
 
     return render_template('artist/profile.html', user=current_user, data=user_data)
 
+
+# função de logout
 @artist_bp.route('/logout')
 @login_required
 def logout():
