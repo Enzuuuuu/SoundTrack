@@ -258,34 +258,21 @@ def cadastro():
         return redirect(url_for('home'))
 
   
-def artista_perfil(artist_id):
-    csv_path = os.path.join(current_app.root_path, 'data', 'dados.csv')
-    artist_data = None
-    csv_path2 = os.path.join(current_app.root_path, 'data', 'artistas.csv')
-    id = None
-
-    # Procurar ID em dados.csv
-    if os.path.exists(csv_path):
-        with open(csv_path, mode='r', encoding='utf-8') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                artista = row.get('artista', '').strip().lower()
-                if artist_id.strip().lower() in artista:
-                    id = row.get('id', '').strip()
-                    break
-    
-    # Procurar artista em artistas.csv usando o ID
-    if os.path.exists(csv_path2) and id:
-        with open(csv_path2, mode='r', encoding='utf-8') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if row.get('id', '').strip() == id:
+def artista_perfil(id_artista):
+    artist_data = []
+    caminho_csv2 = os.path.join(current_app.root_path, 'data', 'artistas.csv')
+    if os.path.exists(caminho_csv2):
+        with open(caminho_csv2, mode='r', encoding='utf-8') as arquivo:
+            ler_csv = csv.DictReader(arquivo)
+            for linha in ler_csv:
+                if linha.get('id', '').strip() == id_artista:
+                    artist_data = linha
                     artist_data = {
-                        'id': row.get('id', '').strip(),
-                        'nome': row.get('Nome', '').strip(),
-                        'genero': row.get('Genero', '').strip(),
-                        'bio': row.get('Bio', '').strip(),
-                        'instagram': row.get('Instagram', '').strip()
+                        'id': linha.get('id', '').strip(),
+                        'nome': linha.get('Nome', '').strip(),
+                        'genero': linha.get('Genero', '').strip(),
+                        'bio': linha.get('Bio', '').strip(),
+                        'instagram': linha.get('Instagram', '').strip()
                     }
                     break
 

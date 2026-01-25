@@ -13,6 +13,6 @@ def login():
 def cadastro():
     return funcoes.cadastro()
 
-@public_bp.route('/artistas/<artista>')
-def artista_perfil(artista):
-    return funcoes.artista_perfil(artista)
+@public_bp.route('/artistas/<id>')
+def artista_perfil(id):
+    return funcoes.artista_perfil(id)
