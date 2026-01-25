@@ -258,13 +258,18 @@ def cadastro():
         return redirect(url_for('home'))
 
   
+  # objetivo da função: ao clicar no botão de artista no carddo show exibe as informações do artista referido
 def artista_perfil(id_artista):
+    #ENTRADA : o Id do artista referente ao show
+    #SAÍDA: informações do artista referido
     artist_data = []
-    caminho_csv2 = os.path.join(current_app.root_path, 'data', 'artistas.csv')
-    if os.path.exists(caminho_csv2):
-        with open(caminho_csv2, mode='r', encoding='utf-8') as arquivo:
+    #pega a tabela confere se existe 
+    tabela = os.path.join(current_app.root_path, 'data', 'artistas.csv')
+    if os.path.exists(tabela):
+        with open(tabela, mode='r', encoding='utf-8') as arquivo:
             ler_csv = csv.DictReader(arquivo)
             for linha in ler_csv:
+                #pega os ID da tabela ( já transformada em dicionario ( função dictreader )) e compara com o ID do parâmetro
                 if linha.get('id', '').strip() == id_artista:
                     artist_data = linha
                     artist_data = {
@@ -274,6 +279,7 @@ def artista_perfil(id_artista):
                         'bio': linha.get('Bio', '').strip(),
                         'instagram': linha.get('Instagram', '').strip()
                     }
+                    #coloca todas as informações do artista especifico dentro da lista artis_data e retorna 
                     break
 
     if artist_data:
