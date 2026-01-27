@@ -23,7 +23,6 @@
     <span id="status"></span>
     <a id="map-link" href=""></a>
 </div>
-
 <div class="shows-container">
     {% for show in shows %}
         <div class="show-card">
@@ -36,7 +35,7 @@
                 {% else %}
                 N/A
                 {% endif %}</p>
-                <div class="red-button"><a href="/artistas/{{ show.id }}"><i class="bi bi-person"></i></a></div>
+                <a href="/artistas/{{ show.id }}" class="red-button"></a>
         </div>
     {% endfor %}
 </div>
