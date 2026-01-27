@@ -107,10 +107,11 @@ def profile():
             with open(tabela, mode='r', encoding='utf-8') as file:
                 leitor = csv.reader(file)
                 for linha in leitor:
-                    #se a linha atual e a primeira informação da linha == id
+                    #se o ID da linha atual bater com o ID do usuário:
                     # significa que já exite um usuário com esse id ou seja usuaário existente
-                    if linha and linha[0] == id:
+                    if linha[0] == id:
                         # Substitui pelos novos dados
+                        # Variavel usuario_encontrado serve como um controle melhor 
                         linhas_atualizadas.append([id, nome, genero, bio, instagram])
                         usuario_encontrado = True
                     else:
@@ -122,6 +123,7 @@ def profile():
 
         # reescreve a tabela 
         try:
+            #função write apra reescrever TODA a tabela usando como base a variável "lista atualizada"
             with open(tabela, mode='w', newline='', encoding='utf-8') as file:
                 escritor = csv.writer(file)
                 escritor.writerows(linhas_atualizadas)
