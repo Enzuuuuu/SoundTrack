@@ -212,8 +212,22 @@ textarea {
         justify-content: center;
         margin-bottom: 0;
     }
-}
 
+    .display {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .art-card {
+        width: 40vw !important;
+        height: 40vw !important;
+}
+}
 .art-card a {
     color: #F30800;
     text-decoration: none;
@@ -237,11 +251,14 @@ textarea {
     width: 100%;
     max-width: 600px;
     height: auto;
+    align-items: center;
+    justify-content: center;
 }
 
 .art-card h3 {
     margin: 0 0 10px 0;
     color: #333;
+    font-size: 4vw;
 }
 .art-card p {
     color: #555;
@@ -253,4 +270,13 @@ textarea {
     text-align: center;
     margin: 2rem 0;
     color: #F30800;
+}
+
+.paragrafo {
+    text-align: center;
+    margin: 1rem 0;
+    color: #333;
+}
+.art-card strong {
+    color: #1C110A;
 }
