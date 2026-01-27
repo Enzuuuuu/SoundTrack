@@ -44,7 +44,7 @@ def marcar_show():
                 leitor = csv.reader(file)
                 next(leitor, None)  # PULA O CABEÇALHO DO ARTISTAS.CSV
                 for linha in leitor:
-                    if linha and linha[0] == str(current_user.id):
+                    if linha[0] == str(current_user.id):
                         artista = linha[1]
                         genero = linha[2]
                         break
@@ -58,14 +58,14 @@ def marcar_show():
                 # Só tenta converter se for um dígito para evitar novos erros
                 ids = []
                 for linha in leitor:
-                    if linha and linha[0].isdigit():
+                    if linha[0].isdigit():
                         ids.append(int(linha[0]))
                 if ids:
                     #ele cataloga todos os ids depois usa a função max para peagr o maior deles e adicionar +1
                     novo_id = max(ids) + 1
 
         # Salva o novo show
-        # aqui foi implementado a função csv.writerow() para escrever uma nova coluna de maneira mais rapida e com menos codigo
+        # aqui foi implementado a função csv.writerow() para escrever uma nova linha de maneira mais rapida e com menos codigo
         try:
             with open(dadoscsv, mode='a', newline='', encoding='utf-8') as file:
                 salvar = csv.writer(file)
