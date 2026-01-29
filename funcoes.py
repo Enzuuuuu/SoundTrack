@@ -28,19 +28,8 @@ def home()-> list:
 
     #O usuário que esta logado no momento
     user = current_user
-    #Diferenciação de página de Logado e não Logado
-    if user.is_authenticated:
-        return render_template(
-            'artist/index.html', 
-            shows=shows_filtrados,  
-            user=current_user, 
-            latitudes=latitudes, 
-            longitudes=longitudes,
-            generos=generos_disponiveis
-        )
-    
-    else:
-        return render_template(
+    # Retorno para o template e as informações
+    return render_template(
             'public/index.html', 
             shows=shows_filtrados, 
             user=current_user, 
