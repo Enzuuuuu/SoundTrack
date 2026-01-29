@@ -7,16 +7,26 @@
 </head>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/artist_profile.css') }}">
 <body>
-    <div class="art-card">
-        <h1>Perfil do Artista: {{ artist.nome }}</h1>
-        <p><strong>Gênero:</strong> {{ artist.genero }}</p>
-        <p><strong>Biografia:</strong> {{ artist.bio }}</p>
-        <p><strong>Instagram:</strong>
-            <a href="https://instagram.com/{{ artist.instagram.replace('@', '') }}" target="_blank">
-                {{ artist.instagram }}
-            </a>
-        </p>
-        <a href="/">Voltar à Página Principal</a>
+    <div class="display">
+        <div class="art-card">
+            <h1>{{ show.titulo }}</h1>
+            <p class="paragrafo"><strong>Local:</strong> {{ show.local }}</p>
+            <p class="paragrafo"><strong>Data:</strong> {{ show.data }}</p>
+            <p class="paragrafo"><strong>Hora:</strong> {{ show.hora }}</p>
+            <p class="paragrafo"><strong>Gênero:</strong> {{ show.genero }}</p>
+            <p class="paragrafo"><strong>Preço:</strong> {{ show.preco }}</p>
+        </div>
+        <div class="art-card">
+            <h1>Perfil do Artista: {{ artist.nome }}</h1>
+            <p><strong>Gênero:</strong> {{ artist.genero }}</p>
+            <p><strong>Biografia:</strong> {{ artist.bio }}</p>
+            <p><strong>Instagram:</strong>
+                <a href="https://instagram.com/{{ artist.instagram.replace('@', '') }}" target="_blank">
+                    {{ artist.instagram }}
+                </a>
+            </p>
+            <a href="/">Voltar à Página Principal</a>
+        </div>
     </div>
 </body>
 </html>

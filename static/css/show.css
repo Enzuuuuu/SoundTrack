@@ -35,8 +35,13 @@ h1 {
     border-radius: 1rem ;
     background-color: white;
     height: 30%;
+    position: relative;
+    transition: all 0.3s ease;
 }
 
+.show-card:hover {
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
 .voltar {
     display: inline-block;
     margin: 2rem auto;
@@ -74,16 +79,13 @@ a {
     border-radius: 50%;
 }
 
-.red-button {
-    display: inline-block;
-    padding: 0.5rem 0.7rem;
-    background-color: #F30800;
-    border-radius: 50%;
-    transition: background-color 0.3s ease;
-    width: 40px;
-    height: 40px;
+.red-button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
 }
-
-.red-button:hover {
-    background-color: #D00600;
 }

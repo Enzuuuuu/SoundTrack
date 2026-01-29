@@ -263,6 +263,7 @@ def artista_perfil(id_artista):
     #ENTRADA : o Id do artista referente ao show
     #SAÍDA: informações do artista referido
     artist_data = []
+    show_data = []
     #pega a tabela confere se existe 
     tabela = os.path.join(current_app.root_path, 'data', 'artistas.csv')
     if os.path.exists(tabela):
@@ -279,11 +280,29 @@ def artista_perfil(id_artista):
                         'bio': linha.get('Bio', '').strip(),
                         'instagram': linha.get('Instagram', '').strip()
                     }
-                    #coloca todas as informações do artista especifico dentro da lista artis_data e retorna 
+                    #coloca todas as informações do artista especifico dentro da lista artis_data  
                     break
-
+    tabela2 = os.path.join(current_app.root_path, 'data', 'dados.csv')
+    if os.path.exists(tabela2):
+        with open(tabela2, mode='r', encoding='utf-8') as arquivo2:
+            ler_csv2 = csv.DictReader(arquivo2)
+            for linha in ler_csv2:
+                if linha.get('id','').strip() == id_artista:
+                    show_data = linha
+                    show_data = {
+                        'id': linha.get('id', '').strip(),
+                        'titulo': linha.get('titulo', '').strip(),
+                        'data': linha.get('data', '').strip(),
+                        'hora': linha.get('hora', '').strip(),
+                        'local': linha.get('local', '').strip(),
+                        'preco': linha.get('preco', '').strip(),
+                        'genero': linha.get('genero', '').strip(),
+                        'latitude': linha.get('latitude', '').strip(),
+                        'longitude': linha.get('longitude', '').strip()
+                    }
+                #repete o processo de criação de lista com informação para os shows também
     if artist_data:
-        return render_template('info_artista.html', artist=artist_data)
+        return render_template('info_artista.html', artist=artist_data, show=show_data)
     else:
         return "Artista não encontrado", 404
     
