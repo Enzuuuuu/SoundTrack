@@ -11,10 +11,6 @@ from db import db
 from models import User
 import funcoes
 
-#blueprints
-from app.public.routes import public_bp
-from app.artist.routes import artist_bp
-
 # configurações básicas flask
 load_dotenv('.env')
 app = Flask(__name__)
@@ -36,31 +32,14 @@ lm.login_view = 'login'
 def user_loader(id):
     return db.session.get(User, int(id))
 
+#blueprints
+from app.public.routes import public_bp
+from app.artist.routes import artist_bp
+
 # registro dos blueprints
 app.register_blueprint(public_bp)
 app.register_blueprint(artist_bp)
 
-
-#rotas 
-@app.route('/')
-def home():
-    return funcoes.home()
-
-@app.route("/coordenadas", methods=["POST"])
-def coordenadas():
-    return funcoes.coordenadas()
-
-@app.route("/distancia", methods=["POST"])
-def distancia():
-    return funcoes.distancia()
-
-@app.route('/shows_proximos')
-def shows_proximos():
-    return funcoes.shows_proximos()
-
-@app.route('/artistas/<id>')
-def artista_perfil(id):
-    return funcoes.artista_perfil(id)
 
 if __name__ == '__main__':
     with app.app_context():
