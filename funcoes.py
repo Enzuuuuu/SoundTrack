@@ -6,9 +6,6 @@ from db import db
 import os
 import csv
 
-
-
-
 # funções base para a home
 def home()-> list:
     
@@ -199,7 +196,6 @@ def shows_proximos():
         longitudes=longitudes
     )
 
-
 # função de logar usuario
 def login():
     if request.method == 'GET':
@@ -209,13 +205,13 @@ def login():
     password = request.form.get('password')
 
     #se a senha e o usuario bater com o banco de dados, o usuario entra no site
-    user = db.session.query(User).filter_by(name=name, password=password).first()
+    user = db.session.query(User).filter_by(name=name).first()
+    if user and user.getpass(password):
+        login_user(user)
+        return redirect(url_for('public.home')) 
     if not user:
         return render_template('public/login.html', error="Usuário ou senha incorretos!", name=name)
     
-    login_user(user)
-    return redirect(url_for('public.home'))
-
 # função de cadastrar novos usuarios
 def cadastro():
     if current_user.is_authenticated:
@@ -236,15 +232,16 @@ def cadastro():
         # verifica se o usuario escolhido já não existe no banco de dados
         existing_user = db.session.query(User).filter_by(name=name).first()
         if existing_user:
-            return render_template('public/cadastro.html', error='Usuário já existe!', name=name)
+            return render_template('public/cadastro.html', error='Algo deu errado, por favor tente uma combinação diferente de senha ou usuario!', name=name)
         
         # cria o usuario novo
-        new_user = User(name=name, password=password)
+        new_user = User(name=name)
+        new_user.setpass(password)
         db.session.add(new_user)
         db.session.commit()
 
         login_user(new_user)
-        return redirect(url_for('home'))
+        return redirect(url_for('public.home'))
 
   
   # objetivo da função: ao clicar no botão de artista no carddo show exibe as informações do artista referido
