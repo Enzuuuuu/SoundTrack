@@ -6,9 +6,6 @@ from db import db
 import os
 import csv
 
-
-
-
 # funções base para a home
 def home()-> list:
     
@@ -28,20 +25,9 @@ def home()-> list:
 
     #O usuário que esta logado no momento
     user = current_user
-    #Diferenciação de página de Logado e não Logado
-    if user.is_authenticated:
-        return render_template(
-            'artist/index.html', 
-            shows=shows_filtrados,  
-            user=current_user, 
-            latitudes=latitudes, 
-            longitudes=longitudes,
-            generos=generos_disponiveis
-        )
-    
-    else:
-        return render_template(
-            'public/index.html', 
+    # Retorno para o template e as informações
+    return render_template(
+            'index.html', 
             shows=shows_filtrados, 
             user=current_user, 
             latitudes=latitudes, 
@@ -203,13 +189,12 @@ def shows_proximos():
     longitudes = [float(linha["longitude"]) for linha in shows]
     
     return render_template(
-        'shows_proximos.html', 
+        'public/shows_proximos.html', 
         shows=shows, 
         user=current_user, 
         latitudes=latitudes, 
         longitudes=longitudes
     )
-
 
 # função de logar usuario
 def login():
@@ -220,17 +205,17 @@ def login():
     password = request.form.get('password')
 
     #se a senha e o usuario bater com o banco de dados, o usuario entra no site
-    user = db.session.query(User).filter_by(name=name, password=password).first()
+    user = db.session.query(User).filter_by(name=name).first()
+    if user and user.getpass(password):
+        login_user(user)
+        return redirect(url_for('home')) 
     if not user:
         return render_template('public/login.html', error="Usuário ou senha incorretos!", name=name)
     
-    login_user(user)
-    return redirect(url_for('home'))
-
 # função de cadastrar novos usuarios
 def cadastro():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('public.home'))
        
     if request.method == 'GET':
         return render_template('public/cadastro.html')
@@ -247,10 +232,11 @@ def cadastro():
         # verifica se o usuario escolhido já não existe no banco de dados
         existing_user = db.session.query(User).filter_by(name=name).first()
         if existing_user:
-            return render_template('public/cadastro.html', error='Usuário já existe!', name=name)
+            return render_template('public/cadastro.html', error='Algo deu errado, por favor tente uma combinação diferente de senha ou usuario!', name=name)
         
         # cria o usuario novo
-        new_user = User(name=name, password=password)
+        new_user = User(name=name)
+        new_user.setpass(password)
         db.session.add(new_user)
         db.session.commit()
 
@@ -302,7 +288,7 @@ def artista_perfil(id_artista):
                     }
                 #repete o processo de criação de lista com informação para os shows também
     if artist_data:
-        return render_template('info_artista.html', artist=artist_data, show=show_data)
+        return render_template('public/info_artista.html', artist=artist_data, show=show_data)
     else:
         return "Artista não encontrado", 404
     
