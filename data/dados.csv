@@ -1,14 +1,17 @@
-id,titulo,artista,data,hora,local,genero,preco,latitude,longitude
-1,Rock Night,Banda X,2025-12-15,20:00,São Paulo,Rock,50.00,-23.55052,-46.633308
-2,Pop Festival,Artista Y,2025-12-20,18:00,Rio de Janeiro,Pop,0.00,-22.906847,-43.172896
-3,Eletrônica Vibes,DJ Z,2025-12-25,22:00,Belo Horizonte,Eletrônica,30.00,-19.916681, -43.934493
-4,Jazz Session,Jazz Band,2025-12-30,19:00,Porto Alegre,Jazz,40.00,-30.034647,-51.217658
-5,Indie Night,Indie Artist,2026-01-05,21:00,Salvador,Indie,25.00,-12.971399,-38.501305 
-6,Clássicos ao Vivo,Orquestra A,2026-01-10,20:30,Curitiba,Clássica,60.00,-25.429596,-49.271272
-7,Hip Hop Beats,Rapper B,2026-01-15,23:00,Fortaleza,Hip Hop,35.00,-3.71722,-38.543369
-8,Reggae Fest,Banda C,2026-01-20,17:00,Recife,Reggae,20.00,-8.047562,-34.877001
-9,Metal Madness,Banda D,2026-01-25,21:30,Belo Horizonte,Metal,55.00,-19.916681,-43.934493
-10,Folk Evening,Folk Group,2026-01-30,19:30,Brasília,Folk,25.00,-15.794229,-47.88216711,
-11,Forró Fest,Jazz aa,2026-02-05,21:00,João Pessoa,Jazz,50.00,-23.5505,-46.6333
-12,Pisadinhas JP,Barões da Pisadinha,2026-02-23,11:11,João Pessoa,piseiro,60,-7.120844853728501,-34.878848552480484
-13,Abc,Jazz aa,2222-02-22,22:22,abc,Jazz,222,-7.120844853728501,-34.878848552480484
+id,titulo,artista,data,hora,local,genero,preco,latitude,longitude,id_artista
+1,Rock Night,Banda X,2025-12-15,20:00,São Paulo,Rock,50.00,-23.55052,-46.633308,1
+2,Pop Festival,Artista Y,2025-12-20,18:00,Rio de Janeiro,Pop,0.00,-22.906847,-43.172896,2
+3,Eletrônica Vibes,DJ Z,2025-12-25,22:00,Belo Horizonte,Eletrônica,30.00,-19.916681, -43.934493,3
+4,Jazz Session,Jazz Band,2025-12-30,19:00,Porto Alegre,Jazz,40.00,-30.034647,-51.217658,4
+5,Indie Night,Indie Artist,2026-01-05,21:00,Salvador,Indie,25.00,-12.971399,-38.501305 ,5
+6,Clássicos ao Vivo,Orquestra A,2026-01-10,20:30,Curitiba,Clássica,60.00,-25.429596,-49.271272,6
+7,Hip Hop Beats,Rapper B,2026-01-15,23:00,Fortaleza,Hip Hop,35.00,-3.71722,-38.543369,7
+8,Reggae Fest,Banda C,2026-01-20,17:00,Recife,Reggae,20.00,-8.047562,-34.877001,8
+9,Metal Madness,Banda D,2026-01-25,21:30,Belo Horizonte,Metal,55.00,-19.916681,-43.934493,9
+10,Folk Evening,Folk Group,2026-01-30,19:30,Brasília,Folk,25.00,-15.794229,-47.88216711,10
+11,Forró Fest,Jazz aa,2026-02-05,21:00,João Pessoa,Jazz,50.00,-23.5505,-46.6333,11
+12,Pisadinhas JP,Barões da Pisadinha,2026-02-23,11:11,João Pessoa,piseiro,60,-7.120844853728501,-34.878848552480484,13
+13,Abc,Jazz aa,2222-02-22,22:22,abc,Jazz,222,-7.120844853728501,-34.878848552480484,11
+14,Fest Verão,Jazz aa,2026-02-03,17:00,Cabedelo,Jazz,200.00,-7.120844853728501,-34.878848552480484,11
+15,Francisco's House,Jazz aa,2026-02-03,21:00,Cabedelo,Jazz,200.00,-7.120844853728501,-34.878848552480484,11
+16, adassdadasdasda, 4, 275760-02-21, 11:11, dasdasdasdas, Jazz, 222, -7.120844853728501, -34.878848552480484,4

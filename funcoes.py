@@ -18,7 +18,6 @@ def home()-> list:
     #Parametros para filtrar --> A tabela contendo todos os shows e o valor da pesquisa
     shows_filtrados =  pesquisar_shows(shows, request.args.get('pesquisa', ''))
 
-
     # Pega as linhas referentes as latitudades e longitudes dos shows 
     latitudes = [float(linha["latitude"]) for linha in shows]
     longitudes = [float(linha["longitude"]) for linha in shows]
@@ -259,35 +258,20 @@ def cadastro():
 
   
   # objetivo da função: ao clicar no botão de artista no carddo show exibe as informações do artista referido
-def artista_perfil(id_artista):
-    #ENTRADA : o Id do artista referente ao show
+def artista_perfil(id_show,id_artista):
+    #ENTRADA : o Id do artista e do Show
     #SAÍDA: informações do artista referido
     artist_data = []
     show_data = []
     #pega a tabela confere se existe 
     tabela = os.path.join(current_app.root_path, 'data', 'artistas.csv')
-    if os.path.exists(tabela):
-        with open(tabela, mode='r', encoding='utf-8') as arquivo:
-            ler_csv = csv.DictReader(arquivo)
-            for linha in ler_csv:
-                #pega os ID da tabela ( já transformada em dicionario ( função dictreader )) e compara com o ID do parâmetro
-                if linha.get('id', '').strip() == id_artista:
-                    artist_data = linha
-                    artist_data = {
-                        'id': linha.get('id', '').strip(),
-                        'nome': linha.get('Nome', '').strip(),
-                        'genero': linha.get('Genero', '').strip(),
-                        'bio': linha.get('Bio', '').strip(),
-                        'instagram': linha.get('Instagram', '').strip()
-                    }
-                    #coloca todas as informações do artista especifico dentro da lista artis_data  
-                    break
     tabela2 = os.path.join(current_app.root_path, 'data', 'dados.csv')
     if os.path.exists(tabela2):
         with open(tabela2, mode='r', encoding='utf-8') as arquivo2:
             ler_csv2 = csv.DictReader(arquivo2)
             for linha in ler_csv2:
-                if linha.get('id','').strip() == id_artista:
+                if linha.get('id','').strip() == id_show:
+                    chave = linha.get('id_artista','').strip()
                     show_data = linha
                     show_data = {
                         'id': linha.get('id', '').strip(),
@@ -300,6 +284,20 @@ def artista_perfil(id_artista):
                         'latitude': linha.get('latitude', '').strip(),
                         'longitude': linha.get('longitude', '').strip()
                     }
+    if os.path.exists(tabela):
+        with open(tabela, mode='r', encoding='utf-8') as arquivo:
+            ler_csv = csv.DictReader(arquivo)
+            for linha in ler_csv:
+                if chave == linha.get('id','').strip():
+                    artist_data = {
+                        'id': linha.get('id', '').strip(),
+                        'nome': linha.get('Nome', '').strip(),
+                        'genero': linha.get('Genero', '').strip(),
+                        'bio': linha.get('Bio', '').strip(),
+                        'instagram': linha.get('Instagram', '').strip()
+                        }
+                    #coloca todas as informações do artista especifico dentro da lista artis_data  
+                    break
                 #repete o processo de criação de lista com informação para os shows também
     if artist_data:
         return render_template('info_artista.html', artist=artist_data, show=show_data)

@@ -58,9 +58,9 @@ def distancia():
 def shows_proximos():
     return funcoes.shows_proximos()
 
-@app.route('/artistas/<id>')
-def artista_perfil(id):
-    return funcoes.artista_perfil(id)
+@app.route('/artistas/<id>-<id_artista>')
+def artista_perfil(id,id_artista):
+    return funcoes.artista_perfil(id,id_artista)
 
 if __name__ == '__main__':
     with app.app_context():

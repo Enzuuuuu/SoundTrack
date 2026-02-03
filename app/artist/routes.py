@@ -62,17 +62,14 @@ def marcar_show():
                         ids.append(int(linha[0]))
                 if ids:
                     #ele cataloga todos os ids depois usa a função max para peagr o maior deles e adicionar +1
-                    novo_id = max(ids) + 1
+                    novo_id = max(ids) + 1   
+                artista = current_user.id
 
         # Salva o novo show
         # aqui foi implementado a função csv.writerow() para escrever uma nova linha de maneira mais rapida e com menos codigo
         try:
             with open(dadoscsv, mode='a', newline='', encoding='utf-8') as file:
-                salvar = csv.writer(file)
-                salvar.writerow([
-                    novo_id, titulo_show, artista, data, 
-                    hora, local, genero, preco, latitude, longitude
-                ])
+                file.write(f'\n{novo_id}, {titulo_show}, {artista}, {data}, {hora}, {local}, {genero}, {preco}, {latitude}, {longitude},{artista}')
             
             # Redirecionar para o perfil para ver o resultado
             return redirect(url_for('artist.profile'))

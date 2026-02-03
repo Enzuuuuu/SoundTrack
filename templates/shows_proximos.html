@@ -30,12 +30,13 @@
             <p>Banda: {{ show.artista }}</p>
             <p>Local: {{ show.local }}</p>
             <p>Data: {{ show.data }}</p>
+            <p>{{ show.id }} {{ show.id_artista }}</p>
             <p class="distancia" data-titulo="{{ show.titulo }}">{% if show.distancia is not none %}
                 {{ show.distancia }} ----------
                 {% else %}
                 N/A
                 {% endif %}</p>
-                <a href="/artistas/{{ show.id }}" class="red-button"></a>
+                <a href="/artistas/{{ show.id }}-{{ show.id_artista }}" class="red-button"></a>
         </div>
     {% endfor %}
 </div>
