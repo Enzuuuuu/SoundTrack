@@ -48,6 +48,9 @@ def distancia():
 def shows_proximos():
     return funcoes.shows_proximos()
 
+@app.route('/artistas/<id>')
+def artista_perfil(id):
+    return funcoes.artista_perfil(id)
 
 #blueprints
 from app.public.routes import public_bp
