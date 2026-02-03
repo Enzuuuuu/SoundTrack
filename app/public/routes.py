@@ -2,23 +2,6 @@
 from . import public_bp
 import funcoes
 
-# Home
-@public_bp.route('/')
-def home():
-    return funcoes.home()
-
-@public_bp.route("/coordenadas", methods=["POST"])
-def coordenadas():
-    return funcoes.coordenadas()
-
-@public_bp.route("/distancia", methods=["POST"])
-def distancia():
-    return funcoes.distancia()
-
-@public_bp.route('/shows_proximos')
-def shows_proximos():
-    return funcoes.shows_proximos()
-
 
 # Login do Usuário
 @public_bp.route('/login', methods=['GET', 'POST'])

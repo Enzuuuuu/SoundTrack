@@ -27,7 +27,7 @@ def home()-> list:
     user = current_user
     # Retorno para o template e as informações
     return render_template(
-            'public/index.html', 
+            'index.html', 
             shows=shows_filtrados, 
             user=current_user, 
             latitudes=latitudes, 
@@ -208,7 +208,7 @@ def login():
     user = db.session.query(User).filter_by(name=name).first()
     if user and user.getpass(password):
         login_user(user)
-        return redirect(url_for('public.home')) 
+        return redirect(url_for('home')) 
     if not user:
         return render_template('public/login.html', error="Usuário ou senha incorretos!", name=name)
     
@@ -241,7 +241,7 @@ def cadastro():
         db.session.commit()
 
         login_user(new_user)
-        return redirect(url_for('public.home'))
+        return redirect(url_for('home'))
 
   
   # objetivo da função: ao clicar no botão de artista no carddo show exibe as informações do artista referido

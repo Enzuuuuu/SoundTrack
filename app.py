@@ -3,7 +3,6 @@
 from flask import Flask
 from flask_login import LoginManager
 from datetime import timedelta
-from dotenv import load_dotenv
 import os
 import secrets
 
@@ -13,7 +12,6 @@ from models import User
 import funcoes
 
 # configurações básicas flask
-load_dotenv('.env')
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
@@ -32,6 +30,24 @@ lm.login_view = 'login'
 @lm.user_loader
 def user_loader(id):
     return db.session.get(User, int(id))
+
+# Home
+@app.route('/')
+def home():
+    return funcoes.home()
+
+@app.route("/coordenadas", methods=["POST"])
+def coordenadas():
+    return funcoes.coordenadas()
+
+@app.route("/distancia", methods=["POST"])
+def distancia():
+    return funcoes.distancia()
+
+@app.route('/shows_proximos')
+def shows_proximos():
+    return funcoes.shows_proximos()
+
 
 #blueprints
 from app.public.routes import public_bp
