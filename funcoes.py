@@ -188,7 +188,7 @@ def shows_proximos():
     longitudes = [float(linha["longitude"]) for linha in shows]
     
     return render_template(
-        'public/shows_proximos.html', 
+        'shows_proximos.html', 
         shows=shows, 
         user=current_user, 
         latitudes=latitudes, 
@@ -208,8 +208,8 @@ def login():
     if user and user.getpass(password):
         login_user(user)
         return redirect(url_for('home')) 
-    if not user:
-        return render_template('public/login.html', error="Usuário ou senha incorretos!", name=name)
+    
+    return render_template('public/login.html', error="Usuário ou senha incorretos!", name=name)
     
 # função de cadastrar novos usuarios
 def cadastro():
@@ -286,7 +286,7 @@ def artista_perfil(id_show,id_artista):
                     break
                 #repete o processo de criação de lista com informação para os shows também
     if artist_data:
-        return render_template('public/info_artista.html', artist=artist_data, show=show_data)
+        return render_template('info_artista.html', artist=artist_data, show=show_data)
     else:
         return "Artista não encontrado", 404
     
