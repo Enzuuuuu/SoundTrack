@@ -11,8 +11,8 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(30), unique=True)
     password = db.Column(db.String(256), nullable=False)
     
-    def setpass(self, passw: str):
+    def setpass(self: str, passw: str) -> str:
         self.password = generate_password_hash(passw)
 
-    def getpass(self, passw: str):
+    def getpass(self: str, passw: str) -> str:
         return check_password_hash(self.password, passw)
