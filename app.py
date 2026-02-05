@@ -1,267 +1,64 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user  
-from flask_sqlalchemy import SQLAlchemy
-from datetime import timedelta
-from geopy.geocoders import Nominatim
-from geopy.distance import geodesic
-from flask import jsonify
 
-# Cria a aplicação Flask
+#flask app.py e derivados
+from flask import Flask
+from flask_login import LoginManager
+from datetime import timedelta
+import os
+import secrets
+
+#funções e arquivos externos
+from db import db
+from models import User
+import funcoes
+
+# configurações básicas flask
 app = Flask(__name__)
-app.secret_key = 'banana'
+app.secret_key = secrets.token_hex(32)
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
+
+# criação do banco de dados do flask_sqlalchemy para login de usuario
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dados.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #deixe essa opção desabilitada porquê senão vai consumir mais recursos desnecessariamente
+# inicialização do banco de dados
+db.init_app(app)
+
+# inicialização do flask login
 lm = LoginManager()
 lm.init_app(app)
-
-# Essa coisa aqui cria banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dados.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-
-# Função para carregar o usuário
+lm.login_view = 'login'
+# carregamento do usuário
 @lm.user_loader
 def user_loader(id):
-    user = db.session.query(User).filter_by(id=id).first()
-    return user
+    return db.session.get(User, int(id))
 
-# Modelo de Usuário
-class User(db.Model, UserMixin):
-    __tablename__ = 'users'
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    name = db.Column(db.String(30), unique=True)
-    password= db.Column(db.String())
-
-# Rota de Login    
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-    elif request.method == 'POST':
-        name = request.form['name']
-        password = request.form['password']
-
-        user = db.session.query(User).filter_by(name=name, password=password).first()
-        if not user:
-            return render_template('login.html', error="Usuário ou senha incorretos!", name=name)
-        
-        login_user(user)
-        return redirect(url_for('home'))
-
-@app.route('/logado')
-@login_required
-def logado():
-    return render_template('logado.html', user=current_user)
-# Rota de Cadastro
-@app.route('/cadastro', methods=['GET', 'POST'])
-def cadastro():
-    if request.method == 'GET':
-        return render_template('cadastro.html')
-    elif request.method == 'POST':
-        name = request.form['name']
-        password = request.form['password']
-        confirmpassword = request.form['confirmpassword']
-        session['username'] = name
-
-        # Verifica se as senhas coincidem
-        if password != confirmpassword: 
-            return render_template('cadastro.html', error="As senhas não coincidem!")
-        
-        # Verifica se o usuário já existe
-        existing_user = db.session.query(User).filter_by(name=name).first()
-        if existing_user:
-            return render_template('cadastro.html', error='Usuário já existe!', name=name)
-        
-        # Criação de um novo usuário
-        new_user = User(name=name, password=password)
-        db.session.add(new_user)
-        db.session.commit()
-
-        login_user(new_user)
-        return redirect(url_for('home'))
-    
-
-# Logout (saindo da conta)
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('home'))
-
-def carregar_shows():
-    try:
-        with open('data/dados.csv', 'r', encoding='utf-8') as arquivo:
-            linhas = arquivo.read().splitlines()
-    except FileNotFoundError:
-        return []
-
-    if not linhas:
-        return []
-
-    shows = []
-
-    cabecalho = linhas[0].split(',')
-
-    for linha in linhas[1:]:
-        valores = linha.split(',')
-
-        row = {}
-        for i in range(len(cabecalho)):
-            if i < len(valores):
-                row[cabecalho[i]] = valores[i]
-            else:
-                row[cabecalho[i]] = ""
-
-        shows.append(row)
-
-    return shows
-
-def pesquisar_shows(shows, termo):
-    termo = termo.lower()
-    resultados = []
-    for show in shows:
-        if (termo in show['artista'].lower() or
-            termo in show['data'].lower() or
-            termo in show['local'].lower()):
-            resultados.append(show)
-    return resultados
-
-def filtrar_shows_alfabeticamente(shows):
-    return sorted(shows, key=lambda x: x['titulo'].lower())
+# Home
 @app.route('/')
 def home():
-    print("ARGS RECEBIDOS:", request.args)
-    
-    # --- leitura manual do CSV ---
-    try:
-        with open("data/dados.csv", "r", encoding="utf-8") as f:
-            linhas = f.read().splitlines()
-    except FileNotFoundError:
-        linhas = []
-
-    dist = []
-
-    if linhas:
-        cabecalho = linhas[0].split(',')
-
-        for linha in linhas[1:]:
-            valores = linha.split(',')
-
-            row = {}
-            for i in range(len(cabecalho)):
-                row[cabecalho[i]] = valores[i] if i < len(valores) else ""
-
-            dist.append(row)
-
-    # --- resto do seu código ---
-    latitudes = []
-    longitudes = []
-    for linha in dist:
-        latitudes.append(float(linha["latitude"]))
-        longitudes.append(float(linha["longitude"]))
-    shows = carregar_shows()
-    resultados = pesquisar_shows(shows, request.args.get('pesquisa', ''))
-    ordenar = request.args.get('ordenar', '')
-    if resultados:
-        shows = resultados
-    
-    genero_filtro = request.args.get('genero', '')
-    if ordenar == 'genero' and genero_filtro:
-        shows = [show for show in shows if show.get('genero', '').lower() == genero_filtro.lower()]
-    if ordenar == 'alfabetica':
-        shows = sorted(shows, key=lambda x: x['titulo'].lower())
-    
-    if ordenar == 'preco':
-        shows = sorted(shows, key=lambda x: float(x.get('preco', float('inf'))))
-
-        
-    for s in shows[:5]:
-        print(s["titulo"], s.get("distancia_km"))    
-    return render_template('index.html', shows=shows, dist=dist, user=current_user, latitudes=latitudes, longitudes=longitudes,)  
-    
-# Cria as tabelas do banco de dados
-with app.app_context():
-    db.create_all()
-
-
+    return funcoes.home()
 
 @app.route("/coordenadas", methods=["POST"])
 def coordenadas():
-    try:
-
-        latitude_str = request.form.get("latitude")
-        longitude_str = request.form.get("longitude")
-
-        # Verifica se os dados foram recebidos
-        if not latitude_str or not longitude_str:
-            return jsonify({"address": "Erro: Dados de latitude/longitude ausentes"}), 400
-
-        # Converte para float antes de usar na biblioteca
-        lat = float(latitude_str)
-        lon = float(longitude_str)
-
-        geolocator = Nominatim(user_agent="myGeolocator")
-        location = geolocator.reverse((lat, lon), language='pt')
-
-        if location:
-            address = location.address
-        else:
-            address = "Endereço não encontrado"
-
-        return jsonify({"address": address})
-    except Exception as e:
-        return jsonify({"address": f"Erro ao processar a solicitação: {str(e)}"}), 500
+    return funcoes.coordenadas()
 
 @app.route("/distancia", methods=["POST"])
 def distancia():
-    data = request.get_json()
+    return funcoes.distancia()
 
-    user_location = (
-        float(data["latitude"]),
-        float(data["longitude"])
-    )
+@app.route('/shows_proximos')
+def shows_proximos():
+    return funcoes.shows_proximos()
 
-    proximidades = calcular_proximidades(user_location)
-    return jsonify(proximidades)
+@app.route('/artistas/<id>-<id_artista>')
+def artista_perfil(id,id_artista):
+    return funcoes.artista_perfil(id,id_artista)
 
-def calcular_proximidades(user_location):
-    proximidades = []
+#blueprints
+from app.public.routes import public_bp
+from app.artist.routes import artist_bp
 
-    try:
-        with open("data/dados.csv", newline="", encoding="utf-8") as f:
-            linhas = f.read().splitlines()
-    except FileNotFoundError:
-        return proximidades
-
-    if not linhas:
-        return proximidades
-
-    cabecalho = linhas[0].split(',')
-
-    for linha in linhas[1:]:
-        valores = linha.split(',')
-        show = {}
-
-        for i in range(len(cabecalho)):
-            show[cabecalho[i]] = valores[i] if i < len(valores) else ""
-
-        show_location = (
-            float(show["latitude"]),
-            float(show["longitude"])
-        )
-
-        distancia_km = geodesic(user_location, show_location).kilometers
-
-        proximidades.append({
-            "titulo": show["titulo"],
-            "distancia_km": round(distancia_km, 2)
-        })
-
-    proximidades.sort(key=lambda x: x["distancia_km"])
-    return proximidades
-
+# registro dos blueprints
+app.register_blueprint(public_bp)
+app.register_blueprint(artist_bp)
 
 
 if __name__ == '__main__':

@@ -1,70 +1,7 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+{% extends "base.html" %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <title>Página Principal</title>
-  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
-  <link rel="stylesheet" href="../static/css/index.css">
-  <link rel="stylesheet" href="../static/css/tabela.css">
-  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-</head>
-
-<body>
-
-  <header>
-    <h1>SoundTrack</h1>
-    <nav>
-      <ul class="menu">
-        <a href="#">
-          <li>
-            <span class="icone"><i class="bi bi-person-fill-gear"></i></span>
-            <span class="texto">Configurações</span>
-          </li>
-        </a>
-
-        <a href="#pesquisa">
-          <li>
-            <span class="icone"><i class="bi bi-search"></i></span>
-            <span class="texto">Pesquisa</span>
-          </li>
-        </a>
-
-        <a href="/login">
-          <li>
-            <span class="icone"><i class="bi bi-box-arrow-in-right"></i></span>
-            <span class="texto">Login</span>
-          </li>
-        </a>
-
-        {{%block content % }}
-        
-
-        {{%endblock%}}
-
-        <a href="#tabela">
-          <li>
-            <span class="icone"><i class="bi bi-cassette-fill"></i></span>
-            <span class="texto">Shows</span>
-          </li>
-        </a>
-      </ul>
-    </nav>
-  </header>
-
-  <button onclick="obterLocalizacao()">Obter Localização</button>
-
-  <main>
-    <section class="carousel">
+{% block content %}
+<section class="carousel">
       <div class="carousel-track">
         <div class="carousel-item">
           <img src="../static/images/imagemc1.png" alt="">
@@ -98,25 +35,30 @@
 
     </section>
 
-      <form method="get" class="search-form">
-        <div class="centralizar">
-          <div class="pesquisa">
-            <input type="text" placeholder="Pesquisar shows..." name="pesquisa" id="pesquisa">
-            <button type="submit"><i class="bi bi-search"></i></button>
-            <a href="/?ordenar=alfabetica" id="alfabeto"><i class="bi bi-alphabet"></i></a>
-            <a href="/"><i class="bi bi-x"></i></a>
-          </div>
-         
+    <form method="get" class="search-form">
+      <div class="centralizar">
+        <div class="pesquisa">
+          <input type="text" placeholder="Pesquisar shows..." name="pesquisa" id="pesquisa">
+          <button type="submit"><i class="bi bi-search"></i></button>
+          <a href="/?ordenar=alfabetica" id="alfabeto"><i class="bi bi-alphabet"></i></a>
+          <a href="/?ordenar=preco" id="preco"><i class="bi bi-currency-dollar"></i></a>
+          <a href="/"><i class="bi bi-x"></i></a>
+
         </div>
-         <div class="filtros">
-            <a href="/?ordenar=genero&genero=Rock" class="filtro-link">Rock</a>
-            <a href="/?ordenar=genero&genero=Pop" class="filtro-link">Pop</a>
-            <a href="/?ordenar=genero&genero=Jazz" class="filtro-link">Jazz</a>
-            <a href="/?ordenar=genero&genero=Clássica" class="filtro-link">Clássica</a>
-            <a href="/?ordenar=genero&genero=Eletrônica" class="filtro-link">Eletrônica</a>
-            <a href="/?ordenar=genero&genero=Hip-Hop" class="filtro-link">Hip-Hop</a>
-          </div>
-      </form>
+
+      </div>
+      <div class="filtros">
+        <label for="filtro-genero">Gênero:</label>
+        <select id="filtro-genero" name="filtro_genero" class="opcoes" onchange="this.form.submit()">
+          <option value="" class="opcao">Todos</option>
+          {% for genero in generos %}
+          <option value="{{ genero }}" {% if request.args.get('filtro_genero') == genero %}selected{% endif %}>
+            {{ genero }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </form>
     <div class="pesquisa-tabela">
       <div class="tabela" id="tabela">
         <table>
@@ -134,7 +76,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for show in shows %}
+            {% for show in shows[:10] %}
             <tr>
               <td>{{ show.titulo }}</td>
               <td>{{ show.artista }}</td>
@@ -150,7 +92,8 @@
                 N/A
                 {% endif %}
               </td>
-              <td><a href="https://www.google.com/maps?q={{show.latitude}},{{show.longitude}}" target="_blank" class="localidade"><i class="fa-solid fa-location-pin"></i></a>
+              <td><a href="https://www.google.com/maps?q={{show.latitude}},{{show.longitude}}" target="_blank"
+                  class="localidade"><i class="fa-solid fa-location-pin"></i></a>
               </td>
             </tr>
             {% endfor %}
@@ -159,24 +102,4 @@
       </div>
       <a id="map-link" href="" target="_blank" class="local"> Seu Local <i class="fa-solid fa-map-location"></i></a>
   </main>
-
-  <footer class="sobrenos">
-    <h2>Sobre Nós</h2>
-    <p>Somos estudantes do IFPB, nosso objetivo com a soundtrack é uma ferramenta simples para conectar músicos e fãs de
-      música. <br><br>
-      Acreditamos no poder da música para unir pessoas e criar experiências inesquecíveis. Além de que precisamos
-      entregar este projeto para a conclusão do nosso curso.
-    </p>
-    <p>Criado Por:</p>
-    <ul>
-      <li>Enzo <a href="https://github.com/Enzuuuuu"><i class="fa-brands fa-github"></i></a></li>
-      <li>Matheus <a href="https://github.com/mattheuspaivadini"><i class="fa-brands fa-github"></i></a></li>
-      <li>Francisco<a href="https://github.com/francisco-josetti"><i class="fa-brands fa-github"></i></a></li>
-    </ul>
-  </footer>
-  <script src="../static/javascript/carrossel.js"></script>
-  <script src="https://kit.fontawesome.com/8de2dbf4f4.js" crossorigin="anonymous"></script>
-  <script src="../static/javascript/geolocalizacao.js"></script>
-</body>
-
-</html>
+  {% endblock %}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Página Principal</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+  <link rel="stylesheet" href="../static/css/index.css">
+  <link rel="stylesheet" href="../static/css/tabela.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <header>
+    <h1>SoundTrack</h1>
+    <nav>
+      <ul class="menu">
+        <a href="#">
+          <li>
+            <span class="icone"><i class="bi bi-person-fill-gear"></i></span>
+            <span class="texto">Configurações</span>
+          </li>
+        </a>
+
+        <a href="#pesquisa">
+          <li>
+            <span class="icone"><i class="bi bi-search"></i></span>
+            <span class="texto">Pesquisa</span>
+          </li>
+        </a>
+
+        {% if user.is_authenticated %}
+        <a href="{{ url_for('artist.profile') }}">
+          <li>
+            <span class="icone"><i class="bi bi-person-circle"></i></span>
+            <span class="texto">{{ current_user.name }}</span>
+          </li>
+        </a>
+
+        <a href="{{ url_for('artist.logout') }}">
+          <li>
+            <span class="icone"><i class="bi bi-box-arrow-right"></i></span>
+            <span class="texto">Logout</span>
+          </li>
+        </a>
+        <a href="/marcar_show">
+          <li>
+            <span class="icone"><i class="bi bi-calendar-check"></i></span>
+            <span class="texto">Marcar Shows</span>
+          </li>
+        </a>
+        {% else %}
+        <a href="{{ url_for('public.login') }}">
+          <li>
+            <span class="icone"><i class="bi bi-box-arrow-in-right"></i></span>
+            <span class="texto">Login</span>
+          </li>
+        </a>
+
+        <a href="{{ url_for('public.cadastro') }}">
+          <li>
+            <span class="icone"><i class="bi bi-person-plus"></i></span>
+            <span class="texto">Cadastro</span>
+          </li>
+        </a>
+        {% endif %}
+
+        <a href="/shows_proximos">
+          <li>
+            <span class="icone"><i class="bi bi-cassette-fill"></i></span>
+            <span class="texto">Shows</span>
+          </li>
+        </a>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    {% block content %} {% endblock %}
+  </main>
+  <footer class="sobrenos">
+    <h2>Sobre Nós</h2>
+    <p>Somos estudantes do IFPB, nosso objetivo com a soundtrack é uma ferramenta simples para conectar músicos e fãs de
+      música. <br><br>
+      Acreditamos no poder da música para unir pessoas e criar experiências inesquecíveis. Além de que precisamos
+      entregar este projeto para a conclusão do nosso curso.
+    </p>
+    <p>Criado Por:</p>
+    <ul>
+      <li>Enzo <a href="https://github.com/Enzuuuuu"><i class="fa-brands fa-github"></i></a></li>
+      <li>Matheus <a href="https://github.com/mattheuspaivadini"><i class="fa-brands fa-github"></i></a></li>
+      <li>Francisco<a href="https://github.com/francisco-josetti"><i class="fa-brands fa-github"></i></a></li>
+    </ul>
+  </footer>
+  <script src="../static/javascript/carrossel.js"></script>
+  <script src="https://kit.fontawesome.com/8de2dbf4f4.js" crossorigin="anonymous"></script>
+  <script src="../static/javascript/geolocalizacao.js"></script>
+</body>
+
+</html>

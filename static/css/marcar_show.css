@@ -1,0 +1,147 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sdtk{
+    font-family: 'Rock Salt', cursive;
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-align: center;
+    display: none;
+}
+body{
+    min-height: 100vh;
+    background-color: #f0f0f0;
+}
+.container{
+    width: 90%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    justify-self: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group{
+    margin-bottom: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+}
+
+h1{
+    font-family: JetBrains Mono, monospace;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    background-color: transparent;
+}
+
+.form-group label{
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    background-color: transparent;
+}
+
+.form-group input{
+    padding: 5px;
+    border: none;
+    border-bottom: 2px solid #F30800;
+    font-size: 16px;
+    background-color: transparent;
+}
+
+.form-group input:focus{
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #d00600;
+    box-shadow: 0 2px 5px rgba(208, 6, 0, 0.2);
+}
+button{
+    background-color: #F30800;
+    width: 100%;
+    border-radius: 60px;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 0.8rem;
+}
+
+button:hover{
+    background-color: #d00600;
+}
+#latitude, #longitude{
+    margin-bottom: 15px;
+}
+
+@media screen and (min-width: 600px) {
+    .container{
+        max-width: 1100px;
+    }
+    .form-group{
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .form-group label{
+        width: 35%;
+        margin-bottom: 0;
+    }
+
+    .form-group input{
+        width: 65%;
+    }
+}
+    @media screen and (min-width: 1024px) {
+        .container{
+            max-width: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+            width: 100%;
+            height: 100%;
+            min-height: none;
+        }
+
+        body{
+            width: 100%;
+            height: 100%;
+            min-height: none;
+        }
+        .sdtk{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: linear-gradient(45deg, #F30800, #880D05);
+            width: 100%;
+            height: 100%;
+        }
+
+        
+        h1{
+            display: none;
+        }
+
+        body{
+            width: 100%;
+            height: 100%;
+            min-height: none;
+        }
+    }
