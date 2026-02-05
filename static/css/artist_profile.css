@@ -1,5 +1,5 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #e9ecef;
     display: flex;
     font-size: 1.2rem;
@@ -244,6 +244,10 @@ textarea {
     height: auto;
     align-items: center;
     justify-content: center;
+    padding: 20px;
+    margin: 20px;
+    max-width: 400px;
+    max-height: 400px;
 }
 
 .profile-card-title  {
@@ -270,4 +274,32 @@ textarea {
 }
 .art-card strong {
     color: #1C110A;
+}
+
+.art-card p {
+    color: #555;
+    line-height: 1.4;
+    margin: 5px 0;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+@media screen and (min-width: 320px) and (max-width: 1023px) {
+    .art-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        justify-self: center;
+        width: 100%;
+        height: auto;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        margin: 20px;
+        max-width: 400px;
+        max-height: 400px;
+    }
 }
